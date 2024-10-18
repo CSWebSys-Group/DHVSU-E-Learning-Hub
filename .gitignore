@@ -1,0 +1,84 @@
+# Ignore Node.js dependencies (for React)
+node_modules/
+
+# Ignore build directories (for React)
+build/
+dist/
+
+# Ignore environment variable files
+.env
+
+# Ignore coverage directory from tests
+coverage/
+
+# Ignore log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore editor-specific files
+*.swp
+*.swo
+*.DS_Store
+.idea/
+.vscode/
+*.log
+
+# Laravel specific ignores
+
+# Laravel Vendor directory (Composer dependencies)
+vendor/
+
+# Laravel compiled files
+/public/storage
+/storage/*.key
+/storage/debugbar/*
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+
+# Laravel environment variable file
+.env
+.env.*.backup
+
+# Ignore database files
+*.sqlite
+homestead.yaml
+Homestead.json
+
+# Ignore cache and build artifacts
+/public/hot
+/public/storage
+/storage/*.key
+/storage/oauth-private.key
+/storage/oauth-public.key
+/storage/clockwork/*
+/storage/app/public
+/storage/app/private
+
+# Ignore compiled views
+bootstrap/cache/*
+
+# Ignore IDE helper files (if you are using laravel-ide-helper)
+.phpstorm.meta.php
+_ide_helper.php
+_ide_helper_models.php
+
+# Ignore any composer lock file if you don't want to track it (optional)
+composer.lock
+
+# Ignore temporary files created by Composer
+composer.phar
+
+# Ignore Mix manifest and NPM/Yarn artifacts (if you're using Laravel Mix)
+/public/mix-manifest.json
+/public/js/*.map
+/public/css/*.map
+npm-debug.log
+yarn-error.log
+
+# Ignore auto-generated IDE helper files (if applicable)
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
