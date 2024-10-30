@@ -32,7 +32,7 @@ const Login = () => {
         height: "600px",
       }}
     >
-      <div className="w-1/2">
+      <div className="w-full">
         <img
           className="w-full h-full absolute -z-50 opacity-10 object-cover filter blur-sm"
           src={dhvsuBg}
@@ -97,7 +97,7 @@ const Login = () => {
           </form>
         </div>
       </div>
-      <div className="w-1/2 h-full p-8 bg-maroon absolute right-0 rounded-l-[8rem] flex justify-center items-center backdrop-filter backdrop-blur-lg">
+      <div className="w-full rounded-l-[8rem] p-8 bg-maroon flex justify-center items-center backdrop-filter backdrop-blur-lg">
         <div className="flex flex-col justify-center items-center gap-6">
           <h2 className="text-4xl text-white font-poppins">
             Welcome, Honorian!
