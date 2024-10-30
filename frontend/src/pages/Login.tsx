@@ -2,13 +2,16 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { dhvsuBg, dhvsuLogo } from "../utils/Images";
 import Input from "../components/Input";
-import { Mail, Lock, Eye, EyeClosed, Loader } from "lucide-react";
+import { Mail, Lock, Eye, EyeClosed, Loader, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  // handling error (if user exists, do not display error) otherwise error should return false.
+  const error = false;
 
   const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,7 +37,7 @@ const Login = () => {
     >
       <div className="w-full">
         <img
-          className="w-full h-full absolute -z-50 opacity-10 object-cover filter blur-sm"
+          className="w-full h-full absolute -z-50 opacity-10 object-cover filter blur-md"
           src={dhvsuBg}
           alt=""
         />
@@ -76,6 +79,16 @@ const Login = () => {
                 Forgot password?
               </Link>
             </div>
+            {error && (
+              <div className="w-full bg-[#FAE5E5] py-2 px-2 border border-red-400 flex items-center gap-2 rounded-md mb-4">
+                <span className="bg-red-600 rounded-full">
+                  <X color="white" size={18} />
+                </span>
+                <span className="text-red-600">
+                  Credentials does not exists, please try again.
+                </span>
+              </div>
+            )}
 
             <motion.button
               className="w-full py-3 px-4 bg-gradient-to-r from-maroon-400 to-maroon-300 text-white  rounded-lg shadow-lg hover:from-maroon-400 hover:to-maroon-500 :outline-none focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200 font-poppins"
@@ -108,8 +121,11 @@ const Login = () => {
             illo recusandae quae autem vel eveniet officiis dicta vitae nostrum
             dolorem.
           </p>
-          <button className="px-8 py-3 rounded-lg bg-transparent border border-white text-white">
-            Sign Up
+          <button className="px-8 py-3 rounded-lg bg-transparent border border-white text-white relative overflow-hidden group">
+            <div className="absolute inset-0 bg-white translate-y-[100%] group-hover:translate-y-[0%] transition-transform duration-300" />
+            <p className="group-hover:text-black z-10 duration-300 relative">
+              Sign Up
+            </p>
           </button>
         </div>
       </div>
