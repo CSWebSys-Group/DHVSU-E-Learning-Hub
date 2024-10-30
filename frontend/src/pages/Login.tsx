@@ -2,12 +2,13 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { dhvsuBg, dhvsuLogo } from "../utils/Images";
 import Input from "../components/Input";
-import { Mail, Lock, Eye, EyeClosed } from "lucide-react";
+import { Mail, Lock, Eye, EyeClosed, Loader } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -85,8 +86,13 @@ const Login = () => {
                 scale: 0.98,
               }}
               type="submit"
+              disabled={isLoading}
             >
-              Login
+              {isLoading ? (
+                <Loader className="w-6 h-6 animate-spin  mx-auto" />
+              ) : (
+                "Log In"
+              )}
             </motion.button>
           </form>
         </div>
