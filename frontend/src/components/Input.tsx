@@ -23,11 +23,14 @@ const Input = ({
 
   // Password hidden logic (can improve)
   const togglePasswordHidden = () => {
-    if (inputType === "password") {
-      setInputType("text");
-    } else {
-      setInputType("password");
-    }
+    // if (inputType === "password") {
+    //   setInputType("text");
+    // } else {
+    //   setInputType("password");
+    // }
+    // setPasswordHidden((pass) => !pass);
+    // new shorter one para clean
+    setInputType(inputType === "password" ? "text" : "password");
     setPasswordHidden((pass) => !pass);
   };
 
