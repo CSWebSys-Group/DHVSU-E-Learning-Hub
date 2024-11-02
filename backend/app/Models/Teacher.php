@@ -26,6 +26,7 @@ class Teacher extends Authenticable implements JWTSubject
     protected $table = 'teachers';
 
     protected $fillable = [
+        'id',
         'fn',
         'ln',
         'activities',
