@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\StudentIDs;
+use App\Models\TeacherIDs;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -15,6 +17,7 @@ class AuthController extends Controller
     public function registerStudent(Request $request)
     {
         $request->validate([
+            'id' => 'required|integer',
             'fn' => 'required|string|max:255',
             'ln' => 'required|string|max:255',
             'section_id' => 'required|integer',
@@ -29,7 +32,12 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
+        if (!StudentIDs::where('id', $request->id)->exists()) {
+            return response()->json(['error' => 'Invalid student ID.'], 400);
+        }
+
         $student = Student::create([
+            'id' => $request->id,
             'fn' => $request->fn,
             'ln' => $request->ln,
             'section_id' => $request->section_id,
@@ -48,6 +56,7 @@ class AuthController extends Controller
     public function registerTeacher(Request $request)
     {
         $request->validate([
+            'id' => 'required|integer',
             'fn' => 'required|string|max:255',
             'ln' => 'required|string|max:255',
             'activities' => 'nullable|array',
@@ -57,7 +66,12 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
+        if (!TeacherIDs::where('id', $request->id)->exists()) {
+            return response()->json(['error' => 'Invalid teacher ID.'], 400);
+        }
+
         $teacher = Teacher::create([
+            'id' => $request->id,
             'fn' => $request->fn,
             'ln' => $request->ln,
             'activities' => $request->activities,

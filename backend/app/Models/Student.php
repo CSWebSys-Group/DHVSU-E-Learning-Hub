@@ -25,6 +25,7 @@ class Student extends Authenticable implements JWTSubject
     protected $table = 'students';
 
     protected $fillable = [
+        'id',
         'fn',
         'ln',
         'section_id',
