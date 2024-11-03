@@ -20,7 +20,6 @@ class AuthController extends Controller
             'id' => 'required|integer',
             'fn' => 'required|string|max:255',
             'ln' => 'required|string|max:255',
-            'section_id' => 'required|integer',
             'activities' => 'nullable|array',
             'assessment' => 'nullable|array',
 
@@ -40,7 +39,6 @@ class AuthController extends Controller
             'id' => $request->id,
             'fn' => $request->fn,
             'ln' => $request->ln,
-            'section_id' => $request->section_id,
             'activities' => $request->activities,
             'assessment' => $request->assessment,
             'grades' => $request->grades,

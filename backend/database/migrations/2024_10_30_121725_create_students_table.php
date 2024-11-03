@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('fn');
             $table->string('ln');
-            $table->unsignedBigInteger('section_id');
+            $table->unsignedBigInteger('section_id')->nullable();
             $table->json('activities')->nullable(); // Array for activities (JSON format)
             $table->json('assessment')->nullable(); // Array for assessments (JSON format)
             $table->json('grades')->nullable();    // Array of objects for grades (JSON format)
