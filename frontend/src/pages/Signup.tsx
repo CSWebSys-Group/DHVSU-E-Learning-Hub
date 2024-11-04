@@ -87,16 +87,24 @@ const Signup = () => {
                 }
             );
 
-            if (!res.ok) throw new Error("Error logging in");
-
             const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(
+                    JSON.stringify(data.error) || "Error signing up"
+                );
+            }
 
             console.log(data);
 
-            // redirects to home after login success
+            // redirects to home after sign up success
             navigate("/");
         } catch (error) {
-            console.log(error);
+            console.error("Sign-up error:", error);
+            // Optionally set the error message here as well
+            if (error instanceof Error) {
+                console.log(error.message);
+            }
         } finally {
             setIsLoading(false);
         }
