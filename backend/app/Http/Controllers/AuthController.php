@@ -16,8 +16,21 @@ class AuthController extends Controller
 
     public function registerStudent(Request $request)
     {
+
+        if (!StudentIDs::where('id', $request->id)->exists()) {
+            return response()->json(['error' => 'Invalid student ID.'], 400);
+        }
+
+        if (Student::where('email', $request->email)->exists()) {
+            return response()->json(['error' => 'The email has already been taken.'], 400);
+        }
+
+        if (Student::where('id', $request->id)->exists()) {
+            return response()->json(['error' => 'The id has already been taken.'], 400);
+        }
+
         $request->validate([
-            'id' => 'required|integer',
+            'id' => 'required|integer|unique:students',
             'fn' => 'required|string|max:255',
             'ln' => 'required|string|max:255',
             'activities' => 'nullable|array',
@@ -30,10 +43,6 @@ class AuthController extends Controller
             'email' => 'required|string|email|unique:students',
             'password' => 'required|string|min:8|confirmed',
         ]);
-
-        if (!StudentIDs::where('id', $request->id)->exists()) {
-            return response()->json(['error' => 'Invalid student ID.'], 400);
-        }
 
         $student = Student::create([
             'id' => $request->id,
@@ -53,8 +62,20 @@ class AuthController extends Controller
 
     public function registerTeacher(Request $request)
     {
+        if (!TeacherIDs::where('id', $request->id)->exists()) {
+            return response()->json(['error' => 'Invalid teacher ID.'], 400);
+        }
+
+        if (Teacher::where('email', $request->email)->exists()) {
+            return response()->json(['error' => 'The email has already been taken.'], 400);
+        }
+
+        if (Teacher::where('id', $request->id)->exists()) {
+            return response()->json(['error' => 'The id has already been taken.'], 400);
+        }
+
         $request->validate([
-            'id' => 'required|integer',
+            'id' => 'required|integer|unique:teachers',
             'fn' => 'required|string|max:255',
             'ln' => 'required|string|max:255',
             'activities' => 'nullable|array',
@@ -63,10 +84,6 @@ class AuthController extends Controller
             'email' => 'required|string|email|unique:teachers',
             'password' => 'required|string|min:8|confirmed',
         ]);
-
-        if (!TeacherIDs::where('id', $request->id)->exists()) {
-            return response()->json(['error' => 'Invalid teacher ID.'], 400);
-        }
 
         $teacher = Teacher::create([
             'id' => $request->id,
