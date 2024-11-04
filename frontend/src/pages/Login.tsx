@@ -31,9 +31,13 @@ const Login = () => {
                 }),
             });
 
-            if (!res.ok) throw new Error("Error logging in");
-
             const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(
+                    JSON.stringify(data.error) || "Error signing up"
+                );
+            }
 
             console.log(data);
 
