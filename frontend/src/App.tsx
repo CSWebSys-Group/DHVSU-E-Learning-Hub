@@ -7,6 +7,7 @@ function App() {
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center bg-[#D9CAC5]">
       <Routes>
         <Route path="/" element={"Home"} />
+
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
       </Routes>
