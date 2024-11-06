@@ -10,6 +10,8 @@ export default {
         "maroon-300": "#924444",
         "maroon-200": "#A94C4C",
         "maroon-100": "#C17171",
+        "main-maroon": "#701D0B",
+        "light-maroon": "#8D4A3C",
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
