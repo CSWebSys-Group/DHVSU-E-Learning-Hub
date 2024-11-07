@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import LandingPage from "./pages/LandingPage";
 import Home from "./pages/Home";
 import { ExpandableButton } from "./components/ui/expandable-button";
+import HomeLayout from "./Layout/HomeLayout";
 
 function App() {
   return (
