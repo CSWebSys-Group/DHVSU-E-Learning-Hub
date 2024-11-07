@@ -7,39 +7,30 @@ import { ExpandableButton } from "./components/ui/expandable-button";
 import HomeLayout from "./Layout/HomeLayout";
 
 function App() {
-    return (
-        <div className="h-screen relative sm:flex sm:items-center sm:justify-center overflow-hidden bg-[#D9CAC5]">
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/home" element={<LandingPage />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/main" element={<HomeLayout />} />
-            </Routes>
-            <div className="absolute bottom-5 right-5">
-                <ExpandableButton>
-                    <Link
-                        to={"/home"}
-                        className="rounded-md text-white font-bold"
-                    >
-                        Home
-                    </Link>
-                    <Link
-                        to={"/login"}
-                        className="rounded-md text-white font-bold"
-                    >
-                        Log In
-                    </Link>
-                    <Link
-                        to={"/signup"}
-                        className="rounded-md text-white font-bold"
-                    >
-                        Sign Up
-                    </Link>
-                </ExpandableButton>
-            </div>
-        </div>
-    );
+  return (
+    <div className="h-screen relative sm:flex sm:items-center sm:justify-center overflow-hidden bg-[#D9CAC5]">
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<LandingPage />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        {/* <Route path="/main" element={<HomeLayout />} /> */}
+      </Routes>
+      <div className="absolute bottom-5 right-5">
+        <ExpandableButton>
+          <Link to={"/home"} className="rounded-md text-white font-bold">
+            Home
+          </Link>
+          <Link to={"/login"} className="rounded-md text-white font-bold">
+            Log In
+          </Link>
+          <Link to={"/signup"} className="rounded-md text-white font-bold">
+            Sign Up
+          </Link>
+        </ExpandableButton>
+      </div>
+    </div>
+  );
 }
 
 export default App;

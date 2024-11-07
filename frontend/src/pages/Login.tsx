@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { dhvsuBg, dhvsuLogo } from "../utils/Images";
 import Input from "../components/Input";
-import { Mail, Lock, Eye, EyeClosed, Loader, X } from "lucide-react";
+import { Mail, Lock, Loader, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -162,6 +162,3 @@ const Login = () => {
 };
 
 export default Login;
-function useEffect(arg0: () => () => void, arg1: never[]) {
-  throw new Error("Function not implemented.");
-}

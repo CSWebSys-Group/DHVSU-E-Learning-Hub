@@ -107,178 +107,172 @@ const Signup = () => {
   };
 
   return (
-    <>
-      <div className="h-screen relative overflow-hidden flex items-center justify-center bg-[#D9CAC5] ">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="w-full h-full lg:w-[900px] sm:w-[600px] sm:h-[600px] bg-white bg-opacity-50 backdrop-filter backdrop-blur-xl lg:rounded-2xl shadow-xl overflow-hidden flex"
-        >
-          <div className=" hidden w-full h-full lg:w-1/2 p-8 lg:bg-maroon bg-pink-600 lg:rounded-r-[8rem]  justify-center items-center backdrop-filter backdrop-blur-lg lg:flex ">
-            <div className="flex flex-col justify-center items-center gap-6">
-              <img
-                src={dhvsuLogo}
-                alt="DHVSU School Logo"
-                width={128}
-                height={128}
-              />
-              <h2 className="text-2xl text-white font-poppins font-bold">
-                May account kana?
-              </h2>
-              <p className="text-sm font-poppins text-white font-light">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit
-                est reiciendis aspernatur a.
-              </p>
-              <button className="px-8 py-3 rounded-lg bg-transparent border border-white text-white relative overflow-hidden group">
-                <div className="absolute inset-0 bg-white translate-y-[100%] group-hover:translate-y-[0%] transition-transform duration-300" />
-                <p className="group-hover:text-black z-10 duration-300 relative uppercase font-bold tracking-wider">
-                  Log in
-                </p>
-              </button>
-            </div>
-          </div>
-          <div className=" lg:block lg:w-1/2 flex flex-col items-center h-full w-full justify-center">
-            <div className="lg:hidden w-[6rem] mt-5">
-              <img
-                src={dhvsuLogo}
-                alt="DHVSU School Logo"
-                width={128}
-                height={128}
-              />
-            </div>
-            <div className="lg:p-8 px-5  ">
-              <h2 className="text-3xl font-bold mt-2 mb-6 text-center text-maroon">
-                Sign Up
-              </h2>
-              <form onSubmit={handleSignUpSubmit}>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="w-full h-full lg:w-[900px] sm:w-[600px] sm:h-[700px] bg-white bg-opacity-50 backdrop-filter backdrop-blur-xl lg:rounded-2xl shadow-xl overflow-hidden flex"
+    >
+      <div className="hidden w-full h-full lg:w-1/2 p-8 lg:bg-maroon lg:rounded-r-[8rem] justify-center items-center backdrop-filter backdrop-blur-lg lg:flex ">
+        <div className="flex flex-col justify-center items-center gap-6">
+          <img
+            src={dhvsuLogo}
+            alt="DHVSU School Logo"
+            width={128}
+            height={128}
+          />
+          <h2 className="text-2xl text-white font-poppins font-bold">
+            May account kana?
+          </h2>
+          <p className="text-sm font-poppins text-white font-light">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit est
+            reiciendis aspernatur a.
+          </p>
+          <button className="px-8 py-3 rounded-lg bg-transparent border border-white text-white relative overflow-hidden group">
+            <div className="absolute inset-0 bg-white translate-y-[100%] group-hover:translate-y-[0%] transition-transform duration-300" />
+            <p className="group-hover:text-black z-10 duration-300 relative uppercase font-bold tracking-wider">
+              Log in
+            </p>
+          </button>
+        </div>
+      </div>
+      <div className="lg:w-1/2 flex flex-col items-center h-full w-full justify-center">
+        <div className="lg:hidden w-[6rem] mt-5">
+          <img
+            src={dhvsuLogo}
+            alt="DHVSU School Logo"
+            width={128}
+            height={128}
+          />
+        </div>
+        <div className="lg:p-8 px-5 w-full">
+          <h2 className="text-3xl font-bold mt-2 mb-6 text-center text-maroon">
+            Sign Up
+          </h2>
+          <form onSubmit={handleSignUpSubmit}>
+            <Input
+              icon={User}
+              type="text"
+              placeholder="Student Number"
+              value={studentNo}
+              onChange={(e) => setStudentNo(e.target.value)}
+            />
+            <div className="flex flex-col lg:flex-row lg: gap-4">
+              <div>
                 <Input
                   icon={User}
                   type="text"
-                  placeholder="Student Number"
-                  value={studentNo}
-                  onChange={(e) => setStudentNo(e.target.value)}
+                  placeholder="First Name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                 />
-                <div className="flex flex-col lg:flex-row">
-                  <div>
-                    <Input
-                      icon={User}
-                      type="text"
-                      placeholder="First Name"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      icon={User}
-                      type="text"
-                      placeholder="Second Name"
-                      value={lastname}
-                      onChange={(e) => setLastName(e.target.value)}
-                    />
-                  </div>
-                </div>
+              </div>
+              <div>
                 <Input
-                  icon={Mail}
+                  icon={User}
                   type="text"
-                  placeholder="Email Address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Second Name"
+                  value={lastname}
+                  onChange={(e) => setLastName(e.target.value)}
                 />
-                <div className="relative">
-                  <Input
-                    icon={Lock}
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => handlePassword(e.target.value)}
-                    isPassword={true}
-                  />
-                  <div className="h-1 w-full bg-gray-300 rounded -mt-5">
-                    <div
-                      className="h-full rounded"
-                      style={{
-                        width: progress,
-                        backgroundColor:
-                          progress === "0%"
-                            ? "#C0C0C0"
-                            : getActiveColor(message), // Use gray if progress is 0%
-                      }}
-                    />
-                  </div>
-                </div>
-                {password.length !== 0 && (
-                  <p
-                    className="mt-2 text-sm"
-                    style={{ color: getActiveColor(message) }}
-                  >
-                    Your password is {message}
-                  </p>
-                )}
-
-                <div className="mt-5">
-                  <Input
-                    icon={Lock}
-                    type="password"
-                    placeholder="Re-type Password"
-                    value={retypePassword}
-                    onChange={(e) => handleRetypePassword(e.target.value)}
-                    isPassword={true}
-                  />
-                  <div className="progress-bg relative h-1 bg-gray-200 rounded -mt-5">
-                    <div
-                      className="progress h-full rounded-lg"
-                      style={{
-                        width: matchProgress,
-                        backgroundColor:
-                          matchProgress === "0%"
-                            ? "#C0C0C0"
-                            : passwordsMatch
-                            ? "#3FBB60"
-                            : "#FF0054", // Use gray if progress is 0%
-                      }}
-                    />
-                  </div>
-                  {retypePassword.length !== 0 && (
-                    <p
-                      className="message"
-                      style={{
-                        color: passwordsMatch ? "#3FBB60" : "#FF0054",
-                      }}
-                    >
-                      {passwordsMatch
-                        ? "Passwords match"
-                        : "Passwords do not match"}
-                    </p>
-                  )}
-                </div>
-
-                <motion.button
-                  className="w-full py-3 px-4 bg-gradient-to-r from-maroon-400 to-maroon-300 text-white rounded-lg shadow-lg hover:from-maroon-400 hover:to-maroon-500 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200 font-poppins font-bold uppercase tracking-wider mt-5"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  type="submit"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <Loader className="w-6 h-6 animate-spin mx-auto" />
-                  ) : (
-                    "Sign up"
-                  )}
-                </motion.button>
-              </form>
+              </div>
             </div>
-          </div>
+            <Input
+              icon={Mail}
+              type="text"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <div className="relative">
+              <Input
+                icon={Lock}
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => handlePassword(e.target.value)}
+                isPassword={true}
+              />
+              <div className="h-1 w-full bg-gray-300 rounded -mt-5">
+                <div
+                  className="h-full rounded"
+                  style={{
+                    width: progress,
+                    backgroundColor:
+                      progress === "0%" ? "#C0C0C0" : getActiveColor(message), // Use gray if progress is 0%
+                  }}
+                />
+              </div>
+            </div>
+            {password.length !== 0 && (
+              <p
+                className="mt-2 text-sm"
+                style={{ color: getActiveColor(message) }}
+              >
+                Your password is {message}
+              </p>
+            )}
 
-          <img
-            className="w-full h-full absolute -z-50 opacity-10 object-cover filter blur-sm"
-            src={dhvsuBg}
-            alt=""
-          />
-        </motion.div>
+            <div className="mt-5">
+              <Input
+                icon={Lock}
+                type="password"
+                placeholder="Re-type Password"
+                value={retypePassword}
+                onChange={(e) => handleRetypePassword(e.target.value)}
+                isPassword={true}
+              />
+              <div className="progress-bg relative h-1 bg-gray-200 rounded -mt-5">
+                <div
+                  className="progress h-full rounded-lg"
+                  style={{
+                    width: matchProgress,
+                    backgroundColor:
+                      matchProgress === "0%"
+                        ? "#C0C0C0"
+                        : passwordsMatch
+                        ? "#3FBB60"
+                        : "#FF0054", // Use gray if progress is 0%
+                  }}
+                />
+              </div>
+              {retypePassword.length !== 0 && (
+                <p
+                  className="message"
+                  style={{
+                    color: passwordsMatch ? "#3FBB60" : "#FF0054",
+                  }}
+                >
+                  {passwordsMatch
+                    ? "Passwords match"
+                    : "Passwords do not match"}
+                </p>
+              )}
+            </div>
+
+            <motion.button
+              className="w-full py-3 px-4 bg-gradient-to-r from-maroon-400 to-maroon-300 text-white rounded-lg shadow-lg hover:from-maroon-400 hover:to-maroon-500 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200 font-poppins font-bold uppercase tracking-wider mt-5"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <Loader className="w-6 h-6 animate-spin mx-auto" />
+              ) : (
+                "Sign up"
+              )}
+            </motion.button>
+          </form>
+        </div>
       </div>
-    </>
+
+      <img
+        className="w-full h-full absolute -z-50 opacity-10 object-cover filter blur-sm"
+        src={dhvsuBg}
+        alt=""
+      />
+    </motion.div>
   );
 };
 
