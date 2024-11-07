@@ -61,7 +61,7 @@ const Login = () => {
       transition={{
         duration: 0.5,
       }}
-      className="lg:w-[900px] sm:w-[600px] sm:h-[600px] w-full h-full bg-white bg-opacity-50 backldrop-filter backdrop-blur-xl rounded-2xl sm:shadow-lg shadow-none overflow-hidden flex items-center"
+      className="lg:w-[900px] sm:w-[600px] sm:h-[600px] w-full h-full bg-white bg-opacity-50 backldrop-filter backdrop-blur-xl sm:rounded-2xl rounded-none sm:shadow-lg shadow-none overflow-hidden flex items-center"
     >
       <div className="w-full lg:max-w-[50%]">
         <img
@@ -162,3 +162,6 @@ const Login = () => {
 };
 
 export default Login;
+function useEffect(arg0: () => () => void, arg1: never[]) {
+  throw new Error("Function not implemented.");
+}
