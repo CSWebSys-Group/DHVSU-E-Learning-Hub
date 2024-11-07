@@ -60,7 +60,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, toggleCollapse }) => {
         </div>
 
         <div className="absolute bg-blue-200 -right-[2rem] mt-[23rem]">
-          <button>arrow</button>
+          {isCollapsed ? <button onClick={toggleCollapse}>arrow</button> : ""}
         </div>
 
         <nav className="flex-grow">
