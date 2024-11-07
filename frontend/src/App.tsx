@@ -13,7 +13,7 @@ function App() {
         <Route path="/home" element={<LandingPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/main" element={<HomeLayout />} />
+        {/* <Route path="/main" element={<HomeLayout />} /> */}
       </Routes>
       <div className="absolute bottom-5 right-5">
         <ExpandableButton>
