@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hoverNav {
+  @apply cursor-pointer py-2 hover:bg-white hover:text-main-maroon hover:rounded-full;
+}
