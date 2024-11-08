@@ -20,4 +20,19 @@ class Section extends Model
         'students' => 'array',
         'subjects' => 'array'
     ];
+
+    //connects to course model
+    public function course(){
+        return $this->belongsTo(Course::class, 'course_code');
+    }
+    //connects to student model
+    public function student(){
+        return $this->hasMany(Student::class, 'id');
+        
+    }
+    //connects to subject model
+    public function subject()
+    {
+        return $this->hasMany(Subject::class, 'subject_code');
+    }
 }

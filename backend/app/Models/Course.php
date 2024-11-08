@@ -12,4 +12,9 @@ class Course extends Model
         'course_code',
         'course_name',
     ];
+
+    //connects to section model
+    public function section(){
+        return $this->hasMany(Section::class, 'course_code');
+    }
 }
