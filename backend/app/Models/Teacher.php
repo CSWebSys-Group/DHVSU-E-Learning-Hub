@@ -29,8 +29,6 @@ class Teacher extends Authenticable implements JWTSubject
         'id',
         'fn',
         'ln',
-        'activities',
-        'assessment',
         'subjects',
         'email',
         'password'
@@ -48,12 +46,10 @@ class Teacher extends Authenticable implements JWTSubject
 
     // Cast JSON fields to array automatically
     protected $casts = [
-        'activities' => 'array',
-        'assessment' => 'array',
         'subjects' => 'array',
         'password' => 'hashed'
     ];
-    
+
     public function subject()
     {
         return $this->belongsToMany(Subject::class, 'subject_code');

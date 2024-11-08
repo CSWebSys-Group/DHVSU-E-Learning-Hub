@@ -33,8 +33,7 @@ class AuthController extends Controller
             'id' => 'required|integer|unique:students',
             'fn' => 'required|string|max:255',
             'ln' => 'required|string|max:255',
-            'activities' => 'nullable|array',
-            'assessment' => 'nullable|array',
+            'tasks' => 'nullable|array',
 
             'grades' => 'nullable|array',
             'grades.*.course_id' => 'required_with:grades|integer',
@@ -48,14 +47,13 @@ class AuthController extends Controller
             'id' => $request->id,
             'fn' => $request->fn,
             'ln' => $request->ln,
-            'activities' => $request->activities,
-            'assessment' => $request->assessment,
+            'tasks' => $request->tasks,
             'grades' => $request->grades,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        $token = JWTAuth::fromUser($student->id);
+        $token = JWTAuth::fromUser($student);
 
         return response()->json(['student' => $student, 'token' => $token], 201);
     }
@@ -78,8 +76,6 @@ class AuthController extends Controller
             'id' => 'required|integer|unique:teachers',
             'fn' => 'required|string|max:255',
             'ln' => 'required|string|max:255',
-            'activities' => 'nullable|array',
-            'assessment' => 'nullable|array',
             'subjects' => 'nullable|array',
             'email' => 'required|string|email|unique:teachers',
             'password' => 'required|string|min:8|confirmed',
@@ -89,14 +85,12 @@ class AuthController extends Controller
             'id' => $request->id,
             'fn' => $request->fn,
             'ln' => $request->ln,
-            'activities' => $request->activities,
-            'assessment' => $request->assessment,
             'subjects' => $request->subjects,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        $token = JWTAuth::fromUser($teacher->id);
+        $token = JWTAuth::fromUser($teacher);
 
         return response()->json(['teacher' => $teacher, 'token' => $token], 201);
     }
@@ -111,14 +105,14 @@ class AuthController extends Controller
         // Attempt to log in as a student
         $student = Student::where('email', $request->email)->first();
         if ($student && Hash::check($request->password, $student->password)) {
-            $token = JWTAuth::fromUser($student->id);
+            $token = JWTAuth::fromUser($student);
             return response()->json(['user' => $student, 'token' => $token, 'role' => 'student'], 200);
         }
 
         // Attempt to log in as a teacher
         $teacher = Teacher::where('email', $request->email)->first();
         if ($teacher && Hash::check($request->password, $teacher->password)) {
-            $token = JWTAuth::fromUser($teacher->id);
+            $token = JWTAuth::fromUser($teacher);
             return response()->json(['user' => $teacher, 'token' => $token, 'role' => 'teacher'], 200);
         }
 

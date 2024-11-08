@@ -29,8 +29,7 @@ class Student extends Authenticable implements JWTSubject
         'fn',
         'ln',
         'section_id',
-        'activities',
-        'assessment',
+        'tasks',
         'grades',
         'email',
         'password'
@@ -53,13 +52,15 @@ class Student extends Authenticable implements JWTSubject
         'grades' => 'array',
         'password' => 'hashed'
     ];
-    
+
     //connects to section model
-    public function section(){
+    public function section()
+    {
         return $this->belongsTo(Section::class, 'course_code');
     }
 
-    public function task(){
+    public function task()
+    {
         return $this->hasMany(Task::class, 'id');
     }
 }

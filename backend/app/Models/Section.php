@@ -13,7 +13,6 @@ class Section extends Model
         'course_code',
         'students',
         'subjects',
-        'adviser_id'
     ];
 
     protected $casts = [
@@ -22,13 +21,14 @@ class Section extends Model
     ];
 
     //connects to course model
-    public function course(){
+    public function course()
+    {
         return $this->belongsTo(Course::class, 'course_code');
     }
     //connects to student model
-    public function student(){
+    public function student()
+    {
         return $this->hasMany(Student::class, 'id');
-        
     }
     //connects to subject model
     public function subject()

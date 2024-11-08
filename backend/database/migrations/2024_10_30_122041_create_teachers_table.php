@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('fn');
             $table->string('ln');
-            $table->json('activities')->nullable(); // Array for activities (JSON format)
-            $table->json('assessment')->nullable(); // Array for assessments (JSON format)
             $table->json('subjects')->nullable(); // Array for subjects (JSON format)
+            $table->boolean('isAdmin')->default(false);
             $table->string('email')->unique();
             $table->string('password');
 
