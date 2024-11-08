@@ -53,4 +53,9 @@ class Teacher extends Authenticable implements JWTSubject
         'subjects' => 'array',
         'password' => 'hashed'
     ];
+    
+    public function subject()
+    {
+        return $this->belongsToMany(Subject::class, 'subject_code');
+    }
 }

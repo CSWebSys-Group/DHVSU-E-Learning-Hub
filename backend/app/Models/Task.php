@@ -21,4 +21,13 @@ class Task extends Model
     protected $casts = [
         'tests' => 'array'
     ];
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class, 'subject_code');
+    }
+
+    public function student(){
+        return $this->belongsTo(Student::class, 'id');
+    }
 }
