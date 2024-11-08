@@ -37,7 +37,7 @@ class AuthController extends Controller
             'assessment' => 'nullable|array',
 
             'grades' => 'nullable|array',
-            'grades.*.subject_id' => 'required_with:grades|integer',
+            'grades.*.course_id' => 'required_with:grades|integer',
             'grades.*.grade' => 'required_with:grades|numeric|min:60|max:100',
 
             'email' => 'required|string|email|unique:students',
