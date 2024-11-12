@@ -2,19 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-    protected $table = 'course';
+    use HasFactory;
+
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'course_code',
-        'course_name',
+        'course_name'
     ];
-
-    //connects to section model
-    public function section(){
-        return $this->hasMany(Section::class, 'course_code');
-    }
 }

@@ -15,17 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('fn');
             $table->string('ln');
-            $table->unsignedBigInteger('section_id')->nullable();
+            $table->foreignId('section_id')->constrained()->cascadeOnDelete();
             $table->json('tasks')->nullable();
-            $table->json('grades')->nullable();    // Array of objects for grades (JSON format)
-            $table->string('email')->unique();
-            $table->string('password');
-
-            // Optional: add timestamps
+            $table->json('grades')->nullable(); // Storing grades as JSON
             $table->timestamps();
-
-            // Foreign key to sections table (if it exists)
-            // $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
         });
     }
 

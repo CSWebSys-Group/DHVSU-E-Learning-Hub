@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('task_name');
-            $table->json('tests');
-            $table->unsignedBigInteger('student_id');
-            $table->integer('score');
-            $table->string('type');
+            $table->json('tests')->nullable();
+            $table->foreignId('student_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->integer('score')->nullable();
+            $table->enum('type', ['act', 'assessment', 'exam']);
             $table->integer('total_score');
             $table->string('subject_code');
+            $table->foreign('subject_code')->references('subject_code')->on('subjects')->cascadeOnDelete();
             $table->timestamps();
         });
     }

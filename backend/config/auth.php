@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'student', // or 'teacher', depending on your app's default
-        'passwords' => 'students', // default reset for students
+        'guard' => env('AUTH_GUARD', 'web'),
+        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
     /*
@@ -36,13 +36,9 @@ return [
     */
 
     'guards' => [
-        'student' => [
-            'driver' => 'jwt',
-            'provider' => 'students',
-        ],
-        'teacher' => [
-            'driver' => 'jwt',
-            'provider' => 'teachers',
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
         ],
     ],
 
@@ -63,27 +59,16 @@ return [
     |
     */
 
-    // 'providers' => [
-    //     'users' => [
-    //         'driver' => 'eloquent',
-    //         'model' => env('AUTH_MODEL', App\Models\User::class),
-    //     ],
-
-    //     // 'users' => [
-    //     //     'driver' => 'database',
-    //     //     'table' => 'users',
-    //     // ],
-    // ],
-
     'providers' => [
-        'students' => [
+        'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Student::class,
+            'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-        'teachers' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Teacher::class,
-        ],
+
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
     ],
 
     /*
@@ -105,24 +90,9 @@ return [
     |
     */
 
-    // 'passwords' => [
-    //     'users' => [
-    //         'provider' => 'users',
-    //         'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-    //         'expire' => 60,
-    //         'throttle' => 60,
-    //     ],
-    // ],
-
     'passwords' => [
-        'students' => [
-            'provider' => 'students',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
-        ],
-        'teachers' => [
-            'provider' => 'teachers',
+        'users' => [
+            'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,

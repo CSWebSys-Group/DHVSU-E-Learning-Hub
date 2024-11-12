@@ -3,55 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticable;
-use Illuminate\Notifications\Notifiable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Model;
 
-class Teacher extends Authenticable implements JWTSubject
+class Teacher extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
-    // Required methods for JWTSubject
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
-
-
-    protected $table = 'teachers';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
-        'id',
         'fn',
         'ln',
         'subjects',
-        'email',
-        'password'
+        'isAdmin'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    // Cast JSON fields to array automatically
     protected $casts = [
         'subjects' => 'array',
-        'password' => 'hashed'
+        'isAdmin' => 'boolean'
     ];
-
-    public function subject()
-    {
-        return $this->belongsToMany(Subject::class, 'subject_code');
-    }
 }

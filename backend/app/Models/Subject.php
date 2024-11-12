@@ -2,31 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
-    protected $table = 'subject';
+    use HasFactory;
+
+    protected $primaryKey = 'subject_code';
+    public $keyType = 'string';
+    public $incrementing = false;
 
     protected $fillable = [
         'subject_code',
-        'name',
-        'section_id'
+        'subject_name',
+        'section_id',
+        'tasks'
     ];
 
-    //connects to section model
     public function section()
     {
-        return $this->belongsTo(Section::class, 'id');
-    }
-
-    public function task()
-    {
-        return $this->hasMany(Task::class, 'id');
-    }
-
-    public function teacher()
-    {
-        return $this->belongsToMany(Teacher::class, 'id');
+        return $this->belongsTo(Section::class);
     }
 }

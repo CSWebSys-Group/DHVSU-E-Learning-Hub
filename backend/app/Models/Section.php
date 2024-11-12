@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Section extends Model
 {
-    protected $table = 'section';
+    use HasFactory;
+
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'year',
-        'course_code',
+        'course_id',
         'students',
         'subjects',
+        'adviser_id',
     ];
 
     protected $casts = [
@@ -20,19 +24,13 @@ class Section extends Model
         'subjects' => 'array'
     ];
 
-    //connects to course model
     public function course()
     {
-        return $this->belongsTo(Course::class, 'course_code');
+        return $this->belongsTo(Course::class);
     }
-    //connects to student model
-    public function student()
+
+    public function adviser()
     {
-        return $this->hasMany(Student::class, 'id');
-    }
-    //connects to subject model
-    public function subject()
-    {
-        return $this->hasMany(Subject::class, 'subject_code');
+        return $this->belongsTo(Teacher::class, 'adviser_id');
     }
 }

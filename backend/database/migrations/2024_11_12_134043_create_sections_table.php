@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('teacher_i_ds', function (Blueprint $table) {
+        Schema::create('sections', function (Blueprint $table) {
             $table->id();
+            $table->integer('year');
+            $table->foreignId('course_id')->constrained()->cascadeOnDelete();
+            $table->json('students')->nullable();
+            $table->json('subjects')->nullable();
+            $table->foreignId('adviser_id')->nullable()->constrained('teachers')->nullOnDelete();
             $table->timestamps();
         });
     }
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('teacher_i_ds');
+        Schema::dropIfExists('sections');
     }
 };
