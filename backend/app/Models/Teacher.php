@@ -16,6 +16,7 @@ class Teacher extends Model
         'ln',
         'subjects',
         'gender',
+        'birthday',
         'isAdmin'
     ];
 

@@ -15,6 +15,7 @@ class Student extends Model
         'fn',
         'ln',
         'gender',
+        'birthday',
         'section_id',
         'tasks',
         'grades'
