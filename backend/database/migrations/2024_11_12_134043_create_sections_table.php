@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('course_id')->constrained()->cascadeOnDelete();
             $table->json('students')->nullable();
             $table->json('subjects')->nullable();
-            $table->foreignId('adviser_id')->nullable()->constrained('teachers')->nullOnDelete();
+            $table->foreignId('adviser_id')->nullable();
             $table->timestamps();
         });
     }

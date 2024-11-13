@@ -29,8 +29,13 @@ class Section extends Model
         return $this->belongsTo(Course::class);
     }
 
-    public function adviser()
+    public function students()
     {
-        return $this->belongsTo(Teacher::class, 'adviser_id');
+        return $this->hasMany(Student::class);
+    }
+
+    public function subjects()
+    {
+        return $this->hasMany(Subject::class);
     }
 }

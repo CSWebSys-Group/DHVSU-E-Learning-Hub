@@ -15,4 +15,9 @@ class Course extends Model
         'course_code',
         'course_name'
     ];
+
+    public function sections()
+    {
+        return $this->hasMany(Section::class);
+    }
 }

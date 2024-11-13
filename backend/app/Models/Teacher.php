@@ -22,4 +22,9 @@ class Teacher extends Model
         'subjects' => 'array',
         'isAdmin' => 'boolean'
     ];
+
+    public function subjects()
+    {
+        return $this->hasMany(Subject::class);
+    }
 }
