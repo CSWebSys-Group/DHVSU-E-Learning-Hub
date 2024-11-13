@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('fn');
             $table->string('ln');
-            $table->unsignedBigInteger('section_id');
+            $table->unsignedBigInteger('section_id')->nullable();
             $table->json('tasks')->nullable();
             $table->json('grades')->nullable();
             $table->timestamps();
