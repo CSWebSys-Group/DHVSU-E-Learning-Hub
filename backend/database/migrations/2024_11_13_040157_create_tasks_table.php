@@ -19,8 +19,7 @@ return new class extends Migration
             $table->integer('score')->nullable();
             $table->enum('type', ['act', 'assessment', 'exam']);
             $table->integer('total_score');
-            $table->string('subject_code');
-            $table->foreign('subject_code')->references('subject_code')->on('subjects')->cascadeOnDelete();
+            $table->foreignId('subject_id')->constrained('subjects')->cascadeOnDelete();
             $table->timestamps();
         });
     }

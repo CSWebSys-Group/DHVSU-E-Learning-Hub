@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('subjects', function (Blueprint $table) {
-            $table->string('subject_code')->primary();
+            $table->id();
+            $table->string('subject_code');
             $table->string('subject_name');
             $table->foreignId('section_id')->constrained()->cascadeOnDelete();
             $table->json('tasks')->nullable();
