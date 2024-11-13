@@ -44,7 +44,7 @@ class AuthController extends Controller
         if ($request->user_type === 'S') {
             $field = $request->validate([
                 'id' => 'required|integer|unique:users',
-                'email' => 'required|string|unique:users',
+                'email' => 'required|string|unique:users|ends_with:@dhvsu.edu.ph',
                 'user_type' => 'required|string|in:S,T',
                 'password' => 'required|string|min:8|confirmed',
                 'fn' => 'required|string|max:100',
@@ -52,6 +52,8 @@ class AuthController extends Controller
                 'section_id' => 'nullable|integer',
                 'tasks' => 'nullable|array',
                 'grades' => 'nullable|array'
+            ], [
+                'email.ends_with' => 'Use your dhvsu email', // Custom error message for email domain validation
             ]);
 
             $user_creds = Student::create([
@@ -65,19 +67,21 @@ class AuthController extends Controller
         } else if ($request->user_type === 'T') {
             $field = $request->validate([
                 'id' => 'required|integer|unique:users',
-                'email' => 'required|string|unique:users',
+                'email' => 'required|string|unique:users|ends_with:@dhvsu.edu.ph',
                 'user_type' => 'required|string|in:S,T',
                 'password' => 'required|string|min:8|confirmed',
                 'fn' => 'required|string|max:100',
                 'ln' => 'required|string|max:100',
                 'subjects' => 'present|array',
+            ], [
+                'email.ends_with' => 'Use your dhvsu email', // Custom error message for email domain validation
             ]);
 
             $user_creds = Teacher::create([
                 'id' => $request->id,
                 'fn' => $request->fn,
                 'ln' => $request->ln,
-                'isAdmin' => false, // Default 'not' if not provided
+                'isAdmin' => false,
                 'subjects' => $request->subjects
             ]);
         }
