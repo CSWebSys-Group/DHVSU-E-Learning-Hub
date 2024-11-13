@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('fn');
             $table->string('ln');
-            $table->foreignId('section_id')->constrained()->cascadeOnDelete();
+            $table->unsignedBigInteger('section_id');
             $table->json('tasks')->nullable();
-            $table->json('grades')->nullable(); // Storing grades as JSON
+            $table->json('grades')->nullable();
             $table->timestamps();
+
+            $table->foreign('section_id')->references('id')->on('sections')->cascadeOnDelete();
         });
     }
 
