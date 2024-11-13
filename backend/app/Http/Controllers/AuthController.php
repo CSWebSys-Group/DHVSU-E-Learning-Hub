@@ -45,6 +45,7 @@ class AuthController extends Controller
             $field = $request->validate([
                 'id' => 'required|integer|unique:users',
                 'email' => 'required|string|unique:users|ends_with:@dhvsu.edu.ph',
+                'gender' => 'required|string|in:M,F,Others',
                 'user_type' => 'required|string|in:S,T',
                 'password' => 'required|string|min:8|confirmed',
                 'fn' => 'required|string|max:100',
@@ -58,6 +59,7 @@ class AuthController extends Controller
 
             $user_creds = Student::create([
                 'id' => $request->id,
+                'gender' => $request->gender,
                 'fn' => $request->fn,
                 'ln' => $request->ln,
                 'section_id' => $request->section_id,
@@ -68,6 +70,7 @@ class AuthController extends Controller
             $field = $request->validate([
                 'id' => 'required|integer|unique:users',
                 'email' => 'required|string|unique:users|ends_with:@dhvsu.edu.ph',
+                'gender' => 'required|string|in:M,F,Others',
                 'user_type' => 'required|string|in:S,T',
                 'password' => 'required|string|min:8|confirmed',
                 'fn' => 'required|string|max:100',
@@ -79,6 +82,7 @@ class AuthController extends Controller
 
             $user_creds = Teacher::create([
                 'id' => $request->id,
+                'gender' => $request->gender,
                 'fn' => $request->fn,
                 'ln' => $request->ln,
                 'isAdmin' => false,

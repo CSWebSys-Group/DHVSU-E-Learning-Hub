@@ -15,6 +15,7 @@ class Teacher extends Model
         'fn',
         'ln',
         'subjects',
+        'gender',
         'isAdmin'
     ];
 

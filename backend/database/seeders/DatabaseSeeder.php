@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call(ValidIdSeeder::class);
+        $this->call(CourseSeeder::class);
+        $this->call(SectionSeeder::class);
     }
 }

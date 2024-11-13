@@ -13,6 +13,7 @@ class Section extends Model
 
     protected $fillable = [
         'year',
+        'section',
         'course_id',
         'students',
         'subjects',

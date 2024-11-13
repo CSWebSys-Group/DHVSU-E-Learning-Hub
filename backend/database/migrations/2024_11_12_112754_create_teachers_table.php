@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('fn'); // First Name
             $table->string('ln'); // Last Name
             $table->json('subjects')->nullable();
+            $table->enum('gender', ['M', 'F', 'Others']);
             $table->boolean('isAdmin')->default(false);
             $table->timestamps();
         });
