@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('fn');
             $table->string('ln');
             $table->enum('gender', ['M', 'F', 'Others']);
-            $table->string('birthday');
+            $table->date('birthday')->nullable();
             $table->unsignedBigInteger('section_id')->nullable();
             $table->json('tasks')->nullable();
             $table->json('grades')->nullable();

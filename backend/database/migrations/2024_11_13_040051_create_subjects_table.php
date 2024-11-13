@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('section_id')->constrained()->cascadeOnDelete();
             $table->json('tasks')->nullable();
             $table->timestamps();
+            $table->string('type');
         });
     }
 

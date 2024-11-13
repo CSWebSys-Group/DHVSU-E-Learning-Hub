@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->string('fn'); // First Name
-            $table->string('ln'); // Last Name
+            $table->string('fn');
+            $table->string('ln');
             $table->json('subjects')->nullable();
             $table->enum('gender', ['M', 'F', 'Others']);
-            $table->string('birthday');
+            $table->date('birthday')->nullable(); // Define 'birthday' only once
             $table->boolean('isAdmin')->default(false);
             $table->timestamps();
         });
