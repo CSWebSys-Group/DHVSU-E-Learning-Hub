@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 // Some react-hook-form import fucking shit
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -15,26 +15,73 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { EyeIcon, EyeOff } from 'lucide-react';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { EyeIcon, EyeOff } from "lucide-react";
 
-import { loginSchema } from '@/lib/schema';
+import { loginSchema } from "@/lib/schema";
+import { Link } from "react-router-dom";
 
 const Login = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [errors, setErrors] = useState<string[]>([]);
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
-            email: '',
-            password: '',
+            email: "",
+            password: "",
         },
     });
 
     const handleSubmit = async (values: z.infer<typeof loginSchema>) => {
-        console.log(values);
+        setErrors([]);
+        setIsLoading(true);
+        try {
+            const res = await fetch("/api/login", {
+                method: "post",
+                body: JSON.stringify(values),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                if (data.errors) {
+                    // Type casting the value of data.errors to string[]
+                    Object.values(data.errors).forEach((errorMessages) => {
+                        // Type casting errorMessages to string[] explicitly
+                        (errorMessages as string[]).forEach((message) => {
+                            setErrors((prevErrors) => [...prevErrors, message]);
+                        });
+                    });
+                } else {
+                    setErrors((prevErrors) => [
+                        ...prevErrors,
+                        "Something went wrong with logging in",
+                    ]);
+                }
+                console.log(errors);
+            }
+
+            // Assuming `data.token` contains the token
+            // if (data.token) {
+            //     // Set the token in a cookie with an expiration of 7 days
+            //     const expires = new Date();
+            //     expires.setDate(expires.getDate() + 14); // 14 days from now
+            //     document.cookie = `authToken=${
+            //         data.token.plainTextToken
+            //     }; expires=${expires.toUTCString()}; path=/; secure; SameSite=Strict`;
+            //     setToken(data.token.plainTextToken);
+            //     console.log(data);
+            //     navigate("/");
+            // }
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -80,12 +127,20 @@ const Login = () => {
                                                 <Input
                                                     placeholder="Password"
                                                     className="shad-input"
-                                                    type={showPassword ? 'text' : 'password'}
+                                                    type={
+                                                        showPassword
+                                                            ? "text"
+                                                            : "password"
+                                                    }
                                                     {...field}
                                                 />
                                                 <button
                                                     type="button"
-                                                    onClick={() => setShowPassword((show) => !show)}
+                                                    onClick={() =>
+                                                        setShowPassword(
+                                                            (show) => !show
+                                                        )
+                                                    }
                                                 >
                                                     {showPassword ? (
                                                         <EyeOff className="text-brand" />
@@ -107,16 +162,18 @@ const Login = () => {
                         disabled={isLoading}
                     >
                         Log In
-                        {isLoading && (
+                        {isLoading &&
                             // loader svg here
-                            ""
-                        )}
+                            ""}
                     </Button>
                     <div className="body-2 flex justify-center">
                         <p className="text-light-100">Don't have an account?</p>
-                        <a href="/register" className="ml-1 font-medium text-brand">
+                        <Link
+                            to={"/auth/signup"}
+                            className="ml-1 font-medium text-brand"
+                        >
                             Sign Up
-                        </a>
+                        </Link>
                     </div>
                 </form>
             </Form>

@@ -1,16 +1,15 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { redirect } from 'next/navigation';
+import { useEffect, useState } from "react";
 
 // Some react-hook-form import fucking shit
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-import { motion, Variants, useAnimationControls } from 'framer-motion';
+import { motion, Variants, useAnimationControls } from "framer-motion";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -18,31 +17,32 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-import { EyeIcon, EyeOff } from 'lucide-react';
+import { EyeIcon, EyeOff } from "lucide-react";
 
-import { registerSchema } from '@/lib/schema';
+import { registerSchema } from "@/lib/schema";
+import { Link } from "react-router-dom";
 
 // TODO: Paganahin yung animation sa mga button (Back, Continue) buttons.
 // TODO: Display the name for each form. (Personal Information and such)
 
 const steps = [
     {
-        id: '1',
-        name: 'Personal Information',
-        fields: ['firstName', 'lastName'],
+        id: "1",
+        name: "Personal Information",
+        fields: ["firstName", "lastName"],
     },
     {
-        id: '2',
-        name: 'Create a strong password',
-        fields: ['password', 'confirmPassword'],
+        id: "2",
+        name: "Create a strong password",
+        fields: ["password", "confirmPassword"],
     },
     {
-        id: '3',
-        name: 'Please enter your DHVSU email',
-        fields: ['emailAddress'],
+        id: "3",
+        name: "Please enter your DHVSU email",
+        fields: ["emailAddress"],
     },
 ];
 
@@ -52,9 +52,10 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const prevButtonAnimControls = useAnimationControls();
     const multiStepProgressBar = useAnimationControls();
+    const [errors, setErrors] = useState<string[]>([]);
 
     const prevButtonVariants: Variants = {
-        initial: { x: '-100%', opacity: 0 },
+        initial: { x: "-100%", opacity: 0 },
         animate: { x: 0, opacity: 1 },
     };
 
@@ -66,17 +67,58 @@ const SignUp = () => {
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
-            firstName: '',
-            lastName: '',
-            emailAddress: '',
-            password: '',
-            passwordConfirm: '',
+            firstName: "",
+            lastName: "",
+            emailAddress: "",
+            password: "",
+            passwordConfirm: "",
         },
     });
 
     // Getting the form data (this function's purpose is to send the data to the api e.g localhost:8000/api/users)
     const handleSubmit = async (values: z.infer<typeof registerSchema>) => {
         console.log(values);
+        setErrors([]);
+        try {
+            const res = await fetch("/api/register", {
+                method: "post",
+                body: JSON.stringify(values),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                if (data.errors) {
+                    // Type casting the value of data.errors to string[]
+                    Object.values(data.errors).forEach((errorMessages) => {
+                        // Type casting errorMessages to string[] explicitly
+                        (errorMessages as string[]).forEach((message) => {
+                            setErrors((prevErrors) => [...prevErrors, message]);
+                        });
+                    });
+                } else {
+                    setErrors((prevErrors) => [
+                        ...prevErrors,
+                        "Something went wrong with registering",
+                    ]);
+                }
+            }
+
+            // Assuming `data.token` contains the token
+            // if (data.token) {
+            //     // Set the token in a cookie with an expiration of 7 days
+            //     const expires = new Date();
+            //     expires.setDate(expires.getDate() + 14); // 14 days from now
+            //     document.cookie = `authToken=${
+            //         data.token.plainTextToken
+            //     }; expires=${expires.toUTCString()}; path=/; secure; SameSite=Strict`;
+            //     setToken(data.token.plainTextToken);
+            //     console.log(data);
+            //     navigate("/");
+            // }
+        } catch (error) {
+            console.log(error);
+        }
         form.reset();
         setCurrentStep(0);
     };
@@ -92,19 +134,23 @@ const SignUp = () => {
         if (currentStep === 1) {
             if (
                 isStepValid &&
-                form.getValues('password') === form.getValues('passwordConfirm')
+                form.getValues("password") === form.getValues("passwordConfirm")
             ) {
-                setCurrentStep((step) => (step < steps.length - 1 ? step + 1 : step));
+                setCurrentStep((step) =>
+                    step < steps.length - 1 ? step + 1 : step
+                );
                 form.clearErrors();
             } else {
-                form.setError('passwordConfirm', {
-                    type: 'manual',
-                    message: 'Passwords do not match',
+                form.setError("passwordConfirm", {
+                    type: "manual",
+                    message: "Passwords do not match",
                 });
             }
         } else {
             if (isStepValid) {
-                setCurrentStep((step) => (step < steps.length - 1 ? step + 1 : step));
+                setCurrentStep((step) =>
+                    step < steps.length - 1 ? step + 1 : step
+                );
             }
         }
     };
@@ -118,13 +164,16 @@ const SignUp = () => {
     // }, [currentStep, prevButtonAnimControls]);
 
     useEffect(() => {
-        multiStepProgressBar.start('animate');
+        multiStepProgressBar.start("animate");
     }, [currentStep, multiStepProgressBar]);
 
     return (
         <>
             <Form {...form}>
-                <form onSubmit={(e) => e.preventDefault()} className="auth-form">
+                <form
+                    onSubmit={(e) => e.preventDefault()}
+                    className="auth-form"
+                >
                     <h1 className="form-title">Sign Up</h1>
                     {/* Multi Step Form Progress bar */}
                     <div className="mt-5 flex justify-center gap-5">
@@ -132,7 +181,7 @@ const SignUp = () => {
                             <motion.div
                                 animate={multiStepProgressBar}
                                 transition={{
-                                    type: 'spring',
+                                    type: "spring",
                                     stiffness: 500,
                                     damping: 20,
                                     duration: 0.3,
@@ -144,7 +193,11 @@ const SignUp = () => {
                             {steps.map((_, index) => (
                                 <span
                                     key={index}
-                                    className={`z-10 mx-1 size-2 rounded-full ${index < currentStep ? 'bg-white' : 'bg-gray-300'}`}
+                                    className={`z-10 mx-1 size-2 rounded-full ${
+                                        index < currentStep
+                                            ? "bg-white"
+                                            : "bg-gray-300"
+                                    }`}
                                 ></span>
                             ))}
                         </div>
@@ -161,7 +214,7 @@ const SignUp = () => {
                             }}
                             transition={{
                                 duration: 0.5,
-                                ease: 'easeInOut',
+                                ease: "easeInOut",
                             }}
                             className="flex flex-col gap-4"
                         >
@@ -245,12 +298,21 @@ const SignUp = () => {
                                                         <Input
                                                             placeholder="Password"
                                                             className="shad-input"
-                                                            type={showPassword ? 'text' : 'password'}
+                                                            type={
+                                                                showPassword
+                                                                    ? "text"
+                                                                    : "password"
+                                                            }
                                                             {...field}
                                                         />
                                                         <button
                                                             type="button"
-                                                            onClick={() => setShowPassword((show) => !show)}
+                                                            onClick={() =>
+                                                                setShowPassword(
+                                                                    (show) =>
+                                                                        !show
+                                                                )
+                                                            }
                                                         >
                                                             {showPassword ? (
                                                                 <EyeOff className="text-brand" />
@@ -340,7 +402,9 @@ const SignUp = () => {
                         {currentStep > 0 && (
                             <Button
                                 onClick={() =>
-                                    setCurrentStep((step) => (step < 0 ? step : step - 1))
+                                    setCurrentStep((step) =>
+                                        step < 0 ? step : step - 1
+                                    )
                                 }
                                 type="button"
                                 className="form-submit-button grow"
@@ -356,10 +420,9 @@ const SignUp = () => {
                                 disabled={isLoading}
                             >
                                 Sign up
-                                {isLoading && (
+                                {isLoading &&
                                     // loading animation here
-                                    ""
-                                )}
+                                    ""}
                             </Button>
                         ) : (
                             <Button
@@ -372,10 +435,15 @@ const SignUp = () => {
                         )}
                     </div>
                     <div className="body-2 flex justify-center">
-                        <p className="text-light-100">Already have an account?</p>
-                        <a href="/login" className="ml-1 font-medium text-brand">
+                        <p className="text-light-100">
+                            Already have an account?
+                        </p>
+                        <Link
+                            to={"/auth/login"}
+                            className="ml-1 font-medium text-brand"
+                        >
                             Login
-                        </a>
+                        </Link>
                     </div>
                 </form>
             </Form>
