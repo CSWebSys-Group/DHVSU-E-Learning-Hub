@@ -1,34 +1,34 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const registerSchema = z
     .object({
-        firstName: z.string().min(1, 'First name is required'),
-        lastName: z.string().min(1, 'Last name is required'),
-        emailAddress: z.string().email(),
+        fn: z.string().min(1, "First name is required"),
+        ln: z.string().min(1, "Last name is required"),
+        email: z.string().email(),
         password: z
             .string()
-            .min(8, { message: 'Password must at least be 8 character(s)' })
+            .min(8, { message: "Password must at least be 8 character(s)" })
             .regex(/[A-Z]/, {
-                message: 'Password must contain at least one uppercase letter',
+                message: "Password must contain at least one uppercase letter",
             })
             .regex(/[!@#$%^&*(),.?":{}|<>]/, {
-                message: 'Password must contain at least one special character',
+                message: "Password must contain at least one special character",
             }),
-        passwordConfirm: z.string(),
+        password_confirmation: z.string(),
     })
     .refine(
         (data) => {
             // if we return true, form is validated
             // if we return false, form is not valid
-            return data.password === data.passwordConfirm;
+            return data.password === data.password_confirmation;
         },
         {
-            message: 'Passwords do not match',
-            path: ['passwordConfirm'],
+            message: "Passwords do not match",
+            path: ["password_confirmation"],
         }
     );
 
 export const loginSchema = z.object({
     email: z.string().email(),
-    password: z.string().min(1, 'Password is required'),
+    password: z.string().min(1, "Password is required"),
 });

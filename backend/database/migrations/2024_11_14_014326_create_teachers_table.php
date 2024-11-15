@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('ln');
             $table->json('subjects')->nullable();
             $table->enum('gender', ['M', 'F', 'Others']);
-            $table->date('birthday'); // Define 'birthday' only once
+            $table->date('birthday')->nullable();
             $table->boolean('isAdmin')->default(false);
             $table->timestamps();
         });

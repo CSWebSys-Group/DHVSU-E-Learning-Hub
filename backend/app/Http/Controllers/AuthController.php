@@ -40,7 +40,7 @@ class AuthController extends Controller
             $field = $request->validate([
                 'id' => 'required|integer|unique:users',
                 'email' => 'required|string|unique:users|ends_with:@dhvsu.edu.ph',
-                'birthday' => 'required|string',
+                'birthday' => 'nullable|string',
                 'gender' => 'required|string|in:M,F,Others',
                 'user_type' => 'required|string|in:S,T',
                 'password' => 'required|string|min:8|confirmed',
@@ -66,7 +66,7 @@ class AuthController extends Controller
             $field = $request->validate([
                 'id' => 'required|integer|unique:users',
                 'email' => 'required|string|unique:users|ends_with:@dhvsu.edu.ph',
-                'birthday' => 'required|string',
+                'birthday' => 'nullable|string',
                 'gender' => 'required|string|in:M,F,Others',
                 'user_type' => 'required|string|in:S,T',
                 'password' => 'required|string|min:8|confirmed',

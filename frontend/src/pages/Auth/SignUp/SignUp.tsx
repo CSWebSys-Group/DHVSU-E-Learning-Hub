@@ -32,7 +32,7 @@ const steps = [
     {
         id: "1",
         name: "Personal Information",
-        fields: ["firstName", "lastName"],
+        fields: ["fn", "ln"],
     },
     {
         id: "2",
@@ -42,7 +42,7 @@ const steps = [
     {
         id: "3",
         name: "Please enter your DHVSU email",
-        fields: ["emailAddress"],
+        fields: ["email"],
     },
 ];
 
@@ -67,11 +67,11 @@ const SignUp = () => {
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
-            firstName: "",
-            lastName: "",
-            emailAddress: "",
+            fn: "",
+            ln: "",
+            email: "",
             password: "",
-            passwordConfirm: "",
+            password_confirmation: "",
         },
     });
 
@@ -82,7 +82,15 @@ const SignUp = () => {
         try {
             const res = await fetch("/api/register", {
                 method: "post",
-                body: JSON.stringify(values),
+                body: JSON.stringify({
+                    ...values,
+                    id: 2995450487,
+                    user_type: "S",
+                    gender: "M",
+                    tasks: [],
+                    grades: [],
+                    //birthday: 2024-12-31
+                }),
             });
 
             const data = await res.json();
@@ -116,6 +124,7 @@ const SignUp = () => {
             //     console.log(data);
             //     navigate("/");
             // }
+            console.log(data);
         } catch (error) {
             console.log(error);
         }
@@ -134,14 +143,15 @@ const SignUp = () => {
         if (currentStep === 1) {
             if (
                 isStepValid &&
-                form.getValues("password") === form.getValues("passwordConfirm")
+                form.getValues("password") ===
+                    form.getValues("password_confirmation")
             ) {
                 setCurrentStep((step) =>
                     step < steps.length - 1 ? step + 1 : step
                 );
                 form.clearErrors();
             } else {
-                form.setError("passwordConfirm", {
+                form.setError("password_confirmation", {
                     type: "manual",
                     message: "Passwords do not match",
                 });
@@ -220,7 +230,7 @@ const SignUp = () => {
                         >
                             <FormField
                                 control={form.control}
-                                name="firstName"
+                                name="fn"
                                 render={({ field }) => {
                                     return (
                                         <FormItem>
@@ -244,7 +254,7 @@ const SignUp = () => {
                             />
                             <FormField
                                 control={form.control}
-                                name="lastName"
+                                name="ln"
                                 render={({ field }) => {
                                     return (
                                         <FormItem>
@@ -330,7 +340,7 @@ const SignUp = () => {
                             />
                             <FormField
                                 control={form.control}
-                                name="passwordConfirm"
+                                name="password_confirmation"
                                 render={({ field }) => {
                                     return (
                                         <FormItem>
@@ -372,7 +382,7 @@ const SignUp = () => {
                         >
                             <FormField
                                 control={form.control}
-                                name="emailAddress"
+                                name="email"
                                 render={({ field }) => {
                                     return (
                                         <FormItem>
