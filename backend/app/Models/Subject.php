@@ -14,6 +14,7 @@ class Subject extends Model
         'subject_code',
         'subject_name',
         'section_id',
+        'teacher_id',
         'tasks'
     ];
 

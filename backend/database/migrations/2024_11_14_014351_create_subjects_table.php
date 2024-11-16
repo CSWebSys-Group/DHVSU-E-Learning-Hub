@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('subject_code');
             $table->string('subject_name');
             $table->foreignId('section_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('teacher_id')->nullable()->constrained()->cascadeOnDelete();
             $table->json('tasks')->nullable();
-            $table->timestamps();
             $table->string('type');
+            $table->timestamps();
         });
     }
 
