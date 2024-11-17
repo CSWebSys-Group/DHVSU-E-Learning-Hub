@@ -10,29 +10,17 @@ class Task extends Model
     /** @use HasFactory<\Database\Factories\TaskFactory> */
     use HasFactory;
 
-    protected $primaryKey = 'id';
-
     protected $fillable = [
         'task_name',
         'tests',
-        'student_id',
-        'score',
         'type',
         'total_score',
-        'subject_code'
+        'subject_id',
+        'deadline'
     ];
 
     protected $casts = [
         'tests' => 'array',
+        'deadline' => 'datetime',
     ];
-
-    public function student()
-    {
-        return $this->belongsTo(Student::class);
-    }
-
-    public function subject()
-    {
-        return $this->belongsTo(Subject::class, 'subject_code', 'subject_code');
-    }
 }

@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('task_name');
             $table->json('tests')->nullable();
-            $table->foreignId('student_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->integer('score')->nullable();
             $table->enum('type', ['act', 'assessment', 'exam']);
             $table->integer('total_score');
             $table->foreignId('subject_id')->constrained('subjects')->cascadeOnDelete();
+            $table->datetime('deadline')->nullable();
             $table->timestamps();
         });
     }

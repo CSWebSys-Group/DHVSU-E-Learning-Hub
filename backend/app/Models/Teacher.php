@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +13,7 @@ class Teacher extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'id',
         'fn',
         'ln',
         'subjects',
@@ -28,16 +28,8 @@ class Teacher extends Model
         'birthday' => 'date'
     ];
 
-    public function subjects()
+    public function formattedBirthday()
     {
-        return $this->hasMany(Subject::class);
-    }
-
-    /**
-     * Accessor to format the birthday attribute as m-d-Y.
-     */
-    public function getBirthdayAttribute($value)
-    {
-        return Carbon::parse($value)->format('m-d-Y');
+        return $this->birthday ? $this->birthday->format('m-d-Y') : null;
     }
 }

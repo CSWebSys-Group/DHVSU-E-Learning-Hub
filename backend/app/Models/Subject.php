@@ -14,21 +14,16 @@ class Subject extends Model
         'subject_code',
         'subject_name',
         'section_id',
+        'teacher_id',
         'tasks'
+    ];
+
+    protected $casts = [
+        'tasks' => 'array',
     ];
 
     public function section()
     {
         return $this->belongsTo(Section::class);
-    }
-
-    public function tasks()
-    {
-        return $this->hasMany(Task::class);
-    }
-
-    public function teacher()
-    {
-        return $this->belongsTo(Teacher::class);
     }
 }
