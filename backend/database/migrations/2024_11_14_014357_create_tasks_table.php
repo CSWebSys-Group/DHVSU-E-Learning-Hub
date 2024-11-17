@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('type', ['act', 'assessment', 'exam']);
             $table->integer('total_score');
             $table->foreignId('subject_id')->constrained('subjects')->cascadeOnDelete();
-            $table->datetime('deadline');
+            $table->datetime('deadline')->nullable();
             $table->timestamps();
         });
     }

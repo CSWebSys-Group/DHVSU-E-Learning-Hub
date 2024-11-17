@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Section;
-use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
-class TaskController extends Controller
+class TaskController extends Controller implements HasMiddleware
 {
     public static function middleware()
     {
@@ -32,19 +31,21 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        Gate::authorize('create', $request);
-
         // First, validate the basic fields
         $fields = $request->validate([
             'task_name' => 'required|string|max:255',
             'type' => 'required|string|in:act,assessment,exam',
             'total_score' => 'required|integer|min:1',
             'subject_id' => 'required|integer',
-            'section_id' => 'required|integer',
 
             // `tests` base validation (array required)
             'tests' => 'required|array',
         ]);
+
+        $subject = Subject::find($fields["subject_id"]);
+        if (!$subject || !$subject->teacher_id || Auth::id() !== $subject->teacher_id) {
+            return response()->json(['message' => "Unauthorized."]);
+        }
 
         // Now, validate the nested `tests` field based on type
         $type = $request->input('type');
@@ -84,10 +85,14 @@ class TaskController extends Controller
             }
         }
 
-        $section = Section::where('id', $request->section_id)->first();
-
         // Create the task
         $task = Task::create($fields);
+
+        // Update the tasks array in the subject
+        $currentTasks = $subject->tasks ?? []; // Get the existing tasks (or an empty array if null)
+        $updatedTasks = array_merge($currentTasks, [$task->id]); // Add the new task ID
+        $subject->tasks = $updatedTasks; // Update the tasks field
+        $subject->save(); // Save the changes to the database
 
         return response()->json(['task' => $task], 201);
     }
@@ -105,9 +110,6 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        $subject = Subject::where('id', $task->subject_id)->first();
-        Gate::authorize('modify', $subject);
-
         // First, validate the basic fields
         $fields = $request->validate([
             'task_name' => 'required|string|max:255',
@@ -117,6 +119,11 @@ class TaskController extends Controller
             // `tests` base validation (array required)
             'tests' => 'required|array',
         ]);
+
+        $subject = Subject::find($task->subject_id);
+        if (!$subject || !$subject->teacher_id || Auth::id() !== $subject->teacher_id) {
+            return response()->json(['message' => "Unauthorized."]);
+        }
 
         // Now, validate the nested `tests` field based on type
         $type = $request->input('type');
@@ -166,10 +173,20 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        Gate::authorize('modify', $task);
+        $subject = Subject::find($task->subject_id);
+
+        if (!$subject || !$subject->teacher_id || Auth::id() !== $subject->teacher_id) {
+            return response()->json(['message' => "Unauthorized."]);
+        }
+
+        // Remove the task ID from the subject's tasks array
+        $currentTasks = $subject->tasks ?? [];
+        $updatedTasks = array_filter($currentTasks, fn($taskId) => $taskId !== $task->id); // Exclude the deleted task ID
+        $subject->tasks = array_values($updatedTasks); // Re-index the array
+        $subject->save();
 
         $task->delete();
 
-        return response()->json(['message' => 'Task deleted and removed from student'], 200);
+        return response()->json(['message' => 'Task deleted and removed from subject'], 200);
     }
 }

@@ -23,9 +23,4 @@ class Task extends Model
         'tests' => 'array',
         'deadline' => 'datetime',
     ];
-
-    public function subject()
-    {
-        return $this->belongsTo(Subject::class);
-    }
 }

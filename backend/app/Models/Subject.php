@@ -18,18 +18,12 @@ class Subject extends Model
         'tasks'
     ];
 
+    protected $casts = [
+        'tasks' => 'array',
+    ];
+
     public function section()
     {
         return $this->belongsTo(Section::class);
-    }
-
-    public function tasks()
-    {
-        return $this->hasMany(Task::class);
-    }
-
-    public function teacher()
-    {
-        return $this->belongsTo(Teacher::class);
     }
 }
