@@ -6,6 +6,8 @@ import Layout from "./pages/Auth/Layout";
 import Home from "./pages/Home";
 import SignUp from "./pages/Auth/SignUp/SignUp";
 import Login from "./pages/Auth/Login/Login";
+import RootLayout from "./layouts/RootLayout";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 function App() {
     return (
@@ -21,6 +23,11 @@ function App() {
                         <Route path="login" element={<Login />} />
                     </Route>
                 </Routes>
+                <RootLayout>
+                    <Routes>
+                        <Route path="dashboard" element={<Dashboard />}></Route>
+                    </Routes>
+                </RootLayout>
             </BrowserRouter>
         </>
     );

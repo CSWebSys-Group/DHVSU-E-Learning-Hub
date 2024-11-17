@@ -24,7 +24,7 @@ import {
   User,
 } from 'lucide-react';
 
-import dhvsuLogo from '../assets/dhvsu-logo-v2.svg';
+import dhvsuLogo from '../assets/icons/dhvsu-logo-v2.svg';
 import {
   Collapsible,
   CollapsibleContent,
