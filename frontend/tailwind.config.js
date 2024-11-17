@@ -35,6 +35,14 @@ export default {
           'drop-2': '0 8px 30px 0 rgba(65, 89, 214, 0.3)',
           'drop-3': '0 8px 30px 0 rgba(65, 89, 214, 0.1)',
         },
+        fontFamily: {
+            poppins: ['var(--font-poppins)'],
+        },
+        borderRadius: {
+            lg: 'var(--radius)',
+            md: 'calc(var(--radius) - 2px)',
+            sm: 'calc(var(--radius) - 4px)',
+        },
       },
     },
     plugins: [require('tailwindcss-animate')],
