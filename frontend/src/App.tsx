@@ -4,6 +4,7 @@ import Layout from "./pages/Auth/Layout";
 
 // pages
 import Home from "./pages/Home";
+import HomeContents from "./components/Home/Home";
 import Campuses from "./components/Home/Campuses";
 import OnlineServices from "./components/Home/OnlineServices";
 import Features from "./components/Home/Features";
@@ -17,8 +18,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />}>
-            {/* <Route index element={<Home />} /> */}
-            <Route index element={<h2>Welcome to the Home Page!</h2>} />
+            <Route index element={<HomeContents />} />
+            {/* <Route index element={<h2>Welcome to the Home Page!</h2>} /> */}
             <Route path="campuses" element={<Campuses />} />
             <Route path="online-services" element={<OnlineServices />} />
             <Route path="features" element={<Features />} />
