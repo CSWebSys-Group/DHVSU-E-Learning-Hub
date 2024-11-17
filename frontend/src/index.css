@@ -24,11 +24,7 @@
   * {
     @apply scroll-smooth;
   }
-
-  body {
-    @apply bg-white text-dark-200 min-h-screen;
-  }
-
+  
   /* Remove scrollbar */
   .remove-scrollbar::-webkit-scrollbar {
     width: 0px;
@@ -53,6 +49,7 @@
   .recharts-responsive-container {
     height: initial !important;
   }
+  
   :root {
     --background: 20 66% 99%;
     --foreground: 20 51% 4%;
