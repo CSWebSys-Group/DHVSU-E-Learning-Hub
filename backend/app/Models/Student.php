@@ -14,6 +14,7 @@ class Student extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'id',
         'fn',
         'ln',
         'gender',
