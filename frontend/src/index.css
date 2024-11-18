@@ -481,3 +481,23 @@
     @apply bg-background text-foreground;
   }
 }
+/* Custom scrollbar styles */
+.custom-scrollbar {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #7a2b20 #e5e5e5; /* Thumb color and track color */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+  height: 8px; /* Height of the scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #7a2b20; /* Thumb color */
+  border-radius: 4px; /* Rounded corners for the thumb */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #e5e5e5; /* Track color */
+  border-radius: 4px; /* Rounded corners for the track */
+}
