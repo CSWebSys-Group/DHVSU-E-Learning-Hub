@@ -1,6 +1,4 @@
-import { VelocityScroll } from "@/components/ui/scroll-based-scroll";
-import { SwipeCarousel } from "@/components/SwipeCarousel";
-import dhvsuLogo from "../../assets/images/dhvsu-logo.png";
+import dhvsuLogo from "@/assets/icons/dhvsu-logo-v2.svg";
 import FloatingNav from "@/components/FloatingNav";
 
 import { Outlet } from "react-router-dom";
@@ -22,15 +20,6 @@ export default function Layout() {
                         <h4 className="h4 text-white font-bold">
                             Don Honorio Ventura State University{" "}
                         </h4>
-                    </div>
-                    <VelocityScroll
-                        // key={}
-                        text="APPLY NOW &#9679;"
-                        default_velocity={5}
-                        className="font-display text-center text-3xl font-bold tracking-[-0.02em] text-black drop-shadow-sm dark:text-white md:text-3xl md:leading-[5rem] bg-[#FABC3F] border-2 border-black z-5"
-                    />
-                    <div className="flex h-full flex-col justify-center items-center space-y-12 overflow-hidden mx-10">
-                        <SwipeCarousel />
                     </div>
                 </section>
 

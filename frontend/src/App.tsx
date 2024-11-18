@@ -11,6 +11,9 @@ import Features from "./pages/Home/Features";
 
 import SignUp from "./pages/Auth/SignUp/SignUp";
 import Login from "./pages/Auth/Login/Login";
+import RootLayout from "./layouts/RootLayout";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Calendar from "./pages/Calendar/Calendar";
 
 function App() {
   return (
@@ -27,6 +30,11 @@ function App() {
             <Route index element={<SignUp />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login />} />
+          </Route>
+
+          <Route path="/" element={<RootLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="calendar " element={<Calendar />} />
           </Route>
         </Routes>
       </BrowserRouter>
