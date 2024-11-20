@@ -16,32 +16,35 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Calendar from "./pages/Calendar/Calendar";
 import Profile from "./pages/Profile/Profile";
 import Subjects from "./pages/Subjects/Subjects";
+import { ThemeProvider } from "./components/theme-provider";
 
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<HomeContents />} />
-            <Route path="campuses" element={<Campuses />} />
-            <Route path="online-services" element={<OnlineServices />} />
-            <Route path="features" element={<Features />} />
-          </Route>
-          <Route path="auth" element={<Layout />}>
-            <Route index element={<SignUp />} />
-            <Route path="signup" element={<SignUp />} />
-            <Route path="login" element={<Login />} />
-          </Route>
+      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />}>
+              <Route index element={<HomeContents />} />
+              <Route path="campuses" element={<Campuses />} />
+              <Route path="online-services" element={<OnlineServices />} />
+              <Route path="features" element={<Features />} />
+            </Route>
+            <Route path="auth" element={<Layout />}>
+              <Route index element={<SignUp />} />
+              <Route path="signup" element={<SignUp />} />
+              <Route path="login" element={<Login />} />
+            </Route>
 
-          <Route path="/" element={<RootLayout />}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="calendar" element={<Calendar />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="subjects" element={<Subjects />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+            <Route path="/" element={<RootLayout />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="calendar" element={<Calendar />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="subjects" element={<Subjects />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
     </>
   );
 }

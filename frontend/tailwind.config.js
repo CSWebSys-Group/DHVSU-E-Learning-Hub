@@ -30,6 +30,7 @@ export default {
           300: "#F2F5F9",
           400: "#F2F4F8",
         },
+        default: "hsl(var(--default)",
         background: "hsl(var(--background))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -40,6 +41,9 @@ export default {
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
+        },
+        form: {
+          DEFAULT: "hsl(var(--form-background))",
         },
       },
       boxShadow: {

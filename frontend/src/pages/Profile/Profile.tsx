@@ -9,12 +9,12 @@ import React from "react";
 const Profile = () => {
   return (
     <div className="p-6">
-      <div className="bg-DHVSU-red text-white px-4 py-2 rounded-full font-semibold w-49 ">
+      <div className="bg-form text-black px-4 py-2 rounded-full font-semibold w-[200px] ">
         Student Information
       </div>
       <div className="flex gap-3">
-        <div className="w-96 ml-0 bg-DHVSU-white border border-DHVSU-black rounded-lg shadow-lg min-w-0">
-          <div className="bg-DHVSU-white rounded-t-lg p-6 flex flex-col items-center">
+        <div className="w-96 ml-0 bg-form border border-DHVSU-black rounded-lg shadow-lg min-w-0">
+          <div className="bg-form rounded-t-lg p-6 flex flex-col items-center">
             <div className="w-16 h-16 bg-DHVSU-white rounded-full flex items-center justify-center text-DHVSU-red font-semibold border border-DHVSU-red">
               Image
             </div>
