@@ -18,6 +18,11 @@ export default {
           500: "#562424",
           DEFAULT: "#701D0B",
         },
+        dhvsu: {
+          DEFAULT: "#701D0B",
+          lighter: "#F2E6E4",
+          light: "#8D4A3C",
+        },
         red: "#FF7474",
         error: "#b80000",
         green: "#3DD9B3",
