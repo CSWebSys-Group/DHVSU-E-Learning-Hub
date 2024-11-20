@@ -1,7 +1,6 @@
+import { PencilIcon } from "lucide-react";
 import React from "react";
 
-// TODO: Gender should be drop down (Male, Female, Others) = values (M, F, Others)
-// TODO: Civil Status should be drop down (Single, Married, Widowed) = values (single, married, widowed)
 // TODO: Not all input fields are are required.
 // TODO: Email disabled
 // TODO: Fix bg folors.
@@ -9,28 +8,23 @@ import React from "react";
 const Profile = () => {
   return (
     <div className="p-6">
-      <div className="bg-form text-black px-4 py-2 rounded-full font-semibold w-[200px] ">
-        Student Information
-      </div>
       <div className="flex gap-3">
-        <div className="w-96 ml-0 bg-form border border-DHVSU-black rounded-lg shadow-lg min-w-0">
+        <div className="w-96 ml-0 bg-form rounded-lg shadow-lg min-w-0">
           <div className="bg-form rounded-t-lg p-6 flex flex-col items-center">
             <div className="w-16 h-16 bg-DHVSU-white rounded-full flex items-center justify-center text-DHVSU-red font-semibold border border-DHVSU-red">
               Image
             </div>
 
-            <div className="text-center mt-4">
-              <p className="text-lg font-bold text-DHVSU-red">
+            <div className="text-center mt-4 text-brand dark:text-white">
+              <p className="text-lg font-bold">
                 Reyes, Mark Angelo J. (Student)
               </p>
-              <p className="text-sm text-DHVSU-red">
-                Bachelor of Science in Computer Science
-              </p>
-              <p className="text-sm text-DHVSU-red">2022308414</p>
+              <p className="text-sm">Bachelor of Science in Computer Science</p>
+              <p className="text-sm">2022308414</p>
             </div>
 
-            <button className="mt-4 px-4 py-2 bg-brown-700 text-DHVSU-white bg-DHVSU-red text-sm font-semibold rounded-full">
-              &#x270E; Edit profile
+            <button className="mt-4 px-4 py-2 bg-brown-700 text-white dark:text-brand bg-brand dark:bg-white text-sm font-semibold rounded-full flex items-center gap-2">
+              <PencilIcon size={14} /> Edit profile
             </button>
           </div>
         </div>
@@ -97,10 +91,14 @@ const Profile = () => {
                 <label className="text-DHVSU-red font-semibold mb-2">
                   Gender
                 </label>
-                <input
-                  type="text"
-                  className="border border-DHVSU-red rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                />
+                <select className="border border-DHVSU-red rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full">
+                  <option value="" disabled selected>
+                    Select an option
+                  </option>
+                  <option value="M">Male</option>
+                  <option value="F">Female</option>
+                  <option value="Others">Others</option>
+                </select>
               </div>
 
               <div className="flex flex-col col-span-2">
@@ -127,10 +125,14 @@ const Profile = () => {
                 <label className="text-DHVSU-red font-semibold mb-2">
                   Civil Status
                 </label>
-                <input
-                  type="text"
-                  className="border border-DHVSU-red rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                />
+                <select className="border border-DHVSU-red rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full">
+                  <option value="" disabled selected>
+                    Select an option
+                  </option>
+                  <option value="single">Single</option>
+                  <option value="married">Married</option>
+                  <option value="widowed">Widowed</option>
+                </select>
               </div>
             </div>
 
