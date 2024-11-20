@@ -14,6 +14,8 @@ import Login from "./pages/Auth/Login/Login";
 import RootLayout from "./layouts/RootLayout";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Calendar from "./pages/Calendar/Calendar";
+import Profile from "./pages/Profile/Profile";
+import Subjects from "./pages/Subjects/Subjects";
 
 function App() {
   return (
@@ -34,7 +36,9 @@ function App() {
 
           <Route path="/" element={<RootLayout />}>
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="calendar " element={<Calendar />} />
+            <Route path="calendar" element={<Calendar />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="subjects" element={<Subjects />} />
           </Route>
         </Routes>
       </BrowserRouter>
