@@ -7,6 +7,7 @@ import news2 from "../../assets/images/news2.png";
 import news3 from "../../assets/images/news3.png";
 import news4 from "../../assets/images/news4.png";
 import announcementImg from "../../assets/images/announcement-img.png";
+import { Link } from "react-router-dom";
 
 type NewsItem = {
   title: string;
@@ -146,9 +147,11 @@ const Home = () => {
                   </button>
                 </div>
                 <div>
-                  <button className="text-brand bg-none border-2 px-6 py-1 rounded-[10px] border-brand lg:px-10 lg:py-2 lg:text-xl transform transition-all duration-300 hover:bg-brand hover:text-white hover:border-none">
-                    Sign In
-                  </button>
+                  <Link to={"/auth/signin"}>
+                    <button className="text-brand bg-none border-2 px-6 py-1 rounded-[10px] border-brand lg:px-10 lg:py-2 lg:text-xl transform transition-all duration-300 hover:bg-brand hover:text-white hover:border-none">
+                      Sign In
+                    </button>
+                  </Link>
                 </div>
               </div>
 
