@@ -22,6 +22,7 @@ export default {
           DEFAULT: "#701D0B",
           lighter: "#F2E6E4",
           light: "#8D4A3C",
+          black: "#4A403A",
         },
         red: "#FF7474",
         error: "#b80000",
