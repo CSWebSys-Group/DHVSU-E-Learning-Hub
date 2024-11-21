@@ -1,17 +1,19 @@
-import RevealGrid from '@/components/RevealGrid';
-import { Calendar } from '@/components/ui/calendar';
-import { Bell } from 'lucide-react';
-import React, { useState } from 'react';
+import RevealGrid from "@/components/RevealGrid";
+import { Calendar } from "@/components/ui/calendar";
+import { formatDate } from "@/lib/utils";
+import { Bell } from "lucide-react";
+import { useState } from "react";
 
 const Dashboard = () => {
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(Date.now());
+  const today = new Date();
   return (
-    <div className=" bg-white rounded-3xl p-8 flex flex-col md:flex-row">
+    <div className="rounded-3xl p-8 flex flex-col md:flex-row">
       <section className="left-section w-full p-4">
         <div className="flex justify-between mb-12">
           <div>
             <h2 className="text-[#701D0B] font-bold">Dashboard</h2>
-            <p className="text-[#701D0B]">Monday, 29 Sept 2024</p>
+            <p className="text-[#701D0B]">{formatDate(today)}</p>
           </div>
           <div>
             <Bell />
