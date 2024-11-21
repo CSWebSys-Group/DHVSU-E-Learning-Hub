@@ -1,7 +1,31 @@
 import SubjectCard from "@/components/SubjectCard";
+import Task from "@/components/Task";
 import React from "react";
 
-const taskDummyData = [{}];
+const taskDummyData = [
+  {
+    id: 1,
+    subject_code: "CSAC 313",
+    task_name: "Solve time complexity",
+    task_description: "Solve the time complexity of the following:",
+    due_date: new Date(Date.now()),
+  },
+  {
+    id: 2,
+    subject_code: "CSPL 313",
+    task_name: "Semantics and Syntax",
+    task_description:
+      "Choose a program language and show its semantics and syntax",
+    due_date: new Date(Date.now()),
+  },
+  {
+    id: 3,
+    subject_code: "CSOS 313",
+    task_name: "Describe Linux OS",
+    task_description: "Describe linux OS on a essay form minimum of 300 words",
+    due_date: new Date(Date.now()),
+  },
+];
 
 const subjectDummyData = [
   {
@@ -45,135 +69,17 @@ const Subjects = () => {
           <div className="border-r border-DHVSU-black h-full"></div>
 
           <div className="overflow-hidden w-full mx-0">
-            <div
-              id="carousel"
-              className="flex transition-transform duration-500 h-56 md:h-60 lg:h-64 w-full"
-            >
+            <div className="flex transition-transform duration-500 h-56 md:h-60 lg:h-64 w-full">
               {/* Task card */}
-              <a href="#" className="flex-none w-full md:w-1/2 lg:w-1/3 px-2">
-                <div className="bg-dhvsu-light rounded-xl p-6 text-white h-full flex flex-col justify-between hover:bg-dhvsu-black">
-                  <div className="flex items-center space-x-2">
-                    <img
-                      src="./img/sample-img.jpg"
-                      alt="sample image"
-                      className="w-8 h-8 rounded-full border-[2px] border-DHVSU-white border-solid"
-                    />
-                    <h3 className="text-lg font-bold">SubCode</h3>
-                  </div>
-                  <hr className="border-[0.12rem] m-0 border-white" />
-                  <div className="bg-white rounded-lg p-5 h-[55%] content-center">
-                    <p className="text-sm text-justify line-clamp-3 text-DHVSU-red">
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Dolores necessitatibus rerum reiciendis molestiae ipsam,
-                      libero aut voluptates maiores optio. Ad facilis soluta ab
-                      saepe iure enim, sint nobis delectus unde?
-                    </p>
-                  </div>
-                  <p className="text-xs text-right underline">
-                    Due Nov 6, 11:59 PM
-                  </p>
-                </div>
-              </a>
-
-              <a href="#" className="flex-none w-full md:w-1/2 lg:w-1/3 px-2">
-                <div className="bg-dhvsu-light rounded-xl p-6 text-white h-full flex flex-col justify-between hover:bg-dhvsu-black">
-                  <div className="flex items-center space-x-2">
-                    <img
-                      src="./img/sample-img.jpg"
-                      alt="sample image"
-                      className="w-8 h-8 rounded-full border-[2px] border-DHVSU-white border-solid"
-                    />
-                    <h3 className="text-lg font-bold">SubCode</h3>
-                  </div>
-                  <hr className="border-[0.12rem] m-0 border-white" />
-                  <div className="bg-white rounded-lg p-5 h-[55%] content-center">
-                    <p className="text-sm text-justify line-clamp-3 text-DHVSU-red">
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Dolores necessitatibus rerum reiciendis molestiae ipsam,
-                      libero aut voluptates maiores optio. Ad facilis soluta ab
-                      saepe iure enim, sint nobis delectus unde?
-                    </p>
-                  </div>
-                  <p className="text-xs text-right underline">
-                    Due Nov 6, 11:59 PM
-                  </p>
-                </div>
-              </a>
-
-              <a href="#" className="flex-none w-full md:w-1/2 lg:w-1/3 px-2">
-                <div className="bg-dhvsu-light rounded-xl p-6 text-white h-full flex flex-col justify-between hover:bg-dhvsu-black">
-                  <div className="flex items-center space-x-2">
-                    <img
-                      src="./img/sample-img.jpg"
-                      alt="sample image"
-                      className="w-8 h-8 rounded-full border-[2px] border-DHVSU-white border-solid"
-                    />
-                    <h3 className="text-lg font-bold">SubCode</h3>
-                  </div>
-                  <hr className="border-[0.12rem] m-0 border-white" />
-                  <div className="bg-white rounded-lg p-5 h-[55%] content-center">
-                    <p className="text-sm text-justify line-clamp-3 text-DHVSU-red">
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Dolores necessitatibus rerum reiciendis molestiae ipsam,
-                      libero aut voluptates maiores optio. Ad facilis soluta ab
-                      saepe iure enim, sint nobis delectus unde?
-                    </p>
-                  </div>
-                  <p className="text-xs text-right underline">
-                    Due Nov 6, 11:59 PM
-                  </p>
-                </div>
-              </a>
-
-              <a href="#" className="flex-none w-full md:w-1/2 lg:w-1/3 px-2">
-                <div className="bg-dhvsu-light rounded-xl p-6 text-white h-full flex flex-col justify-between hover:bg-dhvsu-black">
-                  <div className="flex items-center space-x-2">
-                    <img
-                      src="./img/sample-img.jpg"
-                      alt="sample image"
-                      className="w-8 h-8 rounded-full border-[2px] border-DHVSU-white border-solid"
-                    />
-                    <h3 className="text-lg font-bold">SubCode</h3>
-                  </div>
-                  <hr className="border-[0.12rem] m-0 border-white" />
-                  <div className="bg-white rounded-lg p-5 h-[55%] content-center">
-                    <p className="text-sm text-justify line-clamp-3 text-DHVSU-red">
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Dolores necessitatibus rerum reiciendis molestiae ipsam,
-                      libero aut voluptates maiores optio. Ad facilis soluta ab
-                      saepe iure enim, sint nobis delectus unde?
-                    </p>
-                  </div>
-                  <p className="text-xs text-right underline">
-                    Due Nov 6, 11:59 PM
-                  </p>
-                </div>
-              </a>
-
-              <a href="#" className="flex-none w-full md:w-1/2 lg:w-1/3 px-2">
-                <div className="bg-dhvsu-light rounded-xl p-6 text-white h-full flex flex-col justify-between hover:bg-dhvsu-black">
-                  <div className="flex items-center space-x-2">
-                    <img
-                      src="./img/sample-img.jpg"
-                      alt="sample image"
-                      className="w-8 h-8 rounded-full border-[2px] border-DHVSU-white border-solid"
-                    />
-                    <h3 className="text-lg font-bold">SubCode</h3>
-                  </div>
-                  <hr className="border-[0.12rem] m-0 border-white" />
-                  <div className="bg-white rounded-lg p-5 h-[55%] content-center">
-                    <p className="text-sm text-justify line-clamp-3 text-DHVSU-red">
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                      Dolores necessitatibus rerum reiciendis molestiae ipsam,
-                      libero aut voluptates maiores optio. Ad facilis soluta ab
-                      saepe iure enim, sint nobis delectus unde?
-                    </p>
-                  </div>
-                  <p className="text-xs text-right underline">
-                    Due Nov 6, 11:59 PM
-                  </p>
-                </div>
-              </a>
+              {taskDummyData.map((task) => (
+                <Task
+                  id={task.id}
+                  subject_code={task.subject_code}
+                  task_name={task.task_name}
+                  task_description={task.task_description}
+                  due_date={task.due_date}
+                />
+              ))}
             </div>
           </div>
 
