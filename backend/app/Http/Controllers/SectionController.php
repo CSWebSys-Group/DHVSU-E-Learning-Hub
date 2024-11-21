@@ -5,15 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Section;
 use App\Http\Requests\StoreSectionRequest;
 use App\Http\Requests\UpdateSectionRequest;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class SectionController extends Controller
+class SectionController extends Controller implements HasMiddleware
 {
+
+    public static function middleware()
+    {
+        return [
+            new Middleware('auth:sanctum', except: ['index', 'show'])
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return response()->json(Section::all(), 200);
     }
 
     /**
@@ -37,7 +47,7 @@ class SectionController extends Controller
      */
     public function show(Section $section)
     {
-        //
+        return ['section' => $section];
     }
 
     /**

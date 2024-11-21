@@ -5,15 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Subject;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class SubjectController extends Controller
+class SubjectController extends Controller implements HasMiddleware
 {
+
+    public static function middleware()
+    {
+        return [
+            new Middleware('auth:sanctum', except: ['index', 'show'])
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return response()->json(Subject::all(), 200);
     }
 
     /**
@@ -37,7 +47,7 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        //
+        return ['subject' => $subject];
     }
 
     /**
