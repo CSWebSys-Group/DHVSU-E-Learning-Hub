@@ -1,29 +1,31 @@
-import { NavLink, Outlet } from "react-router-dom"; // Use NavLink for active state styling
+import { NavLink, Outlet } from "react-router-dom";
 import campusesBg from "../../../assets/images/campuses-bg.png";
 
-const getNavLinkClasses = (isActive) =>
-  `text-light-400 relative after:content-[""] after:block after:w-0 after:h-[3px] after:bg-[#FFBA15] 
-   after:absolute after:mt-[2px] after:left-0 hover:after:w-full hover:after:transition-all 
-   after:rounded-full ${
-     isActive ? "after:w-full text-[#FFBA15] text-lg " : ""
-   }`;
+const getNavLinkClasses = (isActive: boolean) =>
+  `${
+    isActive ? "text-brand font-bold bg-[#F2F2F2] scale-105" : "text-light-400"
+  } 
+   relative hover:text-brand hover:bg-[#F2F2F2] hover:scale-105 
+   transition-all rounded-md p-2`;
 
 const Campuses = () => {
   return (
     <>
       {/* Header Section */}
       <div
-        className="bg-cover bg-no-repeat h-[100px] w-full flex justify-center items-center"
+        className="bg-cover bg-no-repeat h-[100px] w-full flex justify-center items-center md:h-[195px] lg:h-[260px] xl:h-[390px]"
         style={{ backgroundImage: `url(${campusesBg})` }}
       >
         <div>
-          <h1 className="font-bold text-white text-xl">CURRICULAR OFFERINGS</h1>
+          <h1 className="font-bold text-white text-xl md:text-4xl lg:text-5xl xl:text-7xl">
+            CURRICULAR OFFERINGS
+          </h1>
         </div>
       </div>
 
       {/* Navigation Section */}
-      <nav className="overflow-x-auto bg-brand">
-        <ul className="flex px-2 py-[8px] gap-3 whitespace-nowrap uppercase font-semibold text-sm cursor-pointer">
+      <nav className="overflow-x-auto bg-brand lg:flex lg:justify-center lg:items-center">
+        <ul className="flex px-2 py-[8px] gap-3 whitespace-nowrap uppercase font-semibold text-sm cursor-pointer md:px-5 md:py-[15px] md:text-lg md:gap-8 lg:py-[20px] lg:gap-10">
           <li>
             <NavLink
               to="/campuses/porac-campus"
