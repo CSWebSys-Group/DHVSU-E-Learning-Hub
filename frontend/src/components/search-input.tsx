@@ -1,6 +1,6 @@
-import { useKBar } from 'kbar';
-import { Search } from 'lucide-react';
-import { Button } from './ui/button';
+import { useKBar } from "kbar";
+import { Search } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default function SearchInput() {
   const { query } = useKBar();
