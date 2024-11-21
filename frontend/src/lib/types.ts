@@ -51,3 +51,10 @@ export interface NavItem {
   isActive?: boolean;
   items?: NavItem[];
 }
+
+export type Subject = {
+  id: number;
+  subject_code: string;
+  subject_name: string;
+  profileImage: string | null;
+};
