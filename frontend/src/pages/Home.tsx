@@ -130,7 +130,7 @@ export default function Home() {
       <Outlet />
       {/* foooter  */}
       {/* bg-white */}
-      <footer className="hidden bg-white bottom-0 h-[300px] flex flex-col md:h-[400px] lg:h-[600px] ">
+      <footer className=" bottom-0 h-[300px] flex flex-col md:h-[400px] lg:h-[600px] ">
         <div className="relative mt-auto bg-gradient-to-b from-brand via-[#92260E] to-[#A32A10] h-[230px] px-5 py-5 w-full flex justify-end items-center flex-col md:h-[300px] lg:h-[380px]">
           <div className="w-full flex flex-col justify-center  md:flex-row md:px-6 lg:mb-4 max-w-screen-lg relative">
             <div className="absolute animate-bounce-updown shadow-lg shadow-[#A9847C] -top-[150px] inset-x-0 mx-5 h-[130px] bg-gradient-to-tl from-[#A9847C]  via-[#C1ACA7] to-[#D9D7D6] flex justify-center items-center rounded-xl  md:h-[180px] md:-top-[210px] lg:h-[250px] lg:-top-[280px] lg:mx-[70px]  max-w-screen-lg">

@@ -1,4 +1,27 @@
+import { IconPerspective } from "@tabler/icons-react";
+import { keyframes } from "framer-motion";
+import { transform } from "typescript";
+
 /** @type {import('tailwindcss').Config} */
+const plugin = require("tailwindcss/plugin");
+
+const CustomStyle = plugin(function ({ addUtilities }) {
+  addUtilities({
+    ".rotate-y-180": {
+      transform: "rotateY(180deg)",
+    },
+    ".preserve-3d": {
+      transformStyle: "preserve-3d",
+    },
+    ".perspective-1000": {
+      perspective: "1000px",
+    },
+    ".backface-hidden": {
+      backfaceVisibility: "hidden",
+    },
+  });
+});
+
 export default {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
@@ -50,7 +73,16 @@ export default {
       fontFamily: {
         poppins: ["var(--font-poppins)"],
       },
+      keyframes: {
+        "bounce-updown": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+      },
+      animation: {
+        "bounce-updown": "bounce-updown 2s infinite",
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), CustomStyle],
 };

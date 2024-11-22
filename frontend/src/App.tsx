@@ -12,7 +12,7 @@ import CandabaCampus from "./pages/Home/Campuses/CandabaCampus";
 import LubaoCampus from "./pages/Home/Campuses/LubaoCampus";
 import MexicoCampus from "./pages/Home/Campuses/MexicoCampus";
 import SanFernandoCampus from "./pages/Home/Campuses/SanFernandoCampus";
-import SantoTomaxCampus from "./pages/Home/Campuses/SantoTomaxCampus";
+import SantoTomaxCampus from "./pages/Home/Campuses/SantoTomasCampus";
 
 import OnlineServices from "./pages/Home/OnlineServices";
 import Features from "./pages/Home/Features";
