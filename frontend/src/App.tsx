@@ -17,7 +17,13 @@ import Calendar from "./pages/Calendar/Calendar";
 import Profile from "./pages/Profile/Profile";
 import Subjects from "./pages/Subjects/Subjects";
 
+import { useContext } from "react";
+import { AppContext } from "./context/AppContext";
+
 function App() {
+  const context = useContext(AppContext);
+  if (!context) return <p>Loading...</p>;
+
   return (
     <>
       <BrowserRouter>
@@ -28,11 +34,14 @@ function App() {
             <Route path="online-services" element={<OnlineServices />} />
             <Route path="features" element={<Features />} />
           </Route>
-          <Route path="auth" element={<Layout />}>
-            <Route index element={<SignUp />} />
-            <Route path="signup" element={<SignUp />} />
-            <Route path="login" element={<Login />} />
-          </Route>
+
+          {!context.token && (
+            <Route path="auth" element={<Layout />}>
+              <Route index element={<SignUp />} />
+              <Route path="signup" element={<SignUp />} />
+              <Route path="login" element={<Login />} />
+            </Route>
+          )}
 
           <Route path="/" element={<RootLayout />}>
             <Route path="dashboard" element={<Dashboard />} />

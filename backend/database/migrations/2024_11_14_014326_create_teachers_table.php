@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('gender', ['M', 'F', 'Others']);
             $table->date('birthday')->nullable();
             $table->boolean('isAdmin')->default(false);
+            $table->string('profile_picture')->nullable();
             $table->timestamps();
         });
     }

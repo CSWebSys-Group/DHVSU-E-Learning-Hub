@@ -4,8 +4,6 @@ import { formatDate } from "@/lib/utils";
 import { Bell } from "lucide-react";
 import { useState } from "react";
 
-// TODO: Fix tablet responsive design.
-
 const Dashboard = () => {
   const [date, setDate] = useState(Date.now());
   const today = new Date();

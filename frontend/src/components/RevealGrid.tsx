@@ -4,8 +4,6 @@ import girlSample from "../assets/images/girl-sample-2.svg";
 import { Bell, Mail, Megaphone, SquarePen, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 
-// TODO: Remove dark mode!
-
 const RevealGrid = () => {
   return (
     <>

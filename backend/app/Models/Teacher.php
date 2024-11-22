@@ -19,7 +19,8 @@ class Teacher extends Model
         'subjects',
         'gender',
         'birthday',
-        'isAdmin'
+        'isAdmin',
+        'profile_picture'
     ];
 
     protected $casts = [
