@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 import Layout from "./pages/Auth/Layout";
 
@@ -20,10 +21,13 @@ import Subjects from "./pages/Subjects/Subjects";
 import { useContext } from "react";
 import { AppContext } from "./context/AppContext";
 import NotFound from "./pages/404/not-found";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 function App() {
   const context = useContext(AppContext);
-  if (!context) return <p>Loading...</p>;
+  const [loading, setLoading] = useState(false);
+
+  if (!context) return <LoadingSpinner loading={!loading} />;
 
   return (
     <>
