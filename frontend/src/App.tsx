@@ -29,6 +29,8 @@ function App() {
 
   if (!context) return <LoadingSpinner loading={!loading} />;
 
+  const { user, token, setToken, setUser } = context;
+
   return (
     <>
       <BrowserRouter>
@@ -39,25 +41,38 @@ function App() {
             <Route path="online-services" element={<OnlineServices />} />
             <Route path="features" element={<Features />} />
           </Route>
+            {/* Routes for unauthenticated users */}
+            {!context.token && (
+              <Route path="auth" element={<Layout />}>
+                <Route index element={<SignUp />} />
+                <Route path="signup" element={<SignUp />} />
+                <Route path="login" element={<Login />} />
+              </Route>
+            )}
 
-          {!context.token && (
-            <Route path="auth" element={<Layout />}>
-              <Route index element={<SignUp />} />
-              <Route path="signup" element={<SignUp />} />
-              <Route path="login" element={<Login />} />
-            </Route>
-          )}
+            {/* Protected routes for authenticated users */}
+            {token && user && (
+              <Route
+                path="/"
+                element={
+                  <RootLayout
+                    user={user}
+                    token={token}
+                    setToken={setToken}
+                    setUser={setUser}
+                  />
+                }
+              >
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="calendar" element={<Calendar />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="subjects" element={<Subjects />} />
+              </Route>
+            )}
 
-          <Route path="/" element={<RootLayout />}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="calendar" element={<Calendar />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="subjects" element={<Subjects />} />
-          </Route>
-
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+            <Route path="*" element={<p>404 Not found</p>} />
+          </Routes>
+        </BrowserRouter>
     </>
   );
 }
