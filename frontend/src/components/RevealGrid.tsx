@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion';
-import { twMerge } from 'tailwind-merge';
-import girlSample from "../assets/images/girl-sample-2.svg"
-import { Bell, Mail, Megaphone, SquarePen, Star } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { motion } from "framer-motion";
+import { twMerge } from "tailwind-merge";
+import girlSample from "../assets/images/girl-sample-2.svg";
+import { Bell, Mail, Megaphone, SquarePen, Star } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // EXTRA TODO: Fix theme provider!
 
@@ -40,13 +40,13 @@ const Block = ({ className, ...rest }) => {
         },
       }}
       transition={{
-        type: 'spring',
+        type: "spring",
         mass: 3,
         stiffness: 400,
         damping: 50,
       }}
       className={twMerge(
-        'col-span-4 rounded-lg border border-[#701D0B] bg-[#F1E8E7] text-3xl leading-snug p-5 shadow-drop-1',
+        "col-span-4 rounded-lg border border-[#701D0B] bg-[#F1E8E7] text-3xl leading-snug p-5 shadow-drop-1",
         className
       )}
       {...rest}
@@ -66,7 +66,7 @@ const HeaderBlock = () => (
       />
       <div className="ml-52">
         <h1 className="mb-2 text-xl md:text-2xl lg:text-4xl font-medium text-[#701D0B]">
-          Welcome, Darren Jason Watkins! 👋{' '}
+          Welcome, Darren Jason Watkins! 👋{" "}
         </h1>
         <p className="text-[#701D0B] text-[1.2rem] md:text-2xl font-light">
           Have a great day ahead!

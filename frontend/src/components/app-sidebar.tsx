@@ -34,6 +34,7 @@ import { NavSecondary } from "./nav-secondary";
 import { NavUser } from "./nav-user";
 import { navItems } from "@/constants/data";
 import { Link, useLocation } from "react-router-dom";
+import { UsersType } from "@/lib/types";
 
 const items = {
   user: {
@@ -76,7 +77,17 @@ const items = {
   ],
 };
 
-export function AppSidebar() {
+export function AppSidebar({
+  user,
+  token,
+  setUser,
+  setToken,
+}: {
+  token: string;
+  setToken: React.Dispatch<React.SetStateAction<string | null>>;
+  user: UsersType;
+  setUser: React.Dispatch<React.SetStateAction<UsersType | null>>;
+}) {
   const { pathname } = useLocation();
   return (
     <Sidebar collapsible="icon" className="border-none">
@@ -160,7 +171,12 @@ export function AppSidebar() {
         <NavSecondary items={items.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={items.user} />
+        <NavUser
+          user={user}
+          token={token}
+          setToken={setToken}
+          setUser={setUser}
+        />
       </SidebarFooter>
     </Sidebar>
   );

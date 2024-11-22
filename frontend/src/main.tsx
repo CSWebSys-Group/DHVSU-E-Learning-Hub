@@ -5,9 +5,11 @@ import App from "./App.tsx";
 import AppProvider from "./context/AppContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  <>
+    {/* <StrictMode> */}
     <AppProvider>
       <App />
     </AppProvider>
-  </StrictMode>
+    {/* </StrictMode> */}
+  </>
 );

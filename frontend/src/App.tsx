@@ -23,7 +23,11 @@ import { AppContext } from "./context/AppContext";
 
 function App() {
   const context = useContext(AppContext);
+
+  // NEED LOADING SCREEN
   if (!context) return <p>Loading...</p>;
+
+  const { user, token, setToken, setUser } = context;
 
   return (
     <>
@@ -37,6 +41,7 @@ function App() {
               <Route path="features" element={<Features />} />
             </Route>
 
+            {/* Routes for unauthenticated users */}
             {!context.token && (
               <Route path="auth" element={<Layout />}>
                 <Route index element={<SignUp />} />
@@ -45,12 +50,27 @@ function App() {
               </Route>
             )}
 
-            <Route path="/" element={<RootLayout />}>
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="calendar" element={<Calendar />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="subjects" element={<Subjects />} />
-            </Route>
+            {/* Protected routes for authenticated users */}
+            {token && user && (
+              <Route
+                path="/"
+                element={
+                  <RootLayout
+                    user={user}
+                    token={token}
+                    setToken={setToken}
+                    setUser={setUser}
+                  />
+                }
+              >
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="calendar" element={<Calendar />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="subjects" element={<Subjects />} />
+              </Route>
+            )}
+
+            <Route path="*" element={<p>404 Not found</p>} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

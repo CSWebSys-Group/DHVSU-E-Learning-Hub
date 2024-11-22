@@ -147,7 +147,7 @@ const Home = () => {
                   </button>
                 </div>
                 <div>
-                  <Link to={"/auth/signin"}>
+                  <Link to={"/auth/login"}>
                     <button className="text-brand bg-none border-2 px-6 py-1 rounded-[10px] border-brand lg:px-10 lg:py-2 lg:text-xl transform transition-all duration-300 hover:bg-brand hover:text-white hover:border-none">
                       Sign In
                     </button>
