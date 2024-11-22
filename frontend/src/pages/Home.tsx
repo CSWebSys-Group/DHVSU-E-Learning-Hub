@@ -3,6 +3,10 @@ import { Outlet, NavLink, Link } from "react-router-dom";
 import { RiMenu4Fill } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
 import dhvsuLogo from "../assets/images/dhvsu-logo.png";
+import { Link } from "react-router-dom";
+import { FaFacebookF } from "react-icons/fa";
+import { FaXTwitter, FaInstagram } from "react-icons/fa6";
+import { MdArrowOutward } from "react-icons/md";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -123,9 +127,110 @@ export default function Home() {
           </li>
         </ul>
       </nav>
-      {/* <div>test</div> */}
+
       {/* Outlet renders the nested routes */}
       <Outlet />
+      {/* foooter  */}
+      {/* bg-white */}
+      <footer className=" bottom-0 h-[300px] flex flex-col md:h-[400px] lg:h-[600px] ">
+        <div className="relative mt-auto bg-gradient-to-b from-brand via-[#92260E] to-[#A32A10] h-[230px] px-5 py-5 w-full flex justify-end items-center flex-col md:h-[300px] lg:h-[380px]">
+          <div className="w-full flex flex-col justify-center  md:flex-row md:px-6 lg:mb-4 max-w-screen-lg relative">
+            <div className="absolute animate-bounce-updown shadow-lg shadow-[#A9847C] -top-[150px] inset-x-0 mx-5 h-[130px] bg-gradient-to-tl from-[#A9847C]  via-[#C1ACA7] to-[#D9D7D6] flex justify-center items-center rounded-xl  md:h-[180px] md:-top-[210px] lg:h-[250px] lg:-top-[280px] lg:mx-[70px]  max-w-screen-lg">
+              {/* last stop spacing  */}
+              <div className="flex px-4 text-brand md:px-10 ">
+                <div className="flex flex-col md:gap-2">
+                  <h1 className="font-bold text-lg md:text-3xl lg:text-4xl">
+                    Not sure where to start?
+                  </h1>
+                  <p className="text-[11px] font-semibold md:text-[16px] lg:text-[20px]">
+                    Let's discuss how can we guide your journey at Don Honorio
+                    Ventura State University. Schedule a free consultation to
+                    explore your options, learn about our programs, and see how
+                    can we help you achieve your goals.
+                  </p>
+                </div>
+                <div className="flex justify-center items-center md:px-2">
+                  <img
+                    src={dhvsuLogo}
+                    alt="dhvsu logo"
+                    className="w-[300px] h-auto md:w-[320px] lg:w-[400px]"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="footer-left text-light-400 hidden md:block md:w-1/2 ">
+              <div>
+                <h1 className="font-bold text-xl lg:text-4xl ">
+                  Let's make your future great together
+                </h1>
+              </div>
+              <div className="flex justify-center items-center  text-brand bg-white w-[120px] gap-2 rounded-full px-2 py-[5px] mt-4 lg:w-[150px] lg:h-[40px] lg:text-lg  lg:mt-5">
+                <Link to="#" className="font-bold">
+                  Sign In
+                </Link>
+                <MdArrowOutward />
+              </div>
+            </div>
+
+            <div className="footer-right text-light-400 flex flex-col gap-4 justify-center items-center md:w-1/2">
+              <div className="text-center md:text-[17px] lg:text-[21px]">
+                <h1>
+                  Empowering Minds. Advancing Techonology, and Creating Brighter
+                  Futures for Tomorrow's Leaders.
+                </h1>
+              </div>
+              <div className="flex gap-2">
+                <div className="flex justify-center items-center gap-2 border px-[10px] py-[2px] rounded-full md:py-[5px] md:px-[12px] lg:w-[150px] lg:h-[40px] lg:mt-2">
+                  <div className="flex justify-center items-center p-[6px]  text-brand  bg-light-400   w-[20px] h-[20px] rounded-full md:w-[23px] md:h-[23px] ">
+                    <FaFacebookF />
+                  </div>
+                  <div>
+                    <Link to="/fb">Facebook</Link>
+                  </div>
+                </div>
+
+                <div className="flex justify-center items-center gap-2 border px-[10px] py-[2px] rounded-full md:py-[5px] md:px-[12px] lg:w-[150px] lg:h-[40px] lg:mt-2">
+                  <div className="flex justify-center items-center p-[4px] text-brand  bg-light-400  w-[20px] h-[20px] rounded-full md:w-[23px] md:h-[23px]">
+                    <FaXTwitter />
+                  </div>
+                  <div>
+                    <Link to="/fb">Twitter</Link>
+                  </div>
+                </div>
+
+                <div className="flex justify-center items-center gap-2 border px-[10px] py-[2px] rounded-full md:py-[5px] md:px-[12px] lg:w-[150px] lg:h-[40px] lg:mt-2">
+                  <div className="flex justify-center items-center p-[4px]  text-brand  bg-light-400   w-[20px] h-[20px] rounded-full md:w-[23px] md:h-[23px]">
+                    <FaInstagram />
+                  </div>
+                  <div>
+                    <Link to="/fb">Instagram</Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col -mb-5 gap-2 py-3 w-full max-w-screen-lg">
+            <div>
+              <hr className="w-full border-t border-light-400 " />
+            </div>
+            <div className=" flex justify-between items-center px-2 ">
+              <div className="hidden md:block text-light-400">
+                <ul className="flex gap-3 text-sm lg:text-lg cursor-pointer">
+                  <li>Home</li>
+                  <li>Campuses</li>
+                  <li>Features</li>
+                  <li>Sign In</li>
+                </ul>
+              </div>
+              <div>
+                <p className="text-xs text-light-400 md:text-sm">
+                  &copy; 2024 DHVSU. All rights reserved.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
