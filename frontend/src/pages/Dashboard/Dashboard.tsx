@@ -1,11 +1,7 @@
 import RevealGrid from "@/components/RevealGrid";
-import { Calendar } from "@/components/ui/calendar";
 import { formatDate } from "@/lib/utils";
-import { Bell } from "lucide-react";
-import { useState } from "react";
 
 const Dashboard = () => {
-  const [date, setDate] = useState(Date.now());
   const today = new Date();
   return (
     <div className="rounded-4xl p-8 flex flex-col md:flex-row">
@@ -23,12 +19,7 @@ const Dashboard = () => {
         <RevealGrid />
       </section>
       <section className="right-section w-[500px] bg-[#F1E8E7] p-4 flex justify-center rounded-3xl">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          className="rounded-md border justify-center"
-        />
+        {/* Calendar here */}
       </section>
     </div>
   );
