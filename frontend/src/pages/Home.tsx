@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, Link } from "react-router-dom";
 import { RiMenu4Fill } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
 import dhvsuLogo from "../assets/images/dhvsu-logo.png";
@@ -10,7 +10,7 @@ import { MdArrowOutward } from "react-icons/md";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const getNavLinkClasses = (isActive) =>
+  const getNavLinkClasses = (isActive: boolean) =>
     `text-white relative after:content-[""] after:block after:w-0 after:h-[3px] after:bg-[#FFBA15] after:absolute after:mt-[2px] after:left-0 
      hover:after:w-full hover:after:transition-all after:rounded-full 
      ${isActive ? "after:w-full" : "after:w-0"}`;
@@ -72,13 +72,15 @@ export default function Home() {
 
           {/* Desktop login button */}
           <div>
-            <button
-              className="hidden md:block text-light-400 border rounded-full px-5 py-1 font-semibold text-sm md:text-base md:mr-2 lg:text-lg lg:mr-10 
+            <Link to="auth/login">
+              <button
+                className="hidden md:block text-light-400 border rounded-full px-5 py-1 font-semibold text-sm md:text-base md:mr-2 lg:text-lg lg:mr-10 
               bg-gradient-to-r from-brand via-[#854335] to-[#935B4F] 
               transition-all duration-300 transform hover:scale-105 hover:from-[#935B4F] hover:via-[#854335] hover:to-brand hover:text-white"
-            >
-              LOG IN
-            </button>
+              >
+                LOG IN
+              </button>
+            </Link>
           </div>
 
           {/* Hamburger  */}
@@ -121,7 +123,7 @@ export default function Home() {
             <NavLink to="features">Features</NavLink>
           </li>
           <li className="hover:text-brand">
-            <NavLink to="login">LOG IN</NavLink>
+            <NavLink to="/auth/login">LOG IN</NavLink>
           </li>
         </ul>
       </nav>

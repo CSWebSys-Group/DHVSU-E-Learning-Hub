@@ -83,6 +83,9 @@ class SubjectSeeder extends Seeder
         foreach ($sections as $section) {
             $year = $section->year; // Get the year of the section
 
+            // Track all subjects for the current section
+            $sectionSubjectIds = [];
+
             // Check if subjects exist for the current year
             if (isset($subjectsByYear[$year])) {
                 $yearSubjects = $subjectsByYear[$year]; // Get subjects for the current year
@@ -105,6 +108,8 @@ class SubjectSeeder extends Seeder
                     if ($section->course_id === 1) {
                         $teacherSubjectIds[] = $subject->id;
                     }
+                    // Add the created subject ID to the section's subject array
+                    $sectionSubjectIds[] = $subject->id;
                 }
 
                 // Loop through the minor subjects and assign them to the section
@@ -116,6 +121,28 @@ class SubjectSeeder extends Seeder
                         'tasks' => json_encode([]), // Initialize with an empty task array
                         'type' => 'minor', // Mark it as a minor subject
                     ]);
+
+                    // Add the created subject ID to the section's subject array
+                    $sectionSubjectIds[] = $subject->id;
+                }
+
+                // Update the section's subjects attribute
+                if (!empty($sectionSubjectIds)) {
+                    $existingSectionSubjects = $section->subjects;
+
+                    // Ensure $existingSectionSubjects is decoded properly
+                    if (is_string($existingSectionSubjects)) {
+                        $existingSectionSubjects = json_decode($existingSectionSubjects, true);
+                    }
+
+                    // Ensure we are working with an array
+                    $existingSectionSubjects = is_array($existingSectionSubjects) ? $existingSectionSubjects : [];
+
+                    // Merge new subjects with existing ones
+                    $section->subjects = json_encode(array_merge($existingSectionSubjects, $sectionSubjectIds));
+
+                    // Save the updated section record
+                    $section->save();
                 }
 
                 // Update the teacher's subjects array in the database

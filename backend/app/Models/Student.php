@@ -14,13 +14,30 @@ class Student extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'id',
         'fn',
         'ln',
         'gender',
         'birthday',
         'section_id',
         'tasks',
-        'grades'
+        'grades',
+        'profile_picture',
+        'middle_name',
+        'ext_name',
+        'place_of_birth',
+        'civil_status',
+        'nationality',
+        'religion',
+        'contact_number',
+        'height',
+        'weight',
+        'blood_type',
+        'address',
+        'province',
+        'city',
+        'barangay',
+        'zip_code'
     ];
 
     protected $casts = [

@@ -1,5 +1,4 @@
 import React from "react";
-// import Sidebar from '../components/Sidebar';
 import {
   SidebarInset,
   SidebarProvider,
@@ -20,7 +19,21 @@ import { UserNav } from "@/components/header-user";
 import { Outlet, useLocation } from "react-router-dom";
 import KBar from "@/components/kbar";
 
-const RootLayout = () => {
+import { AppContext } from "@/context/AppContext";
+import { useContext } from "react";
+import { UsersType } from "@/lib/types";
+
+const RootLayout = ({
+  user,
+  token,
+  setUser,
+  setToken,
+}: {
+  token: string;
+  setToken: React.Dispatch<React.SetStateAction<string | null>>;
+  user: UsersType;
+  setUser: React.Dispatch<React.SetStateAction<UsersType | null>>;
+}) => {
   // Breadcrumb logic
   const { pathname } = useLocation();
 
@@ -29,9 +42,14 @@ const RootLayout = () => {
   return (
     <KBar>
       <SidebarProvider>
-        <AppSidebar />
+        <AppSidebar
+          user={user}
+          token={token}
+          setUser={setUser}
+          setToken={setToken}
+        />
 
-        <SidebarInset className="">
+        <SidebarInset>
           <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 justify-between transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
             <div className="flex items-center gap-2 px-4">
               <SidebarTrigger className="-ml-1" />
@@ -39,8 +57,8 @@ const RootLayout = () => {
               <Breadcrumb>
                 <BreadcrumbList>
                   {sample.map((crumb, index) => (
-                    <>
-                      <BreadcrumbItem className="hidden md:block" key={crumb}>
+                    <React.Fragment key={index}>
+                      <BreadcrumbItem className="hidden md:block">
                         <BreadcrumbLink href={crumb}>
                           {crumb.charAt(0).toUpperCase() + crumb.slice(1)}
                         </BreadcrumbLink>
@@ -48,7 +66,7 @@ const RootLayout = () => {
                       {index > 1 && (
                         <BreadcrumbSeparator className="hidden md:block" />
                       )}
-                    </>
+                    </React.Fragment>
                   ))}
                 </BreadcrumbList>
               </Breadcrumb>

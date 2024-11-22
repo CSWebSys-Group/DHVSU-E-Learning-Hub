@@ -12,7 +12,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarTrigger,
-} from '@/components/ui/sidebar';
+} from "@/components/ui/sidebar";
 import {
   Calendar,
   ChevronRight,
@@ -22,64 +22,75 @@ import {
   LayoutGrid,
   Settings,
   User,
-} from 'lucide-react';
+} from "lucide-react";
 
-import dhvsuLogo from '../assets/icons/dhvsu-logo-v2.svg';
+import dhvsuLogo from "../assets/icons/dhvsu-logo-v2.svg";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from './ui/collapsible';
-import { NavSecondary } from './nav-secondary';
-import { NavUser } from './nav-user';
-import { navItems } from '@/constants/data';
-import { Link, useLocation } from 'react-router-dom';
+} from "./ui/collapsible";
+import { NavSecondary } from "./nav-secondary";
+import { NavUser } from "./nav-user";
+import { navItems } from "@/constants/data";
+import { Link, useLocation } from "react-router-dom";
+import { UsersType } from "@/lib/types";
 
 const items = {
   user: {
-    name: 'ishowspeed',
-    email: '2022308552@dhvsu.ph',
-    avatar: '/avatars/shadcn.jpg',
+    name: "ishowspeed",
+    email: "2022308552@dhvsu.ph",
+    avatar: "/avatars/shadcn.jpg",
   },
   subMenuList: [
     {
-      title: 'Student',
+      title: "Student",
       icon: User,
       isActive: true,
       items: [
         {
-          title: 'Profile',
-          url: '/profile',
+          title: "Profile",
+          url: "/profile",
         },
         {
-          title: 'Grades',
-          url: '/grades',
+          title: "Grades",
+          url: "/grades",
         },
         {
-          title: 'Settings',
-          url: '/settings',
+          title: "Settings",
+          url: "/settings",
         },
       ],
     },
   ],
   navSecondary: [
     {
-      title: 'Settings',
-      url: '/settings',
+      title: "Settings",
+      url: "/settings",
       icon: Settings,
     },
     {
-      title: 'Help',
-      url: '/help',
+      title: "Help",
+      url: "/help",
       icon: HelpCircle,
     },
   ],
 };
 
-export function AppSidebar() {
+export function AppSidebar({
+  user,
+  token,
+  setUser,
+  setToken,
+}: {
+  token: string;
+  setToken: React.Dispatch<React.SetStateAction<string | null>>;
+  user: UsersType;
+  setUser: React.Dispatch<React.SetStateAction<UsersType | null>>;
+}) {
   const { pathname } = useLocation();
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="border-none">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -160,7 +171,12 @@ export function AppSidebar() {
         <NavSecondary items={items.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={items.user} />
+        <NavUser
+          user={user}
+          token={token}
+          setToken={setToken}
+          setUser={setUser}
+        />
       </SidebarFooter>
     </Sidebar>
   );

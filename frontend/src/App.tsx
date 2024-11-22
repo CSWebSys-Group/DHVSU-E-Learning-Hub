@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 // Pages
 import Home from "./pages/Home";
@@ -27,47 +28,81 @@ import RootLayout from "./layouts/RootLayout";
 // Dashboard
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Calendar from "./pages/Calendar/Calendar";
+import Profile from "./pages/Profile/Profile";
+import Subjects from "./pages/Subjects/Subjects";
+
+import { useContext } from "react";
+import { AppContext } from "./context/AppContext";
+import NotFound from "./pages/404/not-found";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 function App() {
+  const context = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
+
+  if (!context) return <LoadingSpinner loading={!loading} />;
+
+  const { user, token, setToken, setUser } = context;
+
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Home Route */}
-        <Route path="/" element={<Home />}>
-          <Route index element={<HomeContents />} />
 
-          {/* Campuses Route */}
-          <Route path="campuses" element={<Campuses />}>
-            <Route index element={<MainCampus />} />
-            <Route path="main-campus" element={<MainCampus />} />
-
-            <Route path="candaba-campus" element={<CandabaCampus />} />
-            <Route path="porac-campus" element={<PoracCampus />} />
-            <Route path="apalit-campus" element={<ApalitCampus />} />
-            <Route path="lubao-campus" element={<LubaoCampus />} />
-            <Route path="mexico-campus" element={<MexicoCampus />} />
-            <Route path="san-fernando-campus" element={<SanFernandoCampus />} />
-            <Route path="santo-tomas-campus" element={<SantoTomaxCampus />} />
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />}>
+            <Route index element={<HomeContents />} />
+            
+             {/* Campuses Route */}
+            <Route path="campuses" element={<Campuses />}>
+              <Route index element={<MainCampus />} />
+              <Route path="main-campus" element={<MainCampus />} />
+              <Route path="candaba-campus" element={<CandabaCampus />} />
+              <Route path="porac-campus" element={<PoracCampus />} />
+              <Route path="apalit-campus" element={<ApalitCampus />} />
+              <Route path="lubao-campus" element={<LubaoCampus />} />
+              <Route path="mexico-campus" element={<MexicoCampus />} />
+              <Route path="san-fernando-campus" element={<SanFernandoCampus />} />
+              <Route path="santo-tomas-campus" element={<SantoTomaxCampus />} />
+            </Route>
+            
+            <Route path="online-services" element={<OnlineServices />} />
+            <Route path="features" element={<Features />} />
           </Route>
+          
+            {/* Routes for unauthenticated users */}
+            {!context.token && (
+              <Route path="auth" element={<Layout />}>
+                <Route index element={<SignUp />} />
+                <Route path="signup" element={<SignUp />} />
+                <Route path="login" element={<Login />} />
+              </Route>
+            )}
 
-          <Route path="online-services" element={<OnlineServices />} />
-          <Route path="features" element={<Features />} />
-        </Route>
+            {/* Protected routes for authenticated users */}
+            {token && user && (
+              <Route
+                path="/"
+                element={
+                  <RootLayout
+                    user={user}
+                    token={token}
+                    setToken={setToken}
+                    setUser={setUser}
+                  />
+                }
+              >
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="calendar" element={<Calendar />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="subjects" element={<Subjects />} />
+              </Route>
+            )}
 
-        {/* Auth Routes */}
-        <Route path="auth" element={<Layout />}>
-          <Route index element={<SignUp />} />
-          <Route path="signup" element={<SignUp />} />
-          <Route path="login" element={<Login />} />
-        </Route>
+            <Route path="*" element={<p>404 Not found</p>} />
+          </Routes>
+        </BrowserRouter>
+    </>
 
-        {/* Root Layout for Dashboard and Calendar */}
-        <Route path="dashboard" element={<RootLayout />}>
-          <Route path="" element={<Dashboard />} />
-          <Route path="calendar" element={<Calendar />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
   );
 }
 

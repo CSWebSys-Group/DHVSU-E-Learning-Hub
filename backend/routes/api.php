@@ -1,7 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OTPController;
+use App\Http\Controllers\SectionController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TeacherController;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\ValidIDs;
@@ -9,9 +14,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::apiResource('tasks', TaskController::class);
+Route::apiResource('students', StudentController::class);
+Route::apiResource('teachers', TeacherController::class);
+Route::apiResource('sections', SectionController::class);
+Route::apiResource('subjects', SubjectController::class);
+
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+
+Route::post('/send-otp', [OTPController::class, 'sendOTP']);
+Route::post('/verify-otp', [OTPController::class, 'verifyOTP']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $req) {
@@ -44,6 +57,10 @@ Route::middleware('auth:sanctum')->group(function () {
             'valid_ids' => ValidIDs::all()
         ];
     });
+
+    // routes for updating profile pictures
+    Route::post('/students/{student}/update-profile-picture', [StudentController::class, 'updateProfilePicture']);
+    Route::post('/teachers/{teacher}/update-profile-picture', [TeacherController::class, 'updateProfilePicture']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

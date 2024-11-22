@@ -41,6 +41,12 @@ export default {
           500: "#562424",
           DEFAULT: "#701D0B",
         },
+        dhvsu: {
+          DEFAULT: "#701D0B",
+          lighter: "#F2E6E4",
+          light: "#8D4A3C",
+          black: "#4A403A",
+        },
         red: "#FF7474",
         error: "#b80000",
         green: "#3DD9B3",
@@ -53,6 +59,7 @@ export default {
           300: "#F2F5F9",
           400: "#F2F4F8",
         },
+        default: "hsl(var(--default)",
         background: "hsl(var(--background))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -63,6 +70,9 @@ export default {
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
+        },
+        form: {
+          DEFAULT: "hsl(var(--form-background))",
         },
       },
       boxShadow: {
