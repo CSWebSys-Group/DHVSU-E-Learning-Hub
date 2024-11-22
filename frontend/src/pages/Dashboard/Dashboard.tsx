@@ -1,5 +1,6 @@
 import RevealGrid from "@/components/RevealGrid";
 import { formatDate } from "@/lib/utils";
+import Calendar from "../Calendar/Calendar";
 
 const Dashboard = () => {
   const today = new Date();
@@ -20,6 +21,7 @@ const Dashboard = () => {
       </section>
       <section className="right-section w-[500px] bg-[#F1E8E7] p-4 flex justify-center rounded-3xl">
         {/* Calendar here */}
+        <Calendar />
       </section>
     </div>
   );
