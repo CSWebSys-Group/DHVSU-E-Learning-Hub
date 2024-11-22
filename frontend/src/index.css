@@ -80,22 +80,6 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-    --sidebar-background: 20 66% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 20 25% 86%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 11 82% 24%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-
-    /* Form styles */
-    --form-background: 20 66% 98%;
-  }
-  .dark {
-    --default: 20 66% 98%;
-    --background: 10 40% 39%;
-
     --sidebar-background: 11 82% 24%;
     --sidebar-foreground: 240 4.8% 95.9%; /* for text */
     --sidebar-primary: 224.3 76.3% 48%;
@@ -104,9 +88,6 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 10 40% 39%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-
-    /* Form styles */
-    --form-background: 11 82% 24%;
   }
 }
 
