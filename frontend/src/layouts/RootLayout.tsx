@@ -1,5 +1,4 @@
 import React from "react";
-// import Sidebar from '../components/Sidebar';
 import {
   SidebarInset,
   SidebarProvider,
@@ -19,7 +18,6 @@ import SearchInput from "@/components/search-input";
 import { UserNav } from "@/components/header-user";
 import { Outlet, useLocation } from "react-router-dom";
 import KBar from "@/components/kbar";
-import ThemeToggle from "@/components/theme-toggle";
 
 import { AppContext } from "@/context/AppContext";
 import { useContext } from "react";
@@ -78,7 +76,6 @@ const RootLayout = ({
                 <SearchInput />
               </div>
               <UserNav />
-              <ThemeToggle />
             </div>
           </header>
           <Outlet />

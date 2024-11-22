@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 import Layout from "./pages/Auth/Layout";
 
@@ -16,31 +17,30 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Calendar from "./pages/Calendar/Calendar";
 import Profile from "./pages/Profile/Profile";
 import Subjects from "./pages/Subjects/Subjects";
-import { ThemeProvider } from "./components/theme-provider";
 
 import { useContext } from "react";
 import { AppContext } from "./context/AppContext";
+import NotFound from "./pages/404/not-found";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 function App() {
   const context = useContext(AppContext);
+  const [loading, setLoading] = useState(false);
 
-  // NEED LOADING SCREEN
-  if (!context) return <p>Loading...</p>;
+  if (!context) return <LoadingSpinner loading={!loading} />;
 
   const { user, token, setToken, setUser } = context;
 
   return (
     <>
-      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />}>
-              <Route index element={<HomeContents />} />
-              <Route path="campuses" element={<Campuses />} />
-              <Route path="online-services" element={<OnlineServices />} />
-              <Route path="features" element={<Features />} />
-            </Route>
-
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />}>
+            <Route index element={<HomeContents />} />
+            <Route path="campuses" element={<Campuses />} />
+            <Route path="online-services" element={<OnlineServices />} />
+            <Route path="features" element={<Features />} />
+          </Route>
             {/* Routes for unauthenticated users */}
             {!context.token && (
               <Route path="auth" element={<Layout />}>
@@ -73,7 +73,6 @@ function App() {
             <Route path="*" element={<p>404 Not found</p>} />
           </Routes>
         </BrowserRouter>
-      </ThemeProvider>
     </>
   );
 }
