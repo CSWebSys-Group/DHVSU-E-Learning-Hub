@@ -19,6 +19,7 @@ import Subjects from "./pages/Subjects/Subjects";
 
 import { useContext } from "react";
 import { AppContext } from "./context/AppContext";
+import NotFound from "./pages/404/not-found";
 
 function App() {
   const context = useContext(AppContext);
@@ -49,6 +50,8 @@ function App() {
             <Route path="profile" element={<Profile />} />
             <Route path="subjects" element={<Subjects />} />
           </Route>
+
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </>
