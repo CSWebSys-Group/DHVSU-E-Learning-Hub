@@ -1,8 +1,9 @@
 import RevealGrid from "@/components/RevealGrid";
 import { formatDate } from "@/lib/utils";
 import Calendar from "../Calendar/Calendar";
+import { UsersType } from "@/lib/types";
 
-const Dashboard = () => {
+const Dashboard = ({ user }: { user: UsersType }) => {
   const today = new Date();
   return (
     <div className="rounded-4xl p-8 flex flex-col md:flex-row">
@@ -17,7 +18,7 @@ const Dashboard = () => {
             </p>
           </div>
         </div>
-        <RevealGrid />
+        <RevealGrid user={user} />
       </section>
       <section className="right-section w-[500px] bg-[#F1E8E7] p-4 flex justify-center rounded-3xl">
         {/* Calendar here */}
