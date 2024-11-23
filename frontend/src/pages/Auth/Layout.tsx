@@ -4,11 +4,12 @@ import FloatingNav from "@/components/FloatingNav";
 import { Outlet } from "react-router-dom";
 
 import dhvsuMain from "@/assets/images/dhvsu-main-image.jpg";
+import { Link } from "react-router-dom";
 
 export default function Layout() {
   return (
     <>
-      <div className="relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0 overflow-hidden">
+      <div className="relative h-screen items-center justify-center md:flex lg:grid lg:max-w-none lg:grid-cols-2 lg:px-0 overflow-hidden">
         <section className="relative hidden h-full w-full items- bg-gradient-to-br from-brand-500 animated-background via-brand to-brand-300 lg:flex flex-col p-10">
           <img
             src={dhvsuMain}
@@ -40,7 +41,6 @@ export default function Layout() {
           </div>
 
           <Outlet />
-          {/* <SignUp /> */}
         </section>
 
         <FloatingNav />

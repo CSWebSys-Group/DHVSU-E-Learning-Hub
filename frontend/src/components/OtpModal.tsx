@@ -12,6 +12,8 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "./ui/input-otp";
 
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
+import { LoaderCircle, X } from "lucide-react";
+
 
 type PropTypes = {
   setOtpModalActive: React.Dispatch<React.SetStateAction<boolean>>;
@@ -67,7 +69,6 @@ const OtpModal = ({
         }
         throw new Error("Something went wrong");
       }
-
       setOtpSuccess(true);
     } catch (error) {
       console.log(error);
@@ -95,13 +96,10 @@ const OtpModal = ({
         <AlertDialogHeader className="relative flex justify-center">
           <AlertDialogTitle className="h2 text-center">
             Enter your OTP
-            <img
-              src="/assets/icons/close-dark.svg"
-              alt="close"
-              width={20}
-              height={20}
-              onClick={() => setIsOpen(false)}
+            <X
+              size={20}
               className="otp-close-button"
+              onClick={handleCloseModal}
             />
           </AlertDialogTitle>
           <AlertDialogDescription className="subtitle-2 text-center text-light-100">
@@ -130,13 +128,7 @@ const OtpModal = ({
             >
               Submit
               {isLoading && (
-                <img
-                  src="/assets/icons/loader.svg"
-                  alt="loader"
-                  width={24}
-                  height={24}
-                  className="ml-2 animate-spin"
-                />
+                <LoaderCircle size={24} className="ml-2 animate-spin" />
               )}
             </AlertDialogAction>
 

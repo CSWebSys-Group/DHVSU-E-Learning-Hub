@@ -103,13 +103,12 @@ function App() {
                 />
               }
             >
-              <Route path="dashboard" element={<Dashboard user={user!} />} />
-              <Route path="calendar" element={<Calendar />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="subjects" element={<Subjects />} />
-            </Route>
+             <Route path="dashboard" element={<Dashboard user={user!} />} />
+             <Route path="calendar" element={<Calendar />} />
+             <Route path="profile" element={<Profile />} />
+             <Route path="subjects" element={<Subjects />} />
+           </Route>
           </Route>
-
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
