@@ -35,6 +35,7 @@ import { useContext } from "react";
 import { AppContext } from "./context/AppContext";
 import NotFound from "./pages/404/not-found";
 import LoadingSpinner from "./components/LoadingSpinner";
+import Help from "./pages/Help/Help";
 import ProtectedAuthRoutes from "./layouts/ProtectedAuthRoutes";
 import ProtectedNotAuthRoutes from "./layouts/ProtectedNotAuthRoutes";
 
