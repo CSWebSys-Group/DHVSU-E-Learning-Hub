@@ -24,9 +24,6 @@ import { registerSchema } from "@/lib/schema";
 import { Link, useNavigate } from "react-router-dom";
 import OtpModal from "@/components/OtpModal";
 
-// TODO: Paganahin yung animation sa mga button (Back, Continue) buttons.
-// TODO: Display the name for each form. (Personal Information and such)
-
 const steps = [
   {
     id: "1",
@@ -192,14 +189,6 @@ const SignUp = ({
       }
     }
   };
-
-  // TODO: DI NAGANA
-  // useEffect(() => {
-  //   if (currentStep === 1) {
-  //     prevButtonAnimControls.set('initial'); // Reset to initia
-  //     prevButtonAnimControls.start('animate'); // Then start
-  //   }
-  // }, [currentStep, prevButtonAnimControls]);
 
   useEffect(() => {
     multiStepProgressBar.start("animate");

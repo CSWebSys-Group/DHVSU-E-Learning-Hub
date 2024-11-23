@@ -73,7 +73,12 @@ const RootLayout = ({
               <div className="hidden md:flex">
                 <SearchInput />
               </div>
-              <UserNav />
+              <UserNav
+                user={user!}
+                setUser={setUser}
+                token={token!}
+                setToken={setToken}
+              />
             </div>
           </header>
           <Outlet />

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('subject_name');
             $table->foreignId('section_id')->constrained()->cascadeOnDelete();
             $table->unsignedBigInteger('teacher_id')->nullable();
-            $table->json('tasks')->nullable();
+            $table->json('classroom_uploads')->nullable();
             $table->string('type');
             $table->timestamps();
         });

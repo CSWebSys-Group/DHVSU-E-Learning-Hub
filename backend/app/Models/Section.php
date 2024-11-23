@@ -18,7 +18,6 @@ class Section extends Model
         'course_id',
         'students',
         'subjects',
-        'adviser_id',
     ];
 
     protected $casts = [

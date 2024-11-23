@@ -15,11 +15,11 @@ class Subject extends Model
         'subject_name',
         'section_id',
         'teacher_id',
-        'tasks'
+        'classroom_uploads'
     ];
 
     protected $casts = [
-        'tasks' => 'array',
+        'classroom_uploads' => 'array',
     ];
 
     public function section()
