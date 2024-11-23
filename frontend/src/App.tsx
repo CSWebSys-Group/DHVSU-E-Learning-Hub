@@ -35,6 +35,7 @@ import { useContext } from "react";
 import { AppContext } from "./context/AppContext";
 import NotFound from "./pages/404/not-found";
 import LoadingSpinner from "./components/LoadingSpinner";
+import Help from "./pages/Help/Help";
 
 function App() {
   const context = useContext(AppContext);
@@ -45,14 +46,13 @@ function App() {
   const { user, token, setToken, setUser } = context;
 
   return (
-
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />}>
             <Route index element={<HomeContents />} />
-            
-             {/* Campuses Route */}
+
+            {/* Campuses Route */}
             <Route path="campuses" element={<Campuses />}>
               <Route index element={<MainCampus />} />
               <Route path="main-campus" element={<MainCampus />} />
@@ -61,48 +61,51 @@ function App() {
               <Route path="apalit-campus" element={<ApalitCampus />} />
               <Route path="lubao-campus" element={<LubaoCampus />} />
               <Route path="mexico-campus" element={<MexicoCampus />} />
-              <Route path="san-fernando-campus" element={<SanFernandoCampus />} />
+              <Route
+                path="san-fernando-campus"
+                element={<SanFernandoCampus />}
+              />
               <Route path="santo-tomas-campus" element={<SantoTomaxCampus />} />
             </Route>
-            
+
             <Route path="online-services" element={<OnlineServices />} />
             <Route path="features" element={<Features />} />
           </Route>
-          
-            {/* Routes for unauthenticated users */}
-            {!context.token && (
-              <Route path="auth" element={<Layout />}>
-                <Route index element={<SignUp />} />
-                <Route path="signup" element={<SignUp />} />
-                <Route path="login" element={<Login />} />
-              </Route>
-            )}
 
-            {/* Protected routes for authenticated users */}
-            {token && user && (
-              <Route
-                path="/"
-                element={
-                  <RootLayout
-                    user={user}
-                    token={token}
-                    setToken={setToken}
-                    setUser={setUser}
-                  />
-                }
-              >
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="calendar" element={<Calendar />} />
-                <Route path="profile" element={<Profile />} />
-                <Route path="subjects" element={<Subjects />} />
-              </Route>
-            )}
+          {/* Routes for unauthenticated users */}
+          {!context.token && (
+            <Route path="auth" element={<Layout />}>
+              <Route index element={<SignUp />} />
+              <Route path="signup" element={<SignUp />} />
+              <Route path="login" element={<Login />} />
+            </Route>
+          )}
 
-            <Route path="*" element={<p>404 Not found</p>} />
-          </Routes>
-        </BrowserRouter>
+          {/* Protected routes for authenticated users */}
+          {token && user && (
+            <Route
+              path="/"
+              element={
+                <RootLayout
+                  user={user}
+                  token={token}
+                  setToken={setToken}
+                  setUser={setUser}
+                />
+              }
+            >
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="calendar" element={<Calendar />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="subjects" element={<Subjects />} />
+              <Route path="help" element={<Help />} />
+            </Route>
+          )}
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
     </>
-
   );
 }
 
