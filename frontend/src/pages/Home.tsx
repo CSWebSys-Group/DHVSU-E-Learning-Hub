@@ -3,7 +3,6 @@ import { Outlet, NavLink, Link } from "react-router-dom";
 import { RiMenu4Fill } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
 import dhvsuLogo from "../assets/images/dhvsu-logo.png";
-import { Link } from "react-router-dom";
 import { FaFacebookF } from "react-icons/fa";
 import { FaXTwitter, FaInstagram } from "react-icons/fa6";
 import { MdArrowOutward } from "react-icons/md";
