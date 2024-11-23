@@ -26,9 +26,6 @@ import { registerSchema } from "@/lib/schema";
 import { Link, useNavigate } from "react-router-dom";
 import OtpModal from "@/components/OtpModal";
 
-// TODO: Paganahin yung animation sa mga button (Back, Continue) buttons.
-// TODO: Display the name for each form. (Personal Information and such)
-
 const steps = [
   {
     id: "1",
@@ -56,7 +53,6 @@ const SignUp = ({
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const prevButtonAnimControls = useAnimationControls();
   const multiStepProgressBar = useAnimationControls();
   const [otpModalActive, setOtpModalActive] = useState(false);
   const [otpSuccess, setOtpSuccess] = useState(false);
@@ -133,11 +129,6 @@ const SignUp = ({
     }
   }, [otpSuccess]);
 
-  const prevButtonVariants: Variants = {
-    initial: { x: "-100%", opacity: 0 },
-    animate: { x: 0, opacity: 1 },
-  };
-
   const progressBarVariants: Variants = {
     initial: { width: `${100 / steps.length}%` },
     animate: { width: `${((currentStep + 1) / steps.length) * 100}%` },
@@ -194,14 +185,6 @@ const SignUp = ({
       }
     }
   };
-
-  // TODO: DI NAGANA
-  // useEffect(() => {
-  //   if (currentStep === 1) {
-  //     prevButtonAnimControls.set('initial'); // Reset to initia
-  //     prevButtonAnimControls.start('animate'); // Then start
-  //   }
-  // }, [currentStep, prevButtonAnimControls]);
 
   useEffect(() => {
     multiStepProgressBar.start("animate");
