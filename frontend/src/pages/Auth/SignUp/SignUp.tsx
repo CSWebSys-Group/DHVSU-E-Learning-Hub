@@ -1,5 +1,3 @@
-"use client";
-
 import { useContext, useEffect, useState } from "react";
 
 // Some react-hook-form import fucking shit
@@ -25,9 +23,6 @@ import { EyeIcon, EyeOff } from "lucide-react";
 import { registerSchema } from "@/lib/schema";
 import { Link, useNavigate } from "react-router-dom";
 import OtpModal from "@/components/OtpModal";
-
-// TODO: Paganahin yung animation sa mga button (Back, Continue) buttons.
-// TODO: Display the name for each form. (Personal Information and such)
 
 const steps = [
   {
@@ -80,7 +75,7 @@ const SignUp = ({
         method: "post",
         body: JSON.stringify({
           ...form.getValues(),
-          id: 4048484247,
+          id: 2029101505,
           user_type: "S",
           gender: "M",
           //birthday: 2024-12-31
@@ -194,14 +189,6 @@ const SignUp = ({
       }
     }
   };
-
-  // TODO: DI NAGANA
-  // useEffect(() => {
-  //   if (currentStep === 1) {
-  //     prevButtonAnimControls.set('initial'); // Reset to initia
-  //     prevButtonAnimControls.start('animate'); // Then start
-  //   }
-  // }, [currentStep, prevButtonAnimControls]);
 
   useEffect(() => {
     multiStepProgressBar.start("animate");

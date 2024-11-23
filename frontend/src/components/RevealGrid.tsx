@@ -1,7 +1,7 @@
 import { HTMLMotionProps, motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import girlSample from "../assets/images/girl-sample-2.svg";
-import { Bell, Mail, Megaphone, SquarePen, Star } from "lucide-react";
+import { Bell, Calendar, Mail, Megaphone, SquarePen, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { UsersType } from "@/lib/types";
 
@@ -142,10 +142,10 @@ const SocialsBlock = () => (
         to="/subject-enrolled"
         className="grid h-full place-content-center text-3xl  text-white dark:text-dhvsu-lighter"
       >
-        <Megaphone size={48} />
+        <Calendar size={48} />
       </Link>
       <p className="text-xs font-semibold  text-white dark:text-dhvsu-lighter">
-        Announcements
+        Calendar
       </p>
     </Block>
   </>

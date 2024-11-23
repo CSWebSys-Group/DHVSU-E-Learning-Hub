@@ -36,7 +36,7 @@ const SubjectCard = ({
           )}
         </div>
 
-        <div className="bg-dhvsu-light text-DHVSU-white p-4 h-[8.265rem] pt-6">
+        <div className="bg-dhvsu-light text-dhvsu-lighter p-4 h-[8.265rem] pt-6">
           <div className="line-clamp-4">
             <p className="font-bold">Due Oct 2, 11:59</p>
             <p className="text-sm mt-1 text-justify">
