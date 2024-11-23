@@ -270,12 +270,73 @@ const Home = () => {
         </div>
       </div>
 
-      <div>titee</div>
-      <div>titee</div>
-      <div>titee</div>
-      <div>titee</div>
-      <div>titee</div>
-      <div>titee</div>
+      <div className="vision-mission-container  mx-auto p-4 max-w-screen-xl mt-5">
+        <div className="flex justify-center items-center mb-4 ">
+          <h1 className="text-xl font-bold text-brand md:text-3xl lg:text-4xl lg:mb-3">
+            Vision and Mission
+          </h1>
+        </div>
+        <div className="flex flex-col justify-center items-center gap-4 md:flex-row lg:gap-10">
+          {/* vision */}
+          <div className="baste-base-to w-[350px] h-[180px] bg-transparent cursor-pointer group rounded-3xl perspective-1000 md:w-[360px] md:h-[190px] lg:w-[470px] lg:h-[280px]">
+            <div className="relative w-full h-full preserve-3d group-hover:rotate-y-180  duration-500">
+              <div className="flex justify-center items-center w-full h-full absolute rounded-3xl bg-brand text-white overflow-hidden ">
+                {/* <img src="" alt="" /> */}
+                <h1 className="text-2xl font-bold md:text-3xl lg:text-4xl">
+                  Vision
+                </h1>
+              </div>
+              <div className="absolute rotate-y-180  w-full h-full bg-[#F1E2E0] border-2 border-brand z-50 rounded-3xl overflow-hidden p-4 backface-hidden ">
+                <div className="flex flex-col text-brand justify-center items-center text-center">
+                  <div>
+                    <h1 className="text-xl font-bold md:text-2xl lg:text-4xl">
+                      Vision
+                    </h1>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold mt-2 md:text-sm md:mt-1 lg:text-lg lg:mt-4">
+                      DHVSU envisions of becoming one of the lead universities
+                      in the ASEAN Region in producing globally competitive
+                      professionals who are capable of creating, applying and
+                      transferring knowledge and technology for the sustainable
+                      development of the humanity and society.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* mission */}
+          <div className="baste-base-to w-[350px] h-[180px] bg-transparent cursor-pointer group rounded-3xl perspective-1000 md:w-[360px] md:h-[190px] lg:w-[470px] lg:h-[280px]">
+            <div className="relative w-full h-full preserve-3d group-hover:rotate-y-180  duration-500">
+              <div className="flex justify-center items-center w-full h-full absolute rounded-3xl bg-brand text-white overflow-hidden ">
+                {/* <img src="" alt="" /> */}
+                <h1 className="text-2xl font-bold md:text-3xl lg:text-4xl">
+                  Mission
+                </h1>
+              </div>
+              <div className="absolute rotate-y-180  w-full h-full bg-[#F1E2E0] border-2 border-brand z-50 rounded-3xl overflow-hidden p-4 backface-hidden ">
+                <div className="flex flex-col text-brand justify-center items-center text-center">
+                  <div>
+                    <h1 className="text-xl font-bold md:text-2xl lg:text-4xl">
+                      Vision
+                    </h1>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold mt-2 md:text-sm md:mt-1 lg:text-lg lg:mt-4">
+                      DHVSU commits itself to provide a conducive environment
+                      for the holistic development of students to become
+                      globally competitive professionals through quality
+                      instruction and services; innovation and research towards
+                      the sustainable development of society.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
