@@ -35,8 +35,10 @@ import { useContext } from "react";
 import { AppContext } from "./context/AppContext";
 import NotFound from "./pages/404/not-found";
 import LoadingSpinner from "./components/LoadingSpinner";
+import Help from "./pages/Help/Help";
 import ProtectedAuthRoutes from "./layouts/ProtectedAuthRoutes";
 import ProtectedNotAuthRoutes from "./layouts/ProtectedNotAuthRoutes";
+
 
 function App() {
   const context = useContext(AppContext);
@@ -53,7 +55,7 @@ function App() {
   }
 
   const { user, token, setToken, setUser } = context!;
-
+        
   return (
     <>
       <BrowserRouter>
@@ -109,6 +111,7 @@ function App() {
              <Route path="subjects" element={<Subjects />} />
            </Route>
           </Route>
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
