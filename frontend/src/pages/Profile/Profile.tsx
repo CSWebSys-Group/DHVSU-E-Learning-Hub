@@ -1,10 +1,46 @@
+import { Button } from "@/components/ui/button";
+import { StudentCreds, UsersType } from "@/lib/types";
 import { PencilIcon } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 
 // TODO: input should have borders (bg-dhvsu)
 // TODO: main & second container doesn't have light and dark mode
 
-const Profile = () => {
+const Profile = ({ user }: { user: UsersType }) => {
+  const user_creds = user.user_creds as StudentCreds;
+
+  const [studentInfo, setStudentInfo] = useState({
+    fn: user_creds.fn,
+    ln: user_creds.ln,
+    middle_name: user_creds.middle_name || "",
+    ext_name: user_creds.ext_name || "",
+    gender: user_creds.gender || "",
+    birthday: user_creds.birthday || "",
+    place_of_birth: user_creds.place_of_birth || "",
+    civil_status: user_creds.civil_status || "",
+    nationality: user_creds.nationality || "",
+    religion: user_creds.religion || "",
+    contact_number: user_creds.contact_number || "",
+    height: user_creds.height || null,
+    weight: user_creds.weight || null,
+    blood_type: user_creds.blood_type || "",
+    address: user_creds.address || "",
+    province: user_creds.province || "",
+    city: user_creds.city || "",
+    barangay: user_creds.barangay || "",
+    zip_code: user_creds.zip_code || null,
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setStudentInfo((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   return (
     <div className="p-6 flex items-center justify-center">
       <div className="flex gap-3">
@@ -16,10 +52,12 @@ const Profile = () => {
 
             <div className="text-center mt-4 text-brand dark:text-white">
               <p className="text-lg font-bold">
-                Reyes, Mark Angelo J. (Student)
+                {user_creds.ln}, {user_creds.fn}{" "}
+                {user_creds.middle_name ? user_creds.middle_name + "." : ""}{" "}
+                (Student)
               </p>
               <p className="text-sm">Bachelor of Science in Computer Science</p>
-              <p className="text-sm">2022308414</p>
+              <p className="text-sm">{user.user.id}</p>
             </div>
 
             <button className="mt-4 px-4 py-2 bg-brown-700 text-white dark:text-brand bg-brand dark:bg-white text-sm font-semibold rounded-full flex items-center gap-2">
@@ -40,6 +78,9 @@ const Profile = () => {
                 <input
                   type="text"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full text-black"
+                  value={studentInfo.ln}
+                  onChange={handleChange}
+                  name="ln"
                 />
               </div>
 
@@ -48,6 +89,9 @@ const Profile = () => {
                 <input
                   type="text"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full text-black"
+                  value={studentInfo.fn}
+                  onChange={handleChange}
+                  name="fn"
                 />
               </div>
 
@@ -56,6 +100,9 @@ const Profile = () => {
                 <input
                   type="text"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full text-black"
+                  value={studentInfo.middle_name}
+                  onChange={handleChange}
+                  name="middle_name"
                 />
               </div>
 
@@ -64,6 +111,9 @@ const Profile = () => {
                 <input
                   type="text"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full text-black"
+                  value={studentInfo.ext_name}
+                  onChange={handleChange}
+                  name="ext_name"
                 />
               </div>
             </div>
@@ -71,7 +121,12 @@ const Profile = () => {
             <div className="grid grid-cols-1 md:grid-cols-6 gap-4 text-dhvsu dark:text-white">
               <div className="flex flex-col col-span-1">
                 <label className=" font-semibold mb-2">Gender</label>
-                <select className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full text-black">
+                <select
+                  className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full text-black"
+                  value={studentInfo.gender}
+                  onChange={handleChange}
+                  name="gender"
+                >
                   <option value="" disabled selected>
                     Select an option
                   </option>
@@ -88,6 +143,9 @@ const Profile = () => {
                 <input
                   type="date"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                  value={studentInfo.birthday}
+                  onChange={handleChange}
+                  name="birthday"
                 />
               </div>
 
@@ -96,12 +154,20 @@ const Profile = () => {
                 <input
                   type="text"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                  value={studentInfo.place_of_birth}
+                  onChange={handleChange}
+                  name="place_of_birth"
                 />
               </div>
 
               <div className="flex flex-col col-span-1">
                 <label className=" font-semibold mb-2">Civil Status</label>
-                <select className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full">
+                <select
+                  className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                  value={studentInfo.civil_status}
+                  onChange={handleChange}
+                  name="civil_status"
+                >
                   <option value="" disabled selected>
                     Select an option
                   </option>
@@ -118,6 +184,9 @@ const Profile = () => {
                 <input
                   type="text"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                  value={studentInfo.nationality}
+                  onChange={handleChange}
+                  name="nationality"
                 />
               </div>
 
@@ -126,6 +195,9 @@ const Profile = () => {
                 <input
                   type="text"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                  value={studentInfo.religion}
+                  onChange={handleChange}
+                  name="religion"
                 />
               </div>
 
@@ -134,6 +206,10 @@ const Profile = () => {
                 <input
                   type="email"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                  value={user.user.email}
+                  disabled={true}
+                  onChange={handleChange}
+                  name="email"
                 />
               </div>
 
@@ -142,6 +218,9 @@ const Profile = () => {
                 <input
                   type="text"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                  value={studentInfo.contact_number}
+                  onChange={handleChange}
+                  name="contact_number"
                 />
               </div>
             </div>
@@ -152,6 +231,9 @@ const Profile = () => {
                 <input
                   type="number"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                  value={studentInfo.height || ""}
+                  onChange={handleChange}
+                  name="height"
                 />
               </div>
 
@@ -160,6 +242,9 @@ const Profile = () => {
                 <input
                   type="number"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                  value={studentInfo.weight || ""}
+                  onChange={handleChange}
+                  name="weight"
                 />
               </div>
 
@@ -168,6 +253,9 @@ const Profile = () => {
                 <input
                   type="email"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                  value={studentInfo.blood_type}
+                  onChange={handleChange}
+                  name="blood_type"
                 />
               </div>
             </div>
@@ -180,6 +268,9 @@ const Profile = () => {
                 <input
                   type="text"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                  value={studentInfo.address}
+                  onChange={handleChange}
+                  name="address"
                 />
               </div>
             </div>
@@ -191,6 +282,9 @@ const Profile = () => {
                   <input
                     type="text"
                     className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                    value={studentInfo.province}
+                    onChange={handleChange}
+                    name="province"
                   />
                 </div>
                 <div className="flex flex-col col-span-1">
@@ -200,6 +294,9 @@ const Profile = () => {
                   <input
                     type="text"
                     className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                    value={studentInfo.city}
+                    onChange={handleChange}
+                    name="city"
                   />
                 </div>
                 <div className="flex flex-col col-span-1">
@@ -207,6 +304,9 @@ const Profile = () => {
                   <input
                     type="text"
                     className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                    value={studentInfo.barangay}
+                    onChange={handleChange}
+                    name="barangay"
                   />
                 </div>
                 <div className="flex flex-col col-span-1">
@@ -214,10 +314,14 @@ const Profile = () => {
                   <input
                     type="number"
                     className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                    value={studentInfo.zip_code || ""}
+                    onChange={handleChange}
+                    name="zip_code"
                   />
                 </div>{" "}
               </div>
             </div>
+            <Button>Save</Button>
           </div>
         </div>
       </div>

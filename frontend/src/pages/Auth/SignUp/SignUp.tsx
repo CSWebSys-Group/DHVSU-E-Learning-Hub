@@ -80,7 +80,7 @@ const SignUp = ({
         method: "post",
         body: JSON.stringify({
           ...form.getValues(),
-          id: 1743552700,
+          id: 4048484247,
           user_type: "S",
           gender: "M",
           //birthday: 2024-12-31
