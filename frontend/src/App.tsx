@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Pages
 import Home from "./pages/Home";
@@ -36,15 +36,26 @@ import { AppContext } from "./context/AppContext";
 import NotFound from "./pages/404/not-found";
 import LoadingSpinner from "./components/LoadingSpinner";
 import Help from "./pages/Help/Help";
+import ProtectedAuthRoutes from "./layouts/ProtectedAuthRoutes";
+import ProtectedNotAuthRoutes from "./layouts/ProtectedNotAuthRoutes";
+
 
 function App() {
   const context = useContext(AppContext);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Start with `true`
 
-  if (!context) return <LoadingSpinner loading={!loading} />;
+  useEffect(() => {
+    if (context) {
+      setLoading(false); // When context is ready, stop loading
+    }
+  }, [context]);
 
-  const { user, token, setToken, setUser } = context;
+  if (loading) {
+    return <LoadingSpinner loading={true} />;
+  }
 
+  const { user, token, setToken, setUser } = context!;
+        
   return (
     <>
       <BrowserRouter>
@@ -72,17 +83,17 @@ function App() {
             <Route path="features" element={<Features />} />
           </Route>
 
-          {/* Routes for unauthenticated users */}
-          {!context.token && (
+          {/* Protected routes for unauthenticated users */}
+          <Route element={<ProtectedNotAuthRoutes user={user} />}>
             <Route path="auth" element={<Layout />}>
-              <Route index element={<SignUp />} />
-              <Route path="signup" element={<SignUp />} />
-              <Route path="login" element={<Login />} />
+              <Route index element={<SignUp setToken={setToken} />} />
+              <Route path="signup" element={<SignUp setToken={setToken} />} />
+              <Route path="login" element={<Login setToken={setToken} />} />
             </Route>
-          )}
+          </Route>
 
           {/* Protected routes for authenticated users */}
-          {token && user && (
+          <Route element={<ProtectedAuthRoutes user={user} />}>
             <Route
               path="/"
               element={
@@ -94,14 +105,13 @@ function App() {
                 />
               }
             >
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="calendar" element={<Calendar />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="subjects" element={<Subjects />} />
-              <Route path="help" element={<Help />} />
-            </Route>
-          )}
-
+             <Route path="dashboard" element={<Dashboard user={user!} />} />
+             <Route path="calendar" element={<Calendar />} />
+             <Route path="profile" element={<Profile />} />
+             <Route path="subjects" element={<Subjects />} />
+           </Route>
+          </Route>
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

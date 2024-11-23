@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\OTPVerificationMail;
 use App\Models\Otp;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -12,11 +13,19 @@ use Carbon\Carbon;
 class OTPController extends Controller
 {
     // Method to generate and send OTP
-    public function sendOTP(Request $request)
+    public function sendOtpSignup(Request $request)
     {
         $request->validate([
-            'email' => 'required|email', // Ensure the email exists in the 'users' table
+            'email' => 'required|email',
         ]);
+
+        $emailExists = User::where('email', $request->email)->exists();
+
+        if ($emailExists) {
+            return response()->json(['errors' => [
+                'email_exists' => ['Email is already used.']
+            ]], 400);
+        }
 
         $otp = Str::random(6); // Generate a random 6-digit OTP
 

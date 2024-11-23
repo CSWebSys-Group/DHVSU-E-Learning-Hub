@@ -1,10 +1,11 @@
-import { motion } from "framer-motion";
+import { HTMLMotionProps, motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import girlSample from "../assets/images/girl-sample-2.svg";
 import { Bell, Mail, Megaphone, SquarePen, Star } from "lucide-react";
 import { Link } from "react-router-dom";
+import { UsersType } from "@/lib/types";
 
-const RevealGrid = () => {
+const RevealGrid = ({ user }: { user: UsersType }) => {
   return (
     <>
       <motion.div
@@ -15,14 +16,18 @@ const RevealGrid = () => {
         }}
         className="grid grid-flow-dense grid-cols-12 grid-rows-4 gap-4"
       >
-        <HeaderBlock />
+        <HeaderBlock fn={user.user_creds.fn} ln={user.user_creds.ln} />
         <SocialsBlock />
       </motion.div>
     </>
   );
 };
 
-const Block = ({ className, ...rest }) => {
+type BlockProps = HTMLMotionProps<"div"> & {
+  className?: string;
+};
+
+const Block = ({ className, ...rest }: BlockProps) => {
   return (
     <motion.div
       variants={{
@@ -52,7 +57,7 @@ const Block = ({ className, ...rest }) => {
   );
 };
 
-const HeaderBlock = () => (
+const HeaderBlock = ({ fn, ln }: { fn: string; ln: string }) => (
   <Block className="col-span-12 text-3xl leading-snug relative mb-4 p-10 bg-dhvsu">
     <div className="flex items-center">
       <img
@@ -64,7 +69,7 @@ const HeaderBlock = () => (
       />
       <div className="ml-52">
         <h1 className="mb-2 text-xl md:text-2xl lg:text-4xl font-medium text-white">
-          Welcome, Darren Jason Watkins! 👋{" "}
+          Welcome, {fn + " " + ln}! 👋{" "}
         </h1>
         <p className="text-white text-[1.2rem] md:text-2xl font-light">
           Have a great day ahead!

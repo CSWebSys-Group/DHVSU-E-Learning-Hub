@@ -16,11 +16,9 @@ import {
 } from "@/components/ui/breadcrumb";
 import SearchInput from "@/components/search-input";
 import { UserNav } from "@/components/header-user";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import KBar from "@/components/kbar";
 
-import { AppContext } from "@/context/AppContext";
-import { useContext } from "react";
 import { UsersType } from "@/lib/types";
 
 const RootLayout = ({
@@ -29,9 +27,9 @@ const RootLayout = ({
   setUser,
   setToken,
 }: {
-  token: string;
+  token: string | null;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
-  user: UsersType;
+  user: UsersType | null;
   setUser: React.Dispatch<React.SetStateAction<UsersType | null>>;
 }) => {
   // Breadcrumb logic
@@ -43,8 +41,8 @@ const RootLayout = ({
     <KBar>
       <SidebarProvider>
         <AppSidebar
-          user={user}
-          token={token}
+          user={user!}
+          token={token!}
           setUser={setUser}
           setToken={setToken}
         />
