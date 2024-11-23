@@ -10,42 +10,27 @@ import {
 
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "./ui/input-otp";
 
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { z } from "zod";
-import { registerSchema } from "@/lib/schema";
-import { AppContext } from "@/context/AppContext";
-import { useNavigate } from "react-router-dom";
 import { LoaderCircle, X } from "lucide-react";
+
 
 type PropTypes = {
   setOtpModalActive: React.Dispatch<React.SetStateAction<boolean>>;
   email: string;
-  values: z.infer<typeof registerSchema>;
-  setIsLoadingForm: React.Dispatch<React.SetStateAction<boolean>>;
-  formReset: () => void;
+  setOtpSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+  setErrors: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const OtpModal = ({
   setOtpModalActive,
   email,
-  values,
-  setIsLoadingForm,
-  formReset,
+  setOtpSuccess,
+  setErrors,
 }: PropTypes) => {
-  const context = useContext(AppContext);
-  if (!context) return <p>Loading...</p>;
-  const { setToken } = context;
-  const navigate = useNavigate();
-
   const [isOpen, setIsOpen] = useState(true);
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<string[]>([]);
-
-  useEffect(() => {
-    sendOTP();
-  }, [email]);
 
   async function sendOTP() {
     try {
@@ -54,17 +39,23 @@ const OtpModal = ({
         body: JSON.stringify({ email }),
       });
 
-      if (!res.ok) throw new Error("Something went wrong");
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (data.errors) {
+          const errorMessages = Object.values(data.errors).flat() as string[];
+          setErrors(errorMessages);
+        }
+      }
     } catch (error) {
       console.log(error);
+      handleCloseModal();
     }
   }
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setErrors([]);
     setIsLoading(true);
-    setIsLoadingForm(true);
     try {
       const payload = { email, otp: password };
       const resVerify = await fetch("/api/verify-otp", {
@@ -74,65 +65,16 @@ const OtpModal = ({
 
       if (!resVerify.ok) {
         if (password.length !== 6) {
-          setErrors((prevErrors) => [
-            ...prevErrors,
-            "OTP should be exactly 6 digits long.",
-          ]);
-          return;
+          throw new Error("OTP should be exactly 6 digits long.");
         }
         throw new Error("Something went wrong");
       }
-
-      const registerPayload = {
-        ...values,
-        id: 7015365014,
-        user_type: "S",
-        gender: "M",
-        //birthday: 2024-12-31
-      };
-      const res = await fetch("/api/register", {
-        method: "post",
-        body: JSON.stringify(registerPayload),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        if (data.errors) {
-          // Type casting the value of data.errors to string[]
-          Object.values(data.errors).forEach((errorMessages) => {
-            // Type casting errorMessages to string[] explicitly
-            (errorMessages as string[]).forEach((message) => {
-              setErrors((prevErrors) => [...prevErrors, message]);
-            });
-          });
-        } else {
-          setErrors((prevErrors) => [
-            ...prevErrors,
-            "Something went wrong with registering",
-          ]);
-        }
-      }
-
-      // Assuming `data.token` contains the token
-      if (data.token) {
-        // Set the token in a cookie with an expiration of 7 days
-        const expires = new Date();
-        expires.setDate(expires.getDate() + 14); // 14 days from now
-        document.cookie = `authToken=${
-          data.token.plainTextToken
-        }; expires=${expires.toUTCString()}; path=/; secure; SameSite=Strict`;
-        setToken(data.token.plainTextToken);
-        console.log(data);
-        navigate("/dashboard");
-      }
-      handleCloseModal();
+      setOtpSuccess(true);
     } catch (error) {
       console.log(error);
+      setOtpSuccess(false);
     } finally {
-      formReset();
       setIsLoading(false);
-      setIsLoadingForm(false);
       handleCloseModal();
     }
   };

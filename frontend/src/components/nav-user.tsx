@@ -131,7 +131,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <button onClick={handleLogout}>
+            <button className="w-full" onClick={handleLogout}>
               <DropdownMenuItem>
                 <LogOut />
                 Log out

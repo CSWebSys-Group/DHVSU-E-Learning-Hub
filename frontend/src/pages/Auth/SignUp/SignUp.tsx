@@ -24,7 +24,6 @@ import { EyeIcon, EyeOff } from "lucide-react";
 
 import { registerSchema } from "@/lib/schema";
 import { Link, useNavigate } from "react-router-dom";
-import { AppContext } from "@/context/AppContext";
 import OtpModal from "@/components/OtpModal";
 
 // TODO: Paganahin yung animation sa mga button (Back, Continue) buttons.
@@ -48,13 +47,20 @@ const steps = [
   },
 ];
 
-const SignUp = () => {
+const SignUp = ({
+  setToken,
+}: {
+  setToken: React.Dispatch<React.SetStateAction<string | null>>;
+}) => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const prevButtonAnimControls = useAnimationControls();
   const multiStepProgressBar = useAnimationControls();
   const [otpModalActive, setOtpModalActive] = useState(false);
+  const [otpSuccess, setOtpSuccess] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -67,6 +73,66 @@ const SignUp = () => {
     },
   });
 
+  async function handleSignUp() {
+    setErrors([]);
+    try {
+      const res = await fetch("/api/register", {
+        method: "post",
+        body: JSON.stringify({
+          ...form.getValues(),
+          id: 1743552700,
+          user_type: "S",
+          gender: "M",
+          //birthday: 2024-12-31
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (data.errors) {
+          const errorMessages = Object.values(data.errors).flat() as string[];
+          setErrors(errorMessages);
+        }
+      }
+
+      // Assuming `data.token` contains the token
+      if (data.token) {
+        // Set the token in a cookie with an expiration of 7 days
+        const expires = new Date();
+        expires.setDate(expires.getDate() + 14); // 14 days from now
+        document.cookie = `authToken=${
+          data.token.plainTextToken
+        }; expires=${expires.toUTCString()}; path=/; secure; SameSite=Strict`;
+        setToken(data.token.plainTextToken);
+        console.log(data);
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.log(error);
+      setOtpModalActive(false);
+      setOtpSuccess(false);
+    } finally {
+      form.reset();
+      setCurrentStep(0);
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      console.log(errors);
+      setOtpSuccess(false);
+      setOtpModalActive(false);
+    }
+  }, [errors]);
+
+  useEffect(() => {
+    if (otpSuccess) {
+      handleSignUp();
+    }
+  }, [otpSuccess]);
+
   const prevButtonVariants: Variants = {
     initial: { x: "-100%", opacity: 0 },
     animate: { x: 0, opacity: 1 },
@@ -77,15 +143,28 @@ const SignUp = () => {
     animate: { width: `${((currentStep + 1) / steps.length) * 100}%` },
   };
 
-  const formReset = () => {
-    form.reset();
-    setCurrentStep(0);
-  };
-
   // Getting the form data (this function's purpose is to send the data to the api e.g localhost:8000/api/users)
   const handleSubmit = async () => {
-    setIsLoading(true);
-    setOtpModalActive(true);
+    try {
+      setOtpModalActive(true);
+      const res = await fetch("/api/send-otp", {
+        method: "post",
+        body: JSON.stringify({ email: form.getValues("email") }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (data.errors) {
+          const errorMessages = Object.values(data.errors).flat() as string[];
+          setErrors(errorMessages);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+      setCurrentStep(0);
+    }
   };
 
   type FieldName = keyof z.infer<typeof registerSchema>;
@@ -133,10 +212,9 @@ const SignUp = () => {
       {otpModalActive && (
         <OtpModal
           setOtpModalActive={setOtpModalActive}
-          values={form.getValues()}
           email={form.getValues("email")}
-          setIsLoadingForm={setIsLoading}
-          formReset={formReset}
+          setOtpSuccess={setOtpSuccess}
+          setErrors={setErrors}
         />
       )}
       <Form {...form}>

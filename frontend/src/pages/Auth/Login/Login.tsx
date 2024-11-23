@@ -21,14 +21,13 @@ import { EyeIcon, EyeOff } from "lucide-react";
 
 import { loginSchema } from "@/lib/schema";
 import { Link, useNavigate } from "react-router-dom";
-import { AppContext } from "@/context/AppContext";
 
-const Login = () => {
-  const context = useContext(AppContext);
-  if (!context) return <p>Loading...</p>;
-  const { setToken } = context;
+const Login = ({
+  setToken,
+}: {
+  setToken: React.Dispatch<React.SetStateAction<string | null>>;
+}) => {
   const navigate = useNavigate();
-
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);

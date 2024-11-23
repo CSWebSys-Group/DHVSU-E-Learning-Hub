@@ -23,7 +23,7 @@ Route::apiResource('subjects', SubjectController::class);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
-Route::post('/send-otp', [OTPController::class, 'sendOTP']);
+Route::post('/send-otp', [OTPController::class, 'sendOtpSignup']);
 Route::post('/verify-otp', [OTPController::class, 'verifyOTP']);
 
 Route::middleware('auth:sanctum')->group(function () {
