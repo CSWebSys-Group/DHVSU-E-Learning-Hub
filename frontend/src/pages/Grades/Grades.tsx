@@ -1,12 +1,29 @@
+type ReportCardInfo = {
+  number: number;
+  subjectCode: string;
+  descriptive: string;
+  units: number;
+  section: string;
+  finalAverage: number | null;
+  equivalentGrade: number | null;
+};
+
+type StudentInfo = {
+  lastName: string;
+  firstName: string;
+  middleInitial: string;
+  course: string;
+};
+
 const Grades = () => {
-  const studentInfo = {
+  const studentInfo: StudentInfo = {
     lastName: "Dela Cruz",
     firstName: "Juan",
     middleInitial: "D.",
     course: "Bachelor of Science in Computer Science",
   };
 
-  const reportCardInfos = [
+  const reportCardInfos: ReportCardInfo[] = [
     {
       number: 1,
       subjectCode: "WEBSYS 313",
