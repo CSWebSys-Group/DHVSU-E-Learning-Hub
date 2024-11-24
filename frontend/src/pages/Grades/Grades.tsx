@@ -1,29 +1,14 @@
-type ReportCardInfo = {
-  number: number;
-  subjectCode: string;
-  descriptive: string;
-  units: number;
-  section: string;
-  finalAverage: number | null;
-  equivalentGrade: number | null;
-};
-
-type StudentInfo = {
-  lastName: string;
-  firstName: string;
-  middleInitial: string;
-  course: string;
-};
+import { motion } from "framer-motion";
 
 const Grades = () => {
-  const studentInfo: StudentInfo = {
+  const studentInfo = {
     lastName: "Dela Cruz",
     firstName: "Juan",
     middleInitial: "D.",
     course: "Bachelor of Science in Computer Science",
   };
 
-  const reportCardInfos: ReportCardInfo[] = [
+  const reportCardInfos = [
     {
       number: 1,
       subjectCode: "WEBSYS 313",
@@ -51,7 +36,6 @@ const Grades = () => {
       finalAverage: 1.25,
       equivalentGrade: 1.25,
     },
-
     {
       number: 4,
       subjectCode: "CSPL 313 ",
@@ -65,21 +49,25 @@ const Grades = () => {
 
   const getRemarks = (grade: number | null) => {
     if (grade === null) {
-      return "Not yet posted"; // if no grade
+      return "Not yet posted";
     }
     return grade >= 1 && grade <= 3 ? "Passed" : "Failed";
   };
 
   const getRemarksColor = (grade: number | null) => {
     if (grade === null) {
-      return "text-gray-500"; //color of the not yet posted
+      return "text-gray-500";
     }
-    // rred for failed green for pasado
     return grade >= 1 && grade <= 3 ? "text-green" : "text-red";
   };
 
   return (
-    <div className="bg-[#F1E8E7] rounded-lg h-screen m-4 p-4 lg:p-8">
+    <motion.div
+      className="bg-[#F1E8E7] rounded-lg h-screen m-4 p-4 lg:p-8"
+      initial={{ scale: 0 }} // Start at 0 size
+      animate={{ scale: 1 }} // Animate to full size
+      transition={{ duration: 0.5 }}
+    >
       <h1 className="text-center text-brand text-3xl font-bold mb-6 lg:text-4xl">
         Report Card
       </h1>
@@ -133,7 +121,7 @@ const Grades = () => {
           </table>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
