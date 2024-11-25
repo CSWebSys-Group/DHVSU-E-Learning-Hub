@@ -30,6 +30,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Calendar from "./pages/Calendar/Calendar";
 import Profile from "./pages/Profile/Profile";
 import Subjects from "./pages/Subjects/Subjects";
+import Grades from "./pages/Grades/Grades";
 
 import { useContext } from "react";
 import { AppContext } from "./context/AppContext";
@@ -108,6 +109,8 @@ function App() {
               <Route path="calendar" element={<Calendar />} />
               <Route path="profile" element={<Profile user={user!} />} />
               <Route path="subjects" element={<Subjects />} />
+              <Route path="help" element={<Help />} />
+              <Route path="grades" element={<Grades />} />
             </Route>
           </Route>
 
