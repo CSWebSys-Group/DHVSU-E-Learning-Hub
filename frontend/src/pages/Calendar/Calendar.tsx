@@ -94,7 +94,7 @@ const Calendar = () => {
 
   return (
     <div className="w-full flex flex-col items-center py-10">
-      <div className="bg-[#F1E8E7] rounded-lg shadow-md p-6 flex space-x-6 w-full max-w-screen-xl">
+      <div className="bg-[#F1E8E7] rounded-lg shadow-md p-6 flex flex-col space-x-6 w-full max-w-screen-xl">
         <div className="flex-grow">
           <h1 className="text-3xl font-bold text-[#8D4A3C] text-center mb-6">
             November 2024
@@ -163,7 +163,7 @@ const Calendar = () => {
                     : "Please enter a task"
                 }
                 style={{
-                  backgroundColor: newTask ? "#f5f5f5" : "#fff", //
+                  backgroundColor: newTask ? "#f5f5f5" : "#fff",
                   color: newTask ? "#a06155" : "#000",
                 }}
               />
