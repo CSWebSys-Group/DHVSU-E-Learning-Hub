@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('activity_uploads', function (Blueprint $table) {
             $table->id();
-            $table->string('task_name');
-            $table->json('tests')->nullable();
-            $table->enum('type', ['act', 'assessment', 'exam']);
+            $table->string('title');
+            $table->string('description')->nullable();
+            $table->json('attachments')->nullable();
             $table->integer('total_score');
-            $table->foreignId('subject_id')->constrained('subjects')->cascadeOnDelete();
-            $table->datetime('deadline')->nullable();
+            $table->unsignedBigInteger('deadline_id');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('activity_uploads');
     }
 };
