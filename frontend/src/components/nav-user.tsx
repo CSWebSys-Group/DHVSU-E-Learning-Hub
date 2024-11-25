@@ -97,7 +97,7 @@ export function NavUser({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg border-dhvsu-light"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
@@ -111,7 +111,7 @@ export function NavUser({
                   />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
+                <div className="grid flex-1 text-left text-sm leading-tight text-white">
                   <span className="truncate font-semibold">
                     {user?.user_creds.fn}
                   </span>
