@@ -100,7 +100,7 @@ class SubjectSeeder extends Seeder
                         'subject_name' => $name,
                         'teacher_id' => $section->course_id === 1 ? $teacher->id : null,
                         'section_id' => $section->id,
-                        'tasks' => json_encode([]), // Initialize with an empty task array
+                        'classroom_uploads' => json_encode([]), // Initialize with an empty task array
                         'type' => 'core', // Mark it as a core subject
                     ]);
 
@@ -118,7 +118,7 @@ class SubjectSeeder extends Seeder
                         'subject_code' => $code,
                         'subject_name' => $name,
                         'section_id' => $section->id,
-                        'tasks' => json_encode([]), // Initialize with an empty task array
+                        'classroom_uploads' => json_encode([]), // Initialize with an empty task array
                         'type' => 'minor', // Mark it as a minor subject
                     ]);
 

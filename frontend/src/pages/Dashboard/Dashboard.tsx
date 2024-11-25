@@ -1,6 +1,7 @@
 import RevealGrid from "@/components/RevealGrid";
 import { formatDate } from "@/lib/utils";
 import { UsersType } from "@/lib/types";
+import Calendar from "../Calendar/Calendar";
 
 const Dashboard = ({ user }: { user: UsersType }) => {
   const today = new Date();
@@ -19,7 +20,10 @@ const Dashboard = ({ user }: { user: UsersType }) => {
         </div>
         <RevealGrid user={user} />
       </section>
-      <section className="right-section w-full lg:w-[500px] bg-[#F1E8E7] p-4 flex justify-center rounded-3xl"></section>
+      <section className="right-section w-[500px] bg-[#F1E8E7] p-4 flex justify-center rounded-3xl">
+        {/* Calendar here */}
+        <Calendar />
+      </section>
     </div>
   );
 };

@@ -25,7 +25,6 @@ class SectionSeeder extends Seeder
                     'course_id' => $course->id,
                     'students' => json_encode([]), // Start with an empty student list
                     'subjects' => json_encode([]), // Start with an empty subject list
-                    'adviser_id' => null, // Add adviser IDs if available
                     'name' => '3' . $suffix, // Section name like '3A', '3B', '3C'
                 ]);
             }
