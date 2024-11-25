@@ -109,6 +109,7 @@ const Calendar = () => {
   ];
 
   return (
+
     <motion.div
       className="w-full flex flex-col items-center py-10 px-4"
       initial={{ scale: 0 }}
@@ -117,6 +118,7 @@ const Calendar = () => {
     >
       <div className="bg-[#F1E8E7] rounded-lg shadow-md p-6 flex flex-col lg:flex-row space-y-6 lg:space-y-0 w-full max-w-screen-xl">
         {/* calendar */}
+
         <div className="flex-grow">
           <motion.div
             className="flex justify-around items-center mb-6"
@@ -195,6 +197,7 @@ const Calendar = () => {
         {/* actvities and upacoming tasks */}
         <div className="w-full lg:w-[320px] bg-[#8D4A3C] text-white rounded-lg p-4 space-y-6">
           <div>
+
             <h2 className="text-lg font-semibold">Today's Activity</h2>
             {getActivitiesForDay(todayDate).length > 0 ? (
               <motion.div

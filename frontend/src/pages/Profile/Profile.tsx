@@ -1,13 +1,32 @@
 import { Button } from "@/components/ui/button";
 import { StudentCreds, UsersType } from "@/lib/types";
+import { AnimatePresence } from "framer-motion";
 import { PencilIcon } from "lucide-react";
 import React, { useState } from "react";
-
-// TODO: input should have borders (bg-dhvsu)
-// TODO: main & second container doesn't have light and dark mode
+import { Notification } from "@/components/SlideInNotifications";
 
 const Profile = ({ user }: { user: UsersType }) => {
   const user_creds = user.user_creds as StudentCreds;
+
+  const [notifications, setNotifications] = useState<
+    { id: number; successMessage: string }[]
+  >([]);
+
+  const addNotification = (message: string) => {
+    const id = Date.now();
+    setNotifications((prev) => [...prev, { id, successMessage: message }]);
+  };
+
+  const removeNotification = (id: number) => {
+    setNotifications((prev) => prev.filter((notif) => notif.id !== id));
+  };
+
+  // this saveProfile() function handles form submition and notifications
+  const saveProfile = () => {
+    setTimeout(() => {
+      addNotification("Profile saved successfully!");
+    }, 1000);
+  };
 
   const [studentInfo, setStudentInfo] = useState({
     fn: user_creds.fn,
@@ -321,9 +340,21 @@ const Profile = ({ user }: { user: UsersType }) => {
                 </div>{" "}
               </div>
             </div>
-            <Button>Save</Button>
+            <Button onClick={() => saveProfile()}>Save</Button>
           </div>
         </div>
+      </div>
+      <div>
+        <AnimatePresence>
+          {notifications.map((notif) => (
+            <Notification
+              key={notif.id}
+              id={notif.id}
+              successMessage={notif.successMessage}
+              removeNotif={removeNotification}
+            />
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );

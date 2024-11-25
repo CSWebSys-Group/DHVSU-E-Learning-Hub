@@ -1,14 +1,14 @@
-import { navItems } from '@/constants/data';
+import { navItems } from "@/constants/data";
 import {
   KBarAnimator,
   KBarPortal,
   KBarPositioner,
   KBarProvider,
   KBarSearch,
-} from 'kbar';
-import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import RenderResults from './render-result';
+} from "kbar";
+import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import RenderResults from "./render-result";
 
 export default function KBar({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
@@ -21,13 +21,13 @@ export default function KBar({ children }: { children: React.ReactNode }) {
       navItems.flatMap((navItem) => {
         // Only include base action if the navItem has a real URL and is not just a container
         const baseAction =
-          navItem.url !== '#'
+          navItem.url !== "#"
             ? {
                 id: `${navItem.title.toLowerCase()}Action`,
                 name: navItem.title,
                 shortcut: navItem.shortcut,
                 keywords: navItem.title.toLowerCase(),
-                section: 'Navigation',
+                section: "Navigation",
                 subtitle: `Go to ${navItem.title}`,
                 perform: () => navigateTo(navItem.url),
               }
