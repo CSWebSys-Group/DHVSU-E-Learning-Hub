@@ -1,6 +1,6 @@
 import { AppContextType, UsersType } from "@/lib/types";
 import { getCookie } from "@/lib/utils";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 
 export const AppContext = createContext<AppContextType | null>(null);
 
@@ -15,8 +15,9 @@ export default function AppProvider({ children }: ParamType) {
   useEffect(() => {
     if (token) {
       getUser();
+    } else {
+      setUser(null); // Reset user state if token is removed
     }
-    // Adding a dependency array to avoid infinite calls
   }, [token]);
 
   async function getUser() {
@@ -35,9 +36,13 @@ export default function AppProvider({ children }: ParamType) {
     }
   }
 
+  // Memoize the context value to prevent unnecessary re-renders
+  const contextValue = useMemo(
+    () => ({ token, setToken, user, setUser }),
+    [token, user]
+  );
+
   return (
-    <AppContext.Provider value={{ token, setToken, user, setUser }}>
-      {children}
-    </AppContext.Provider>
+    <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
   );
 }

@@ -1,10 +1,13 @@
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { UsersType } from "@/lib/types";
 import { Navigate, Outlet } from "react-router-dom";
 
 export default function ProtectedNotAuthRoutes({
   user,
 }: {
-  user: UsersType | null;
+  user: UsersType | null | undefined;
 }) {
-  return !user ? <Outlet /> : <Navigate to="/dashboard" />;
+  if (user === undefined) return <LoadingSpinner loading={true} />;
+
+  return !user ? <Outlet /> : <Navigate to="/user/dashboard" />;
 }

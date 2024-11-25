@@ -101,7 +101,7 @@ const SignUp = ({
         }; expires=${expires.toUTCString()}; path=/; secure; SameSite=Strict`;
         setToken(data.token.plainTextToken);
         console.log(data);
-        navigate("/dashboard");
+        navigate("/user/dashboard");
       }
     } catch (error) {
       console.log(error);

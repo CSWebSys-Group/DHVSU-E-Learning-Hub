@@ -4,7 +4,7 @@ import { Calendar, LayoutGrid, Mail, User } from "lucide-react";
 export const navItems: NavItem[] = [
   {
     title: "Dashboard",
-    url: "/dashboard",
+    url: "/user/dashboard",
     icon: LayoutGrid,
     isActive: false,
     items: [],
@@ -24,25 +24,25 @@ export const navItems: NavItem[] = [
     items: [
       {
         title: "Profile",
-        url: "/profile",
+        url: "/user/profile",
       },
       {
         title: "Subjects",
-        url: "/subjects",
+        url: "/user/subjects",
       },
       {
         title: "Grades",
-        url: "/grades",
+        url: "/user/grades",
       },
       {
         title: "Subject Enrolled",
-        url: "/subject-enrolled",
+        url: "/user/subject-enrolled",
       },
     ],
   },
   {
     title: "Messages",
-    url: "/messages",
+    url: "/user/messages",
     icon: Mail,
     isActive: false,
   },
