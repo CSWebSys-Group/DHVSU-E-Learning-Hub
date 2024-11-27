@@ -3,7 +3,7 @@ import { z } from "zod";
 export const registerSchema = z
   .object({
     id: z.string().min(10, "Please enter a valid Id"),
-    user_type: z.enum(["Teacher", "Student"], {
+    user_type: z.enum(["T", "S"], {
       errorMap: () => ({ message: "Please select a option." }),
     }),
     fn: z.string().min(1, "First name is required"),

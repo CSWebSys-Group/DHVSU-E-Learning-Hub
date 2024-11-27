@@ -50,11 +50,11 @@ function App() {
     }
   }, [context]);
 
-  if (loading) {
+  const { user, token, setToken, setUser } = context!;
+
+  if (loading || !user) {
     return <LoadingSpinner loading={true} />;
   }
-
-  const { user, token, setToken, setUser } = context!;
 
   return (
     <>
@@ -84,7 +84,7 @@ function App() {
           </Route>
 
           {/* Protected routes for unauthenticated users */}
-          <Route element={<ProtectedNotAuthRoutes user={user} />}>
+          <Route element={<ProtectedNotAuthRoutes token={token} />}>
             <Route path="/auth" element={<Layout />}>
               <Route index element={<SignUp setToken={setToken} />} />
               <Route path="signup" element={<SignUp setToken={setToken} />} />
@@ -93,7 +93,7 @@ function App() {
           </Route>
 
           {/* Protected routes for authenticated users */}
-          <Route element={<ProtectedAuthRoutes user={user} />}>
+          <Route element={<ProtectedAuthRoutes token={token} />}>
             <Route
               path="/user"
               element={

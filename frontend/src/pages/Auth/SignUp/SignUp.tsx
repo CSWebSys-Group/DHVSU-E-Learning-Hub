@@ -30,6 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Notification } from "@/components/SlideInNotifications";
 
 const steps = [
   {
@@ -76,7 +77,7 @@ const SignUp = ({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       id: "",
-      user_type: "Student",
+      user_type: "S",
       fn: "",
       ln: "",
       email: "",
@@ -92,9 +93,6 @@ const SignUp = ({
         method: "post",
         body: JSON.stringify({
           ...form.getValues(),
-          id: 2217291667,
-          user_type: "S",
-          gender: "M",
           //birthday: 2024-12-31
         }),
       });
@@ -213,6 +211,9 @@ const SignUp = ({
 
   return (
     <>
+      {
+        // errors.length > 0 && errors.map((e, i) => <Notification successMessage={e} id={i}  />)
+      }
       {otpModalActive && (
         <OtpModal
           setOtpModalActive={setOtpModalActive}
@@ -304,8 +305,8 @@ const SignUp = ({
                               <SelectValue placeholder="Select your option" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="Student">Teacher</SelectItem>
-                              <SelectItem value="Teacher">Student</SelectItem>
+                              <SelectItem value="T">Teacher</SelectItem>
+                              <SelectItem value="S">Student</SelectItem>
                             </SelectContent>
                           </Select>
                         </FormControl>
