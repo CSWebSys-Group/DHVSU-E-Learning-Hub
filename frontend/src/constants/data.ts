@@ -11,7 +11,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: "Calendar",
-    url: "/calendar",
+    url: "/user/calendar",
     icon: Calendar,
     isActive: false,
     items: [],
