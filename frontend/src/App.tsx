@@ -52,10 +52,6 @@ function App() {
 
   const { user, token, setToken, setUser } = context!;
 
-  if (loading || !user) {
-    return <LoadingSpinner loading={true} />;
-  }
-
   return (
     <>
       <BrowserRouter>
@@ -94,24 +90,33 @@ function App() {
 
           {/* Protected routes for authenticated users */}
           <Route element={<ProtectedAuthRoutes token={token} />}>
-            <Route
-              path="/user"
-              element={
-                <RootLayout
-                  user={user}
-                  token={token}
-                  setToken={setToken}
-                  setUser={setUser}
-                />
-              }
-            >
-              <Route path="dashboard" element={<Dashboard user={user!} />} />
-              <Route path="calendar" element={<Calendar />} />
-              <Route path="profile" element={<Profile user={user!} />} />
-              <Route path="subjects" element={<Subjects />} />
-              <Route path="help" element={<Help />} />
-              <Route path="grades" element={<Grades />} />
-            </Route>
+            {loading || !user ? (
+              <Route path="*" element={<LoadingSpinner loading={true} />} />
+            ) : (
+              <>
+                <Route
+                  path="/user"
+                  element={
+                    <RootLayout
+                      user={user}
+                      token={token}
+                      setToken={setToken}
+                      setUser={setUser}
+                    />
+                  }
+                >
+                  <Route
+                    path="dashboard"
+                    element={<Dashboard user={user!} />}
+                  />
+                  <Route path="calendar" element={<Calendar />} />
+                  <Route path="profile" element={<Profile user={user!} />} />
+                  <Route path="subjects" element={<Subjects />} />
+                  <Route path="help" element={<Help />} />
+                  <Route path="grades" element={<Grades />} />{" "}
+                </Route>
+              </>
+            )}
           </Route>
 
           <Route path="*" element={<NotFound />} />
