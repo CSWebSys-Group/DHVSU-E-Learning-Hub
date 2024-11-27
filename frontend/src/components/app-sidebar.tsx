@@ -50,15 +50,15 @@ const items = {
       items: [
         {
           title: "Profile",
-          url: "/profile",
+          url: "/user/profile",
         },
         {
           title: "Grades",
-          url: "/grades",
+          url: "/user/grades",
         },
         {
           title: "Settings",
-          url: "/settings",
+          url: "/user/settings",
         },
       ],
     },
@@ -66,12 +66,12 @@ const items = {
   navSecondary: [
     {
       title: "Settings",
-      url: "/settings",
+      url: "/user/settings",
       icon: Settings,
     },
     {
       title: "Help",
-      url: "/help",
+      url: "/user/help",
       icon: HelpCircle,
     },
   ],

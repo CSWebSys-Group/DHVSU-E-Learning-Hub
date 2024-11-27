@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 
 type Activity = {
   title: string;
@@ -17,6 +18,7 @@ const Calendar = () => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
+  const { pathname } = useLocation();
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const todayDate = today.toISOString().split("T")[0];
@@ -109,14 +111,17 @@ const Calendar = () => {
   ];
 
   return (
-
     <motion.div
       className="w-full flex flex-col items-center py-10 px-4"
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
       transition={{ duration: 0.4 }}
     >
-      <div className="bg-[#F1E8E7] rounded-lg shadow-md p-6 flex flex-col lg:flex-row space-y-6 lg:space-y-0 w-full max-w-screen-xl">
+      <div
+        className={`bg-[#F1E8E7] rounded-lg shadow-md p-6 flex flex-col ${
+          pathname === "/calendar" ? "lg:flex-row" : ""
+        } space-y-6 lg:space-y-0 w-full max-w-screen-xl`}
+      >
         {/* calendar */}
 
         <div className="flex-grow">
@@ -197,7 +202,6 @@ const Calendar = () => {
         {/* actvities and upacoming tasks */}
         <div className="w-full lg:w-[320px] bg-[#8D4A3C] text-white rounded-lg p-4 space-y-6">
           <div>
-
             <h2 className="text-lg font-semibold">Today's Activity</h2>
             {getActivitiesForDay(todayDate).length > 0 ? (
               <motion.div

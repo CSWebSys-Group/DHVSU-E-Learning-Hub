@@ -85,7 +85,7 @@ function App() {
 
           {/* Protected routes for unauthenticated users */}
           <Route element={<ProtectedNotAuthRoutes user={user} />}>
-            <Route path="auth" element={<Layout />}>
+            <Route path="/auth" element={<Layout />}>
               <Route index element={<SignUp setToken={setToken} />} />
               <Route path="signup" element={<SignUp setToken={setToken} />} />
               <Route path="login" element={<Login setToken={setToken} />} />
@@ -95,7 +95,7 @@ function App() {
           {/* Protected routes for authenticated users */}
           <Route element={<ProtectedAuthRoutes user={user} />}>
             <Route
-              path="/"
+              path="/user"
               element={
                 <RootLayout
                   user={user}

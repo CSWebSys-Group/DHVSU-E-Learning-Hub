@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 
 // Some react-hook-form import fucking shit
 import { z } from "zod";
@@ -23,20 +23,32 @@ import { EyeIcon, EyeOff } from "lucide-react";
 import { registerSchema } from "@/lib/schema";
 import { Link, useNavigate } from "react-router-dom";
 import OtpModal from "@/components/OtpModal";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const steps = [
   {
     id: "1",
+    name: "Verification",
+    fields: ["id", "user_type"],
+  },
+  {
+    id: "2",
     name: "Personal Information",
     fields: ["fn", "ln"],
   },
   {
-    id: "2",
-    name: "Create a strong password",
-    fields: ["password", "confirmPassword"],
+    id: "3",
+    name: "Create you password",
+    fields: ["password", "passwordConfirm"],
   },
   {
-    id: "3",
+    id: "4",
     name: "Please enter your DHVSU email",
     fields: ["email"],
   },
@@ -57,9 +69,14 @@ const SignUp = ({
   const [otpSuccess, setOtpSuccess] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
 
+  const [isFocused, setIsFocused] = useState(false);
+  const showPasswordButtonRef = useRef(null);
+
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      id: "",
+      user_type: "Student",
       fn: "",
       ln: "",
       email: "",
@@ -75,7 +92,7 @@ const SignUp = ({
         method: "post",
         body: JSON.stringify({
           ...form.getValues(),
-          id: 5580954672,
+          id: 2217291667,
           user_type: "S",
           gender: "M",
           //birthday: 2024-12-31
@@ -101,7 +118,7 @@ const SignUp = ({
         }; expires=${expires.toUTCString()}; path=/; secure; SameSite=Strict`;
         setToken(data.token.plainTextToken);
         console.log(data);
-        navigate("/dashboard");
+        navigate("/user/dashboard");
       }
     } catch (error) {
       console.log(error);
@@ -250,6 +267,74 @@ const SignUp = ({
             >
               <FormField
                 control={form.control}
+                name="id"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <div className="shad-form-item">
+                        <FormLabel className="shad-form-label">Id</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="eg. 202304552"
+                            className="shad-input"
+                            {...field}
+                          />
+                        </FormControl>
+                      </div>
+                      <FormMessage className="shad-form-message" />
+                    </FormItem>
+                  );
+                }}
+              />
+              <FormField
+                control={form.control}
+                name="user_type"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <div className="shad-form-item w-full">
+                        <FormLabel className="shad-form-label">User</FormLabel>
+                        <FormControl>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            {...field}
+                          >
+                            <SelectTrigger className="border-none shadow-none focus:ring-none focus:outline-none p-0">
+                              <SelectValue placeholder="Select your option" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Student">Teacher</SelectItem>
+                              <SelectItem value="Teacher">Student</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                      </div>
+                      <FormMessage className="shad-form-message" />
+                    </FormItem>
+                  );
+                }}
+              />
+            </motion.div>
+          )}
+          {currentStep === 1 && (
+            <motion.div
+              initial={{
+                y: 5,
+                opacity: 0,
+              }}
+              animate={{
+                y: 0,
+                opacity: 1,
+              }}
+              transition={{
+                duration: 0.5,
+                ease: "easeInOut",
+              }}
+              className="flex flex-col gap-4"
+            >
+              <FormField
+                control={form.control}
                 name="fn"
                 render={({ field }) => {
                   return (
@@ -298,7 +383,7 @@ const SignUp = ({
               />
             </motion.div>
           )}
-          {currentStep === 1 && (
+          {currentStep === 2 && (
             <motion.div
               initial={{
                 y: 5,
@@ -329,18 +414,35 @@ const SignUp = ({
                               placeholder="Password"
                               className="shad-input"
                               type={showPassword ? "text" : "password"}
-                              {...field}
+                              onFocus={() => setIsFocused(true)}
+                              onBlur={(event) => {
+                                // Prevent onBlur logic if the button is clicked
+                                if (
+                                  showPasswordButtonRef.current &&
+                                  showPasswordButtonRef.current.contains(
+                                    event.relatedTarget
+                                  )
+                                ) {
+                                  return;
+                                }
+                                setIsFocused(false);
+                              }}
+                              value={field.value}
+                              onChange={field.onChange}
                             />
-                            <button
-                              type="button"
-                              onClick={() => setShowPassword((show) => !show)}
-                            >
-                              {showPassword ? (
-                                <EyeOff className="text-brand" />
-                              ) : (
-                                <EyeIcon className="text-brand" />
-                              )}
-                            </button>
+                            {isFocused && (
+                              <button
+                                type="button"
+                                ref={showPasswordButtonRef}
+                                onClick={() => setShowPassword((show) => !show)}
+                              >
+                                {showPassword ? (
+                                  <EyeOff className="text-brand" />
+                                ) : (
+                                  <EyeIcon className="text-brand" />
+                                )}
+                              </button>
+                            )}
                           </div>
                         </FormControl>
                       </div>
@@ -376,7 +478,7 @@ const SignUp = ({
             </motion.div>
           )}
 
-          {currentStep === 2 && (
+          {currentStep === 3 && (
             <motion.div
               initial={{
                 y: 5,
@@ -431,7 +533,7 @@ const SignUp = ({
                 Back
               </Button>
             )}
-            {currentStep === 2 ? (
+            {currentStep === 3 ? (
               <Button
                 type="button"
                 onClick={form.handleSubmit(handleSubmit)}

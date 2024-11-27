@@ -78,7 +78,7 @@ const Login = ({
           data.token.plainTextToken
         }; expires=${expires.toUTCString()}; path=/; secure; SameSite=Strict`;
         setToken(data.token.plainTextToken);
-        navigate("/dashboard");
+        navigate("/user/dashboard");
       }
     } catch (error) {
       console.log(error);
