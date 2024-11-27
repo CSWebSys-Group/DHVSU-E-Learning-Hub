@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('ln');
             $table->string('middle_name')->nullable();
             $table->string('ext_name')->nullable();
-            $table->enum('gender', ['M', 'F', 'Others']);
+            $table->enum('gender', ['M', 'F', 'Others'])->nullable();
             $table->date('birthday')->nullable();
             $table->string('place_of_birth')->nullable();
             $table->enum('civil_status', ['single', 'married', 'widowed'])->nullable();

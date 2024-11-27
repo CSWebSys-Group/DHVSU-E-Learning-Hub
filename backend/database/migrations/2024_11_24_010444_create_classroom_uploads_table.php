@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('classroom_uploads', function (Blueprint $table) {
             $table->id();
             $table->enum('type', ['module', 'activity']);
-            $table->string('subject_id');
+            $table->unsignedBigInteger('subject_id');
             $table->timestamps();
         });
     }
