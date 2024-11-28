@@ -6,11 +6,12 @@ import dhvsuLogo from "../assets/images/dhvsu-logo.png";
 import { FaFacebookF } from "react-icons/fa";
 import { FaXTwitter, FaInstagram } from "react-icons/fa6";
 import { MdArrowOutward } from "react-icons/md";
+
 import { FaArrowUp } from "react-icons/fa";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showScrollButton, setShowScrollButton] = useState(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const getNavLinkClasses = (isActive: boolean) =>
     `text-white relative after:content-[""] after:block after:w-0 after:h-[3px] after:bg-[#FFBA15] after:absolute after:mt-[2px] after:left-0 
@@ -21,22 +22,26 @@ export default function Home() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  //for button scroll up
   useEffect(() => {
+    // Show button when user scrolls down
     const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowScrollButton(true);
+      if (window.scrollY > 200) {
+        setIsVisible(true);
       } else {
-        setShowScrollButton(false);
+        setIsVisible(false);
       }
     };
 
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -152,14 +157,18 @@ export default function Home() {
       <Outlet />
 
       {/* scroll to top button */}
-      {showScrollButton && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 p-3 rounded-md bg-brand text-white shadow-lg transition-all duration-300 transform hover:scale-105"
-        >
-          <FaArrowUp className="text-xl" />
-        </button>
-      )}
+      <button
+        className={`fixed bottom-5 right-5 flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-r from-brand via-[#854335] to-[#935B4F] text-white shadow-lg transition-all duration-300 transform group hover:w-36 hover:rounded-xl hover:bg-gradient-to-r hover:from-[#935B4F] hover:via-[#854335] hover:to-brand ${
+          isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={scrollToTop}
+      >
+        <FaArrowUp className="text-xl transition-transform duration-300 group-hover:opacity-0" />
+
+        <span className="ml-2 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 absolute transform  group-hover:translate-x-0">
+          Back to Top
+        </span>
+      </button>
 
       {/* foooter  */}
       {/* bg-white */}
