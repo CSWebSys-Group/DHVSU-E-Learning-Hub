@@ -18,13 +18,14 @@ const Calendar = () => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
+  const [hoveredDate, setHoveredDate] = useState<string | null>(null);
   const { pathname } = useLocation();
 
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const todayDate = today.toISOString().split("T")[0];
 
   const activities: Activities = {
-    "2024-11-24": [
+    "2024-11-28": [
       {
         title: "Mathematicsss 101",
         description: "Lecture on Calculus",
@@ -119,7 +120,7 @@ const Calendar = () => {
     >
       <div
         className={`bg-[#F1E8E7] rounded-lg shadow-md p-6 flex flex-col ${
-          pathname === "/calendar" ? "lg:flex-row" : ""
+          pathname === "/user/calendar" ? "lg:flex-row" : "gap-6 lg:p-2"
         } space-y-6 lg:space-y-0 w-full max-w-screen-xl`}
       >
         {/* calendar */}
@@ -136,10 +137,18 @@ const Calendar = () => {
               className="flex items-center text-[#8D4A3C] font-semibold hover:underline"
               whileTap={{ scale: 0.9 }}
             >
-              <MdNavigateBefore className="mr-2" />
+              <MdNavigateBefore
+                className={` ${
+                  pathname === "/user/calendar" ? "mr-2" : "mr-1"
+                }`}
+              />
               {monthNames[(currentMonth - 1 + 12) % 12]}
             </motion.button>
-            <h1 className="text-3xl font-bold text-[#8D4A3C] text-center">
+            <h1
+              className={`text-3xl font-bold text-[#8D4A3C] text-center ${
+                pathname === "/user/calendar" ? "" : "text-xl"
+              }`}
+            >
               {monthNames[currentMonth]} {currentYear}
             </h1>
             <motion.button
@@ -148,11 +157,15 @@ const Calendar = () => {
               whileTap={{ scale: 0.9 }}
             >
               {monthNames[(currentMonth + 1) % 12]}
-              <MdNavigateNext className="ml-2" />
+              <MdNavigateNext
+                className={` ${
+                  pathname === "/user/calendar" ? "ml-2" : "ml-1"
+                }`}
+              />
             </motion.button>
           </motion.div>
           <motion.div
-            className="grid grid-cols-7 gap-4 text-center text-[#8D4A3C]"
+            className="grid grid-cols-7 gap-4 text-center text-[#8D4A3C] px-2"
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.6 }}
@@ -182,17 +195,23 @@ const Calendar = () => {
                     isToday ? "bg-[#f1604d] text-white" : ""
                   } ${activityForDay ? "bg-[#f0b3a4]" : ""}`}
                   whileHover={{ scale: 1.1 }}
+                  onMouseEnter={() => setHoveredDate(currentDate)}
+                  onMouseLeave={() => setHoveredDate(null)}
                 >
-                  <span>{day}</span>
+                  <span className="z-0">{day}</span>
 
-                  {activityForDay && (
-                    <div
-                      className="absolute top-10 text-xs mt-1 "
-                      style={{ color: isToday ? "#AC766B" : "#8D4A3C" }}
-                    >
-                      {getActivitiesForDay(currentDate)[0]?.title}
-                    </div>
-                  )}
+                  {hoveredDate === currentDate &&
+                    activityForDay && ( //hover tassks calendar
+                      <div
+                        className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 text-xs text-center bg-white p-2 rounded shadow z-10"
+                        style={{
+                          color: isToday ? "#AC766B" : "#8D4A3C",
+                          width: "max-content",
+                        }}
+                      >
+                        {getActivitiesForDay(currentDate)[0]?.title}
+                      </div>
+                    )}
                 </motion.div>
               );
             })}
@@ -200,7 +219,7 @@ const Calendar = () => {
         </div>
 
         {/* actvities and upacoming tasks */}
-        <div className="w-full lg:w-[320px] bg-[#8D4A3C] text-white rounded-lg p-4 space-y-6">
+        <div className="w-full lg:w-[320px] bg-[#8D4A3C] text-white rounded-lg  p-4 space-y-6">
           <div>
             <h2 className="text-lg font-semibold">Today's Activity</h2>
             {getActivitiesForDay(todayDate).length > 0 ? (
@@ -228,7 +247,7 @@ const Calendar = () => {
             transition={{ duration: 0.7 }}
           >
             <h2 className="text-lg font-semibold text-brand mb-2">
-              Upcoming Tasks
+              Upcoming Activities
             </h2>
             {Object.keys(upcomingTasks).map((date, index) => {
               const upcomingTask = getUpcomingTaskForDay(date)[0];
