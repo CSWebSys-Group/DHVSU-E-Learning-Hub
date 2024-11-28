@@ -114,8 +114,8 @@ const Calendar = () => {
   return (
     <motion.div
       className="w-full flex flex-col items-center py-10 px-4"
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
       <div
@@ -135,7 +135,7 @@ const Calendar = () => {
             <motion.button
               onClick={() => handleMonthChange("prev")}
               className="flex items-center text-[#8D4A3C] font-semibold hover:underline"
-              whileTap={{ scale: 0.9 }}
+              whileTap={{ scale: 0.11 }}
             >
               <MdNavigateBefore
                 className={` ${
@@ -166,9 +166,9 @@ const Calendar = () => {
           </motion.div>
           <motion.div
             className="grid grid-cols-7 gap-4 text-center text-[#8D4A3C] px-2"
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
           >
             <span className="font-semibold">SUN</span>
             <span className="font-semibold">MON</span>
