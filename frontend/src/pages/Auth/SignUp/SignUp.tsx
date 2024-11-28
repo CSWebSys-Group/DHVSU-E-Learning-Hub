@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { EyeIcon, EyeOff } from "lucide-react";
+import { EyeIcon, EyeOff, LoaderCircle } from "lucide-react";
 
 import { registerSchema } from "@/lib/schema";
 import { Link, useNavigate } from "react-router-dom";
@@ -157,7 +157,7 @@ const SignUp = ({
   // Getting the form data (this function's purpose is to send the data to the api e.g localhost:8000/api/users)
   const handleSubmit = async () => {
     try {
-      setOtpModalActive(true);
+      setIsLoading(true);
       const res = await fetch("/api/send-otp", {
         method: "post",
         body: JSON.stringify({ email: form.getValues("email") }),
@@ -171,6 +171,8 @@ const SignUp = ({
           setErrors(errorMessages);
         }
       }
+      setIsLoading(false);
+      setOtpModalActive(true);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -588,9 +590,9 @@ const SignUp = ({
                 disabled={isLoading}
               >
                 Sign up
-                {isLoading &&
-                  // loading animation here
-                  ""}
+                {isLoading && (
+                  <LoaderCircle size={24} className="ml-2 animate-spin" />
+                )}
               </Button>
             ) : (
               <Button
