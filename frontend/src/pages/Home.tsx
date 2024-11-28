@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet, NavLink, Link } from "react-router-dom";
 import { RiMenu4Fill } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
@@ -7,8 +7,12 @@ import { FaFacebookF } from "react-icons/fa";
 import { FaXTwitter, FaInstagram } from "react-icons/fa6";
 import { MdArrowOutward } from "react-icons/md";
 
+import { FaArrowUp } from "react-icons/fa";
+
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+
   const getNavLinkClasses = (isActive: boolean) =>
     `text-white relative after:content-[""] after:block after:w-0 after:h-[3px] after:bg-[#FFBA15] after:absolute after:mt-[2px] after:left-0 
      hover:after:w-full hover:after:transition-all after:rounded-full 
@@ -16,6 +20,28 @@ export default function Home() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  useEffect(() => {
+    // Show button when user scrolls down
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -129,6 +155,21 @@ export default function Home() {
 
       {/* Outlet renders the nested routes */}
       <Outlet />
+
+      {/* scroll to top button */}
+      <button
+        className={`fixed bottom-5 right-5 flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-r from-brand via-[#854335] to-[#935B4F] text-white shadow-lg transition-all duration-300 transform group hover:w-36 hover:rounded-xl hover:bg-gradient-to-r hover:from-[#935B4F] hover:via-[#854335] hover:to-brand ${
+          isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={scrollToTop}
+      >
+        <FaArrowUp className="text-xl transition-transform duration-300 group-hover:opacity-0" />
+
+        <span className="ml-2 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 absolute transform  group-hover:translate-x-0">
+          Back to Top
+        </span>
+      </button>
+
       {/* foooter  */}
       {/* bg-white */}
       <footer className=" bottom-0 h-[300px] flex flex-col md:h-[400px] lg:h-[600px] ">
