@@ -347,7 +347,7 @@ const SignUp = ({
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="First Name"
+                            placeholder="Juan"
                             className="shad-input"
                             // type="email"
                             {...field}
@@ -371,7 +371,7 @@ const SignUp = ({
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="Last Name"
+                            placeholder="Dela Cruz"
                             className="shad-input"
                             // type="email"
                             {...field}
@@ -418,7 +418,7 @@ const SignUp = ({
                           <div className="flex items-center ">
                             <Input
                               ref={inputRef}
-                              placeholder="Password"
+                              placeholder="Create a strong password"
                               className="shad-input"
                               type={showPassword ? "text" : "password"}
                               onFocus={() => setIsFocused(true)}
@@ -477,7 +477,7 @@ const SignUp = ({
                           <div className="flex items-center ">
                             <Input
                               ref={inputRef}
-                              placeholder="Confirm Password"
+                              placeholder="Re-enter your password"
                               className="shad-input"
                               type={showConfirmPassword ? "text" : "password"}
                               onFocus={() => setIsFocusedConfirm(true)}
@@ -552,7 +552,7 @@ const SignUp = ({
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="Email Address"
+                            placeholder="sample@dhvsu.edu.ph"
                             className="shad-input"
                             // type="email"
                             {...field}
