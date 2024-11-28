@@ -64,6 +64,7 @@ const SignUp = ({
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const prevButtonAnimControls = useAnimationControls();
   const multiStepProgressBar = useAnimationControls();
   const [otpModalActive, setOtpModalActive] = useState(false);
@@ -71,7 +72,7 @@ const SignUp = ({
   const [errors, setErrors] = useState<string[]>([]);
 
   const [isFocused, setIsFocused] = useState(false);
-  const showPasswordButtonRef = useRef(null);
+  const [isFocusedConfirm, setIsFocusedConfirm] = useState(false);
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -403,6 +404,10 @@ const SignUp = ({
                 control={form.control}
                 name="password"
                 render={({ field }) => {
+                  const showPasswordButtonRef =
+                    useRef<HTMLButtonElement | null>(null);
+                  const inputRef = useRef<HTMLInputElement | null>(null);
+
                   return (
                     <FormItem>
                       <div className="shad-form-item">
@@ -412,12 +417,12 @@ const SignUp = ({
                         <FormControl>
                           <div className="flex items-center ">
                             <Input
+                              ref={inputRef}
                               placeholder="Password"
                               className="shad-input"
                               type={showPassword ? "text" : "password"}
                               onFocus={() => setIsFocused(true)}
                               onBlur={(event) => {
-                                // Prevent onBlur logic if the button is clicked
                                 if (
                                   showPasswordButtonRef.current &&
                                   showPasswordButtonRef.current.contains(
@@ -427,12 +432,14 @@ const SignUp = ({
                                   return;
                                 }
                                 setIsFocused(false);
+                                setShowPassword(false);
                               }}
                               value={field.value}
                               onChange={field.onChange}
                             />
                             {isFocused && (
                               <button
+                                onMouseDown={(e) => e.preventDefault()}
                                 type="button"
                                 ref={showPasswordButtonRef}
                                 onClick={() => setShowPassword((show) => !show)}
@@ -456,19 +463,58 @@ const SignUp = ({
                 control={form.control}
                 name="password_confirmation"
                 render={({ field }) => {
+                  const showConfirmPasswordButtonRef =
+                    useRef<HTMLButtonElement | null>(null);
+                  const inputRef = useRef<HTMLInputElement | null>(null);
+
                   return (
                     <FormItem>
                       <div className="shad-form-item">
                         <FormLabel className="shad-form-label">
-                          Password Confirm
+                          Confirm Password
                         </FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder="Password Confirm"
-                            className="shad-input"
-                            type="password"
-                            {...field}
-                          />
+                          <div className="flex items-center ">
+                            <Input
+                              ref={inputRef}
+                              placeholder="Confirm Password"
+                              className="shad-input"
+                              type={showConfirmPassword ? "text" : "password"}
+                              onFocus={() => setIsFocusedConfirm(true)}
+                              onBlur={(event) => {
+                                if (
+                                  showConfirmPasswordButtonRef.current &&
+                                  showConfirmPasswordButtonRef.current.contains(
+                                    event.relatedTarget
+                                  )
+                                ) {
+                                  console.log("show password ref");
+                                  return;
+                                }
+                                console.log("show password set set");
+                                setIsFocusedConfirm(false);
+                                setShowConfirmPassword(false);
+                              }}
+                              value={field.value}
+                              onChange={field.onChange}
+                            />
+                            {isFocusedConfirm && (
+                              <button
+                                onMouseDown={(e) => e.preventDefault()}
+                                type="button"
+                                ref={showConfirmPasswordButtonRef}
+                                onClick={() =>
+                                  setShowConfirmPassword((show) => !show)
+                                }
+                              >
+                                {showConfirmPassword ? (
+                                  <EyeOff className="text-brand" />
+                                ) : (
+                                  <EyeIcon className="text-brand" />
+                                )}
+                              </button>
+                            )}
+                          </div>
                         </FormControl>
                       </div>
                       <FormMessage className="shad-form-message" />
