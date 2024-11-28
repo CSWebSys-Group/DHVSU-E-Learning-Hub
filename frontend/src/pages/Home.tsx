@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet, NavLink, Link } from "react-router-dom";
 import { RiMenu4Fill } from "react-icons/ri";
 import { IoMdClose } from "react-icons/io";
@@ -6,9 +6,12 @@ import dhvsuLogo from "../assets/images/dhvsu-logo.png";
 import { FaFacebookF } from "react-icons/fa";
 import { FaXTwitter, FaInstagram } from "react-icons/fa6";
 import { MdArrowOutward } from "react-icons/md";
+import { FaArrowUp } from "react-icons/fa";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
+
   const getNavLinkClasses = (isActive: boolean) =>
     `text-white relative after:content-[""] after:block after:w-0 after:h-[3px] after:bg-[#FFBA15] after:absolute after:mt-[2px] after:left-0 
      hover:after:w-full hover:after:transition-all after:rounded-full 
@@ -16,6 +19,24 @@ export default function Home() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  //for button scroll up
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -129,6 +150,17 @@ export default function Home() {
 
       {/* Outlet renders the nested routes */}
       <Outlet />
+
+      {/* scroll to top button */}
+      {showScrollButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 p-3 rounded-md bg-brand text-white shadow-lg transition-all duration-300 transform hover:scale-105"
+        >
+          <FaArrowUp className="text-xl" />
+        </button>
+      )}
+
       {/* foooter  */}
       {/* bg-white */}
       <footer className=" bottom-0 h-[300px] flex flex-col md:h-[400px] lg:h-[600px] ">
