@@ -64,8 +64,8 @@ const Grades = () => {
   return (
     <motion.div
       className="bg-[#F1E8E7] rounded-lg h-screen m-4 p-4 lg:p-8"
-      initial={{ scale: 0 }} // Start at 0 size
-      animate={{ scale: 1 }} // Animate to full size
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <h1 className="text-center text-brand text-3xl font-bold mb-6 lg:text-4xl">

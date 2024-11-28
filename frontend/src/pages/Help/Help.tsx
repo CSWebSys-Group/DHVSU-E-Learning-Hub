@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 interface FAQItem {
