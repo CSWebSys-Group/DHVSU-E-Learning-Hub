@@ -15,7 +15,7 @@ import MexicoCampus from "./pages/Home/Campuses/MexicoCampus";
 import SanFernandoCampus from "./pages/Home/Campuses/SanFernandoCampus";
 import SantoTomaxCampus from "./pages/Home/Campuses/SantoTomasCampus";
 
-import OnlineServices from "./pages/Home/OnlineServices";
+import AboutUs from "./pages/Home/AboutUs";
 import Features from "./pages/Home/Features";
 
 import SignUp from "./pages/Auth/SignUp/SignUp";
@@ -75,7 +75,7 @@ function App() {
               <Route path="santo-tomas-campus" element={<SantoTomaxCampus />} />
             </Route>
 
-            <Route path="online-services" element={<OnlineServices />} />
+            <Route path="about-us" element={<AboutUs />} />
             <Route path="features" element={<Features />} />
           </Route>
 
