@@ -39,6 +39,7 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import Help from "./pages/Help/Help";
 import ProtectedAuthRoutes from "./layouts/ProtectedAuthRoutes";
 import ProtectedNotAuthRoutes from "./layouts/ProtectedNotAuthRoutes";
+import Submissions from "./pages/Submissions/Submissions";
 
 function App() {
   const context = useContext(AppContext);
@@ -116,7 +117,8 @@ function App() {
                   />
                   <Route path="subjects" element={<Subjects />} />
                   <Route path="help" element={<Help />} />
-                  <Route path="grades" element={<Grades />} />{" "}
+                  <Route path="grades" element={<Grades />} />
+                  <Route path="submissions" element={<Submissions />} />
                 </Route>
               </>
             )}
