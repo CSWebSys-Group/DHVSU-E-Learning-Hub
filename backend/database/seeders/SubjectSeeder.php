@@ -100,7 +100,7 @@ class SubjectSeeder extends Seeder
                         'subject_name' => $name,
                         'teacher_id' => $section->course_id === 1 ? $teacher->id : null,
                         'section_id' => $section->id,
-                        'classroom_uploads' => json_encode([]), // Initialize with an empty task array
+                        'classroom_uploads' => [], // Initialize with an empty task array
                         'type' => 'core', // Mark it as a core subject
                     ]);
 
@@ -118,7 +118,7 @@ class SubjectSeeder extends Seeder
                         'subject_code' => $code,
                         'subject_name' => $name,
                         'section_id' => $section->id,
-                        'classroom_uploads' => json_encode([]), // Initialize with an empty task array
+                        'classroom_uploads' => [], // Initialize with an empty task array
                         'type' => 'minor', // Mark it as a minor subject
                     ]);
 
@@ -139,7 +139,7 @@ class SubjectSeeder extends Seeder
                     $existingSectionSubjects = is_array($existingSectionSubjects) ? $existingSectionSubjects : [];
 
                     // Merge new subjects with existing ones
-                    $section->subjects = json_encode(array_merge($existingSectionSubjects, $sectionSubjectIds));
+                    $section->subjects = array_merge($existingSectionSubjects, $sectionSubjectIds);
 
                     // Save the updated section record
                     $section->save();
@@ -158,7 +158,7 @@ class SubjectSeeder extends Seeder
                     $existingSubjects = is_array($existingSubjects) ? $existingSubjects : [];
 
                     // Merge new subjects with existing ones
-                    $teacher->subjects = json_encode(array_merge($existingSubjects, $teacherSubjectIds));
+                    $teacher->subjects = array_merge($existingSubjects, $teacherSubjectIds);
 
                     // Save the updated teacher record
                     $teacher->save();

@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClassroomUploadController;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TeacherController;
 use App\Models\Student;
 use App\Models\Teacher;
@@ -13,7 +13,7 @@ use App\Models\ValidIDs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('tasks', TaskController::class);
+Route::apiResource('classroom-upload', ClassroomUploadController::class);
 Route::apiResource('students', StudentController::class);
 Route::apiResource('teachers', TeacherController::class);
 Route::apiResource('sections', SectionController::class);

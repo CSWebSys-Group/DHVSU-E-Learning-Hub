@@ -119,7 +119,7 @@ const Calendar = () => {
     >
       <div
         className={`bg-[#F1E8E7] rounded-lg shadow-md p-6 flex flex-col ${
-          pathname === "/calendar" ? "lg:flex-row" : ""
+          pathname === "/user/calendar" ? "lg:flex-row" : ""
         } space-y-6 lg:space-y-0 w-full max-w-screen-xl`}
       >
         {/* calendar */}

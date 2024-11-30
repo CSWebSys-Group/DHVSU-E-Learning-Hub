@@ -2,31 +2,25 @@ import { Button } from "@/components/ui/button";
 import { StudentCreds, UsersType } from "@/lib/types";
 import { AnimatePresence } from "framer-motion";
 import { PencilIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Notification } from "@/components/SlideInNotifications";
+import { fetchUser } from "@/lib/utils";
+import { userInfo } from "os";
 
-const Profile = ({ user }: { user: UsersType }) => {
+const Profile = ({
+  user,
+  token,
+  setUser,
+}: {
+  user: UsersType;
+  token: string;
+  setUser: React.Dispatch<React.SetStateAction<UsersType | null>>;
+}) => {
   const user_creds = user.user_creds as StudentCreds;
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<
     { id: number; successMessage: string }[]
   >([]);
-
-  const addNotification = (message: string) => {
-    const id = Date.now();
-    setNotifications((prev) => [...prev, { id, successMessage: message }]);
-  };
-
-  const removeNotification = (id: number) => {
-    setNotifications((prev) => prev.filter((notif) => notif.id !== id));
-  };
-
-  // this saveProfile() function handles form submition and notifications
-  const saveProfile = () => {
-    setTimeout(() => {
-      addNotification("Profile saved successfully!");
-    }, 1000);
-  };
 
   const [studentInfo, setStudentInfo] = useState({
     fn: user_creds.fn,
@@ -34,8 +28,8 @@ const Profile = ({ user }: { user: UsersType }) => {
     middle_name: user_creds.middle_name || "",
     ext_name: user_creds.ext_name || "",
     gender: user_creds.gender || "",
-    birthday: user_creds.birthday || "",
     place_of_birth: user_creds.place_of_birth || "",
+    birthday: user_creds.birthday || new Date().toISOString().split("T")[0],
     civil_status: user_creds.civil_status || "",
     nationality: user_creds.nationality || "",
     religion: user_creds.religion || "",
@@ -49,14 +43,71 @@ const Profile = ({ user }: { user: UsersType }) => {
     barangay: user_creds.barangay || "",
     zip_code: user_creds.zip_code || null,
   });
+  const [errors, setErrors] = useState<string[]>([]);
 
-  const handleChange = (
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach((e) => {
+        addNotification(e);
+      });
+    }
+  }, [errors]);
+
+  const addNotification = (message: string) => {
+    const id = Date.now();
+    setNotifications((prev) => [...prev, { id, successMessage: message }]);
+  };
+
+  const removeNotification = (id: number) => {
+    setNotifications((prev) => prev.filter((notif) => notif.id !== id));
+  };
+
+  async function fetchUserData() {
+    const userData = await fetchUser(token);
+    setUser(userData);
+  }
+
+  // this saveProfile() function handles form submition and notifications
+  const saveProfile = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
+      setErrors([]);
+      const res = await fetch(`/api/students/${user.user?.id}`, {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the token here
+        },
+        body: JSON.stringify(studentInfo),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        if (data.errors) {
+          const errorMessages = Object.values(data.errors).flat() as string[];
+          setErrors(errorMessages);
+        } else {
+          setErrors((e) => [...e, "Something went wrong"]);
+        }
+      } else {
+        fetchUserData();
+        window.location.reload();
+        addNotification("Profile saved successfully!");
+      }
+    } catch (error) {
+      console.log(errors);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleChange = <T extends keyof typeof studentInfo>(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setStudentInfo((prevState) => ({
-      ...prevState,
-      [name]: value,
+    setStudentInfo((prev) => ({
+      ...prev,
+      [name]: prev[name as T] instanceof Number ? Number(value) : value,
     }));
   };
 
@@ -76,7 +127,7 @@ const Profile = ({ user }: { user: UsersType }) => {
                 (Student)
               </p>
               <p className="text-sm">Bachelor of Science in Computer Science</p>
-              <p className="text-sm">{user.user.id}</p>
+              <p className="text-sm">{user.user?.id}</p>
             </div>
 
             <button className="mt-4 px-4 py-2 bg-brown-700 text-white dark:text-brand bg-brand dark:bg-white text-sm font-semibold rounded-full flex items-center gap-2">
@@ -90,7 +141,10 @@ const Profile = ({ user }: { user: UsersType }) => {
             STUDENT INFORMATION
           </span>
 
-          <div className="bg-dhvsu-lighter dark:bg-dhvsu-light rounded-xl mx-0 my-2 w-full shadow-md p-6 space-y-4 min-w-0">
+          <form
+            onSubmit={saveProfile}
+            className="bg-dhvsu-lighter dark:bg-dhvsu-light rounded-xl mx-0 my-2 w-full shadow-md p-6 space-y-4 min-w-0"
+          >
             <div className="grid grid-cols-1 md:grid-cols-6 gap-4 dark:text-white text-dhvsu-light">
               <div className="flex flex-col col-span-2">
                 <label className="font-semibold mb-2">Last Name</label>
@@ -146,7 +200,7 @@ const Profile = ({ user }: { user: UsersType }) => {
                   onChange={handleChange}
                   name="gender"
                 >
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     Select an option
                   </option>
                   <option value="M">Male</option>
@@ -187,7 +241,7 @@ const Profile = ({ user }: { user: UsersType }) => {
                   onChange={handleChange}
                   name="civil_status"
                 >
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     Select an option
                   </option>
                   <option value="single">Single</option>
@@ -225,7 +279,7 @@ const Profile = ({ user }: { user: UsersType }) => {
                 <input
                   type="email"
                   className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                  value={user.user.email}
+                  value={user.user?.email}
                   disabled={true}
                   onChange={handleChange}
                   name="email"
@@ -340,8 +394,10 @@ const Profile = ({ user }: { user: UsersType }) => {
                 </div>{" "}
               </div>
             </div>
-            <Button onClick={() => saveProfile()}>Save</Button>
-          </div>
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? "Saving..." : "Save profile"}
+            </Button>
+          </form>
         </div>
       </div>
       <div>

@@ -110,7 +110,10 @@ function App() {
                     element={<Dashboard user={user!} />}
                   />
                   <Route path="calendar" element={<Calendar />} />
-                  <Route path="profile" element={<Profile user={user!} />} />
+                  <Route
+                    path="profile"
+                    element={<Profile user={user!} token={token!} />}
+                  />
                   <Route path="subjects" element={<Subjects />} />
                   <Route path="help" element={<Help />} />
                   <Route path="grades" element={<Grades />} />{" "}
