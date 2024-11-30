@@ -47,7 +47,10 @@ export default {
           light: "#8D4A3C",
           black: "#4A403A",
         },
-        red: "#FF7474",
+        red: {
+          100: "rgb(254, 226, 226)",
+          DEFAULT: "#FF7474",
+        },
         error: "#b80000",
         green: "#3DD9B3",
         blue: "#56B8FF",

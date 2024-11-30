@@ -22,6 +22,8 @@ import { EyeIcon, EyeOff } from "lucide-react";
 import { loginSchema } from "@/lib/schema";
 import { Link, useNavigate } from "react-router-dom";
 
+import { motion } from "framer-motion";
+
 const Login = ({
   setToken,
 }: {
@@ -95,62 +97,78 @@ const Login = ({
           className="auth-form z-20"
         >
           <h1 className="form-title">Login</h1>
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <div className="shad-form-item w-full">
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Email"
-                        className="shad-input"
-                        // type="email"
-                        {...field}
-                      />
-                    </FormControl>
-                  </div>
-                  <FormMessage className="shad-form-message" />
-                </FormItem>
-              );
+          <motion.div
+            initial={{
+              y: 5,
+              opacity: 0,
             }}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <div className="shad-form-item">
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <div className="flex items-center ">
+            animate={{
+              y: 0,
+              opacity: 1,
+            }}
+            transition={{
+              duration: 0.3,
+            }}
+            className="flex flex-col gap-4"
+          >
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <div className="shad-form-item w-full">
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
                         <Input
-                          placeholder="Password"
+                          placeholder="Email"
                           className="shad-input"
-                          type={showPassword ? "text" : "password"}
+                          // type="email"
                           {...field}
                         />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword((show) => !show)}
-                        >
-                          {showPassword ? (
-                            <EyeOff className="text-brand" />
-                          ) : (
-                            <EyeIcon className="text-brand" />
-                          )}
-                        </button>
-                      </div>
-                    </FormControl>
-                  </div>
-                  <FormMessage className="shad-form-message" />
-                </FormItem>
-              );
-            }}
-          />
+                      </FormControl>
+                    </div>
+                    <FormMessage className="shad-form-message" />
+                  </FormItem>
+                );
+              }}
+            />
+
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <div className="shad-form-item">
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <div className="flex items-center ">
+                          <Input
+                            placeholder="Password"
+                            className="shad-input"
+                            type={showPassword ? "text" : "password"}
+                            {...field}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword((show) => !show)}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="text-brand" />
+                            ) : (
+                              <EyeIcon className="text-brand" />
+                            )}
+                          </button>
+                        </div>
+                      </FormControl>
+                    </div>
+                    <FormMessage className="shad-form-message" />
+                  </FormItem>
+                );
+              }}
+            />
+          </motion.div>
           <Button
             type="submit"
             className="form-submit-button"
