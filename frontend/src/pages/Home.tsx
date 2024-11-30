@@ -78,10 +78,10 @@ export default function Home() {
               </li>
               <li>
                 <NavLink
-                  to="/online-services"
+                  to="/about-us"
                   className={({ isActive }) => getNavLinkClasses(isActive)}
                 >
-                  Online Services
+                  About
                 </NavLink>
               </li>
               <li>
