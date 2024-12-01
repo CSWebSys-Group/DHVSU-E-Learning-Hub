@@ -8,6 +8,7 @@ import { Heading } from "@/components/heading";
 
 import ProfileSetModal from "@/components/ProfileSetModal";
 import { fetchUser } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 
 const Profile = ({
   user,
@@ -125,7 +126,16 @@ const Profile = ({
           <div className="w-96 ml-0 bg-form rounded-lg shadow-drop-1 min-w-0">
             <div className="bg-form rounded-t-lg p-6 flex flex-col items-center">
               <div className="w-16 h-16 bg-DHVSU-white rounded-full flex items-center justify-center font-semibold border border-dhvsu dark:border-dhvsu-lighter">
-                Image
+                <Avatar className="h-8 w-8 rounded-lg">
+                  <AvatarImage
+                    src={user.user_creds.profile_picture!}
+                    alt={user?.user_creds.id.toString()}
+                  />
+                  <AvatarFallback className="rounded-lg">
+                    {user.user_creds.fn[0].toUpperCase() +
+                      user.user_creds.ln[0].toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
               </div>
 
               <div className="text-center mt-4 text-brand dark:text-white">
@@ -151,7 +161,15 @@ const Profile = ({
             </div>
           </div>
 
-          <ProfileSetModal isOpen={editProfile} setIsOpen={setEditProfile} />
+          {editProfile && (
+            <ProfileSetModal
+              isOpen={editProfile}
+              setIsOpen={setEditProfile}
+              userId={user.user.id}
+              token={token}
+              setErrors={setErrors}
+            />
+          )}
 
           <div className="flex-grow p-10 bg-dhvsu-light dark:bg-dhvsu-lighter rounded-xl w-full shadow-md">
             <span className="text-dhvsu-lighter font-semibold mx-3 dark:text-dhvsu-light">

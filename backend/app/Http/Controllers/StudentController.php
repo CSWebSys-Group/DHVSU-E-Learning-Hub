@@ -127,7 +127,7 @@ class StudentController extends Controller implements HasMiddleware
     public function updateProfilePicture(Request $request, Student $student)
     {
         $request->validate([
-            'file' => 'required|file|image|max:2048', // Accept only images up to 2MB
+            'file' => 'required|file|mimes:jpeg,png,jpg|max:2048', // Accept only images up to 2MB
         ]);
 
         // Get the authenticated user
@@ -148,6 +148,7 @@ class StudentController extends Controller implements HasMiddleware
         }
 
         if ($request->hasFile('file')) {
+
             // Delete old profile picture from Cloudinary
             if ($student->profile_picture !== null) {
                 $publicId = preg_replace('/^.+\/Project_Impossible\/(.+)\..+$/', 'Project_Impossible/$1', $student->profile_picture);
