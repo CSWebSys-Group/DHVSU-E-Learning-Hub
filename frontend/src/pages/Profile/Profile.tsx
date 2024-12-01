@@ -5,6 +5,8 @@ import { PencilIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Notification } from "@/components/SlideInNotifications";
 import { Heading } from "@/components/heading";
+
+import ProfileSetModal from "@/components/ProfileSetModal";
 import { fetchUser } from "@/lib/utils";
 
 const Profile = ({
@@ -17,6 +19,8 @@ const Profile = ({
   setUser: React.Dispatch<React.SetStateAction<UsersType | null>>;
 }) => {
   const user_creds = user.user_creds as StudentCreds;
+
+  const [editProfile, setEditProfile] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<
     { id: number; successMessage: string }[]
@@ -138,11 +142,16 @@ const Profile = ({
                 <p className="text-sm">{user.user.id}</p>
               </div>
 
-              <button className="mt-4 px-4 py-2 bg-brown-700 text-white dark:text-brand bg-brand dark:bg-white text-sm font-semibold rounded-full flex items-center gap-2">
+              <Button
+                className="mt-4 px-4 py-2 bg-brown-700 text-white dark:text-brand bg-brand dark:bg-white text-sm font-semibold rounded-full flex items-center gap-2"
+                onClick={() => setEditProfile(true)}
+              >
                 <PencilIcon size={14} /> Edit profile
-              </button>
+              </Button>
             </div>
           </div>
+
+          <ProfileSetModal isOpen={editProfile} setIsOpen={setEditProfile} />
 
           <div className="flex-grow p-10 bg-dhvsu-light dark:bg-dhvsu-lighter rounded-xl w-full shadow-md">
             <span className="text-dhvsu-lighter font-semibold mx-3 dark:text-dhvsu-light">

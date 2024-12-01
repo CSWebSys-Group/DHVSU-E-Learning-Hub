@@ -222,7 +222,6 @@ const Calendar = () => {
               })}
             </motion.div>
           </div>
-
           {/* actvities and upacoming tasks */}
           <div className="w-full lg:w-[320px] bg-[#8D4A3C] text-white rounded-lg  p-4 space-y-6">
             <div>
