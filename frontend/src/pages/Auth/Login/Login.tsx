@@ -17,12 +17,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { EyeIcon, EyeOff } from "lucide-react";
+import { EyeIcon, EyeOff, LoaderCircle } from "lucide-react";
 
 import { loginSchema } from "@/lib/schema";
 import { Link, useNavigate } from "react-router-dom";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import ErrorMessage from "@/components/ErrorMessage";
 
 const Login = ({
   setToken,
@@ -33,6 +34,7 @@ const Login = ({
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
+  const [hideErrorMessage, setHideErrorMessage] = useState(true);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -83,7 +85,7 @@ const Login = ({
         navigate("/user/dashboard");
       }
     } catch (error) {
-      console.log(error);
+      console.log(errors);
     } finally {
       setIsLoading(false);
     }
@@ -118,7 +120,7 @@ const Login = ({
                 return (
                   <FormItem>
                     <div className="shad-form-item w-full">
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel className="shad-form-label">Email</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Email"
@@ -141,7 +143,9 @@ const Login = ({
                 return (
                   <FormItem>
                     <div className="shad-form-item">
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel className="shad-form-label">
+                        Password
+                      </FormLabel>
                       <FormControl>
                         <div className="flex items-center ">
                           <Input
@@ -169,15 +173,26 @@ const Login = ({
               }}
             />
           </motion.div>
+          <AnimatePresence>
+            {errors.length > 0 && hideErrorMessage
+              ? errors.map((error, i) => (
+                  <ErrorMessage
+                    error={error}
+                    setHideErrorMessage={setHideErrorMessage}
+                    key={i}
+                  />
+                ))
+              : null}
+          </AnimatePresence>
           <Button
             type="submit"
             className="form-submit-button"
             disabled={isLoading}
           >
             Log In
-            {isLoading &&
-              // loader svg here
-              ""}
+            {isLoading && (
+              <LoaderCircle size={24} className="ml-2 animate-spin" />
+            )}
           </Button>
           <div className="body-2 flex justify-center">
             <p className="text-light-100">Don't have an account?</p>
