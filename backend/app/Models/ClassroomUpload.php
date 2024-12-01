@@ -14,4 +14,8 @@ class ClassroomUpload extends Model
         'type',
         'subject_id'
     ];
+
+    protected $casts = [
+        'subject_id' => 'integer'
+    ];
 }

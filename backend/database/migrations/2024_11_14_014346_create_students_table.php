@@ -34,7 +34,7 @@ return new class extends Migration
             $table->integer('zip_code')->nullable();
             $table->string('profile_picture')->nullable();
             $table->unsignedBigInteger('section_id')->nullable();
-            $table->json('tasks')->nullable();
+            $table->json('activities')->nullable();
             $table->json('grades')->nullable();
             $table->timestamps();
 
