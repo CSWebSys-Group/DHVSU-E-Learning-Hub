@@ -127,7 +127,9 @@ const Profile = ({
               <div className="text-center mt-4 text-brand dark:text-white">
                 <p className="text-lg font-bold">
                   {user_creds.ln}, {user_creds.fn}{" "}
-                  {user_creds.middle_name ? user_creds.middle_name + "." : ""}{" "}
+                  {user_creds.middle_name
+                    ? user_creds.middle_name[0].toUpperCase() + "."
+                    : ""}{" "}
                   (Student)
                 </p>
                 <p className="text-sm">
@@ -330,7 +332,7 @@ const Profile = ({
                 <div className="flex flex-col col-span-2">
                   <label className=" font-semibold mb-2">Blood Type</label>
                   <input
-                    type="email"
+                    type="text"
                     className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
                     value={studentInfo.blood_type}
                     onChange={handleChange}

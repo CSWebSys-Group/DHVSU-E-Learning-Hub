@@ -172,7 +172,7 @@ export function AppSidebar({
       </SidebarContent>
       <SidebarFooter>
         <NavUser
-          user={user}
+          user={user!}
           token={token}
           setToken={setToken}
           setUser={setUser}

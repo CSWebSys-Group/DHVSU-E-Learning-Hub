@@ -80,7 +80,7 @@ class StudentController extends Controller implements HasMiddleware
             'middle_name' => 'nullable|sometimes|string|max:100',
             'ext_name' => 'nullable|sometimes|string|max:10',
             'place_of_birth' => 'nullable|sometimes|string',
-            'civil_status' => 'nullable|sometimes|in:$civil_status',
+            'civil_status' => 'nullable|sometimes|in:single,married,widowed',
             'nationality' => 'nullable|sometimes|string',
             'religion' => 'nullable|sometimes|string',
             'contact_number' => 'nullable|sometimes|string',

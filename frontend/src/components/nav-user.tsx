@@ -25,9 +25,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AppContext } from "@/context/AppContext";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { UsersType } from "@/lib/types";
 
@@ -39,7 +37,7 @@ export function NavUser({
 }: {
   token: string | null;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
-  user: UsersType | null;
+  user: UsersType;
   setUser: React.Dispatch<React.SetStateAction<UsersType | null>>;
 }) {
   const navigate = useNavigate();
@@ -85,7 +83,10 @@ export function NavUser({
                   src={userAvatar}
                   alt={user?.user_creds.id.toString()}
                 />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {user.user_creds.fn[0].toUpperCase() +
+                    user.user_creds.ln[0].toUpperCase()}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
@@ -109,7 +110,11 @@ export function NavUser({
                     src={userAvatar}
                     alt={user?.user_creds.id.toString()}
                   />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {" "}
+                    {user.user_creds.fn[0].toUpperCase() +
+                      user.user_creds.ln[0].toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight text-white">
                   <span className="truncate font-semibold">
@@ -121,14 +126,15 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
+              <Link to="/user/profile">
+                <DropdownMenuItem>
+                  <BadgeCheck />
+                  Account
+                </DropdownMenuItem>
+              </Link>
+              <Link to="/user/subjects">
+                <DropdownMenuItem>Subjects</DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <button className="w-full" onClick={handleLogout}>

@@ -58,7 +58,9 @@ const RootLayout = ({
                   {sample.map((crumb, index) => (
                     <React.Fragment key={index}>
                       <BreadcrumbItem className="hidden md:block">
-                        <BreadcrumbLink href={crumb}>
+                        <BreadcrumbLink
+                          href={`/${sample.slice(0, index + 1).join("/")}`}
+                        >
                           {crumb.charAt(0).toUpperCase() + crumb.slice(1)}
                         </BreadcrumbLink>
                       </BreadcrumbItem>
