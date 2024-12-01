@@ -6,7 +6,7 @@ import Calendar from "../Calendar/Calendar";
 const Dashboard = ({ user }: { user: UsersType }) => {
   const today = new Date();
   return (
-    <div className="rounded-4xl p-8 flex flex-col items-center md:items-start lg:flex-row">
+    <div className="rounded-4xl p-8 flex flex-col items-center md:items-start lg:flex-row md:min-w-[720px] lg:min-w-[1280px]">
       <section className="left-section w-full p-4">
         <div className="flex justify-between mb-8">
           <div>

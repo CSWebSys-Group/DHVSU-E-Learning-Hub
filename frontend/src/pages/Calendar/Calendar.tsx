@@ -222,9 +222,8 @@ const Calendar = () => {
               })}
             </motion.div>
           </div>
-
           {/* actvities and upacoming tasks */}
-          <div className="w-full lg:w-[320px] bg-[#8D4A3C] text-white rounded-lg p-4 space-y-6">
+          <div className="w-full lg:w-[320px] bg-[#8D4A3C] text-white rounded-lg  p-4 space-y-6">
             <div>
               <h2 className="text-lg font-semibold">Today's Activity</h2>
               {getActivitiesForDay(todayDate).length > 0 ? (
@@ -244,57 +243,35 @@ const Calendar = () => {
                 <p>No activity for today</p>
               )}
             </div>
-            {/* actvities and upacoming tasks */}
-            <div className="w-full lg:w-[320px] bg-[#8D4A3C] text-white rounded-lg  p-4 space-y-6">
-              <div>
-                <h2 className="text-lg font-semibold">Today's Activity</h2>
-                {getActivitiesForDay(todayDate).length > 0 ? (
+
+            <motion.div
+              className="mt-4 bg-white px-2 py-2 rounded-lg"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.7 }}
+            >
+              <h2 className="text-lg font-semibold text-brand mb-2">
+                Upcoming Activities
+              </h2>
+              {Object.keys(upcomingTasks).map((date, index) => {
+                const upcomingTask = getUpcomingTaskForDay(date)[0];
+                return (
                   <motion.div
-                    className="bg-[#D98A80] p-3 rounded-lg my-2"
+                    key={index}
+                    className="p-2 bg-[#BC7162] text-white rounded-lg mb-2"
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.6 }}
+                    transition={{ delay: index * 0.2, duration: 0.7 }}
                   >
-                    <h3 className="font-semibold">
-                      {getActivitiesForDay(todayDate)[0]?.title}
-                    </h3>
-                    <p>{getActivitiesForDay(todayDate)[0]?.description}</p>
-                    <p>{getActivitiesForDay(todayDate)[0]?.time}</p>
+                    <h3 className="font-semibold">{upcomingTask?.title}</h3>
+                    <p className="text-sm">{upcomingTask?.description}</p>
+                    <p className="text-xs">
+                      {upcomingTask?.date} at {upcomingTask?.time}
+                    </p>
                   </motion.div>
-                ) : (
-                  <p>No activity for today</p>
-                )}
-              </div>
-
-              <motion.div
-                className="mt-4 bg-white px-2 py-2 rounded-lg"
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.7 }}
-              >
-                <h2 className="text-lg font-semibold text-brand mb-2">
-                  Upcoming Activities
-                </h2>
-                {Object.keys(upcomingTasks).map((date, index) => {
-                  const upcomingTask = getUpcomingTaskForDay(date)[0];
-                  return (
-                    <motion.div
-                      key={index}
-                      className="p-2 bg-[#BC7162] text-white rounded-lg mb-2"
-                      initial={{ scale: 0.9, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: index * 0.2, duration: 0.7 }}
-                    >
-                      <h3 className="font-semibold">{upcomingTask?.title}</h3>
-                      <p className="text-sm">{upcomingTask?.description}</p>
-                      <p className="text-xs">
-                        {upcomingTask?.date} at {upcomingTask?.time}
-                      </p>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            </div>
+                );
+              })}
+            </motion.div>
           </div>
         </div>
       </motion.div>
