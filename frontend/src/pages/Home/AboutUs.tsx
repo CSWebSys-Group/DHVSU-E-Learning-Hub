@@ -175,8 +175,6 @@ const teamMembers = [
       twitter: "#",
     },
   },
-
-  // Add the rest of your team members in similar fashion
 ];
 
 const About = () => {
