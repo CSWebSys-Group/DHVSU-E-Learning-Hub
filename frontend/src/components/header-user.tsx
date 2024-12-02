@@ -54,7 +54,10 @@ export function UserNav({
       <DropdownMenuTrigger asChild>
         <Avatar className="h-8 w-8">
           <AvatarImage />
-          <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+          <AvatarFallback className="rounded-lg">
+            {user.user_creds.fn[0].toUpperCase() +
+              user.user_creds.ln[0].toUpperCase()}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -74,17 +77,19 @@ export function UserNav({
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link to="/profile">
+          <Link to="/user/profile">
             <DropdownMenuItem>
               Profile
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem>
+          {/* <DropdownMenuItem>
             Settings
             <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>New Team</DropdownMenuItem>
+          </DropdownMenuItem> */}
+          <Link to="/user/subjects">
+            <DropdownMenuItem>Subjects</DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <button className="w-full" onClick={handleLogout}>

@@ -1,11 +1,16 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // Some react-hook-form import fucking shit
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { motion, Variants, useAnimationControls } from "framer-motion";
+import {
+  motion,
+  Variants,
+  useAnimationControls,
+  AnimatePresence,
+} from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { EyeIcon, EyeOff } from "lucide-react";
+import { EyeIcon, EyeOff, LoaderCircle, X } from "lucide-react";
 
 import { registerSchema } from "@/lib/schema";
 import { Link, useNavigate } from "react-router-dom";
@@ -30,7 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Notification } from "@/components/SlideInNotifications";
+import ErrorMessage from "@/components/ErrorMessage";
 
 const steps = [
   {
@@ -64,14 +69,13 @@ const SignUp = ({
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const prevButtonAnimControls = useAnimationControls();
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const multiStepProgressBar = useAnimationControls();
   const [otpModalActive, setOtpModalActive] = useState(false);
   const [otpSuccess, setOtpSuccess] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
 
-  const [isFocused, setIsFocused] = useState(false);
-  const showPasswordButtonRef = useRef(null);
+  const [hideErrorMessage, setHideErrorMessage] = useState(true);
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -143,11 +147,6 @@ const SignUp = ({
     }
   }, [otpSuccess]);
 
-  const prevButtonVariants: Variants = {
-    initial: { x: "-100%", opacity: 0 },
-    animate: { x: 0, opacity: 1 },
-  };
-
   const progressBarVariants: Variants = {
     initial: { width: `${100 / steps.length}%` },
     animate: { width: `${((currentStep + 1) / steps.length) * 100}%` },
@@ -156,7 +155,7 @@ const SignUp = ({
   // Getting the form data (this function's purpose is to send the data to the api e.g localhost:8000/api/users)
   const handleSubmit = async () => {
     try {
-      setOtpModalActive(true);
+      setIsLoading(true);
       const res = await fetch("/api/send-otp", {
         method: "post",
         body: JSON.stringify({ email: form.getValues("email") }),
@@ -170,6 +169,8 @@ const SignUp = ({
           setErrors(errorMessages);
         }
       }
+      setIsLoading(false);
+      setOtpModalActive(true);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -185,7 +186,7 @@ const SignUp = ({
       shouldFocus: true,
     }); // Trigger validation for current step fields
 
-    if (currentStep === 1) {
+    if (currentStep === 2) {
       if (
         isStepValid &&
         form.getValues("password") === form.getValues("password_confirmation")
@@ -211,9 +212,6 @@ const SignUp = ({
 
   return (
     <>
-      {
-        // errors.length > 0 && errors.map((e, i) => <Notification successMessage={e} id={i}  />)
-      }
       {otpModalActive && (
         <OtpModal
           setOtpModalActive={setOtpModalActive}
@@ -346,7 +344,7 @@ const SignUp = ({
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="First Name"
+                            placeholder="Juan"
                             className="shad-input"
                             // type="email"
                             {...field}
@@ -370,7 +368,7 @@ const SignUp = ({
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="Last Name"
+                            placeholder="Dela Cruz"
                             className="shad-input"
                             // type="email"
                             {...field}
@@ -412,38 +410,21 @@ const SignUp = ({
                         <FormControl>
                           <div className="flex items-center ">
                             <Input
-                              placeholder="Password"
+                              placeholder="Create a strong password"
                               className="shad-input"
                               type={showPassword ? "text" : "password"}
-                              onFocus={() => setIsFocused(true)}
-                              onBlur={(event) => {
-                                // Prevent onBlur logic if the button is clicked
-                                if (
-                                  showPasswordButtonRef.current &&
-                                  showPasswordButtonRef.current.contains(
-                                    event.relatedTarget
-                                  )
-                                ) {
-                                  return;
-                                }
-                                setIsFocused(false);
-                              }}
-                              value={field.value}
-                              onChange={field.onChange}
+                              {...field}
                             />
-                            {isFocused && (
-                              <button
-                                type="button"
-                                ref={showPasswordButtonRef}
-                                onClick={() => setShowPassword((show) => !show)}
-                              >
-                                {showPassword ? (
-                                  <EyeOff className="text-brand" />
-                                ) : (
-                                  <EyeIcon className="text-brand" />
-                                )}
-                              </button>
-                            )}
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword((show) => !show)}
+                            >
+                              {showPassword ? (
+                                <EyeOff className="text-brand" />
+                              ) : (
+                                <EyeIcon className="text-brand" />
+                              )}
+                            </button>
                           </div>
                         </FormControl>
                       </div>
@@ -460,18 +441,34 @@ const SignUp = ({
                     <FormItem>
                       <div className="shad-form-item">
                         <FormLabel className="shad-form-label">
-                          Password Confirm
+                          Confirm Password
                         </FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder="Password Confirm"
-                            className="shad-input"
-                            type="password"
-                            {...field}
-                          />
+                          <div className="flex items-center ">
+                            <Input
+                              placeholder="Re-enter your password"
+                              className="shad-input"
+                              type={showConfirmPassword ? "text" : "password"}
+                              {...field}
+                            />
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setShowConfirmPassword((show) => !show)
+                              }
+                            >
+                              {showConfirmPassword ? (
+                                <EyeOff className="text-brand" />
+                              ) : (
+                                <EyeIcon className="text-brand" />
+                              )}
+                            </button>
+                          </div>
                         </FormControl>
                       </div>
-                      <FormMessage className="shad-form-message" />
+                      <FormMessage className="shad-form-message">
+                        {form.formState.errors.password_confirmation?.message}
+                      </FormMessage>
                     </FormItem>
                   );
                 }}
@@ -506,7 +503,7 @@ const SignUp = ({
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="Email Address"
+                            placeholder="sample@dhvsu.edu.ph"
                             className="shad-input"
                             // type="email"
                             {...field}
@@ -520,6 +517,19 @@ const SignUp = ({
               />
             </motion.div>
           )}
+
+          {/* Error div */}
+          <AnimatePresence>
+            {errors.length > 0 && hideErrorMessage
+              ? errors.map((error, i) => (
+                  <ErrorMessage
+                    error={error}
+                    setHideErrorMessage={setHideErrorMessage}
+                    key={i}
+                  />
+                ))
+              : null}
+          </AnimatePresence>
 
           {/* for Buttons */}
           <div className="flex gap-2">
@@ -542,9 +552,9 @@ const SignUp = ({
                 disabled={isLoading}
               >
                 Sign up
-                {isLoading &&
-                  // loading animation here
-                  ""}
+                {isLoading && (
+                  <LoaderCircle size={24} className="ml-2 animate-spin" />
+                )}
               </Button>
             ) : (
               <Button
@@ -565,7 +575,8 @@ const SignUp = ({
         </form>
       </Form>
       <p className="px-8 mt-4 text-center text-sm text-muted-foreground">
-        By clicking continue, you agree to our{" "}
+        By clicking <span className="text-dhvsu font-bold ">Sign up</span> you
+        agree to our{" "}
         <Link
           to="/terms"
           className="underline underline-offset-4 hover:text-primary"

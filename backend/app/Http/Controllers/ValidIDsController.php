@@ -13,7 +13,7 @@ class ValidIDsController extends Controller
      */
     public function index()
     {
-        //
+        return ValidIDs::all();
     }
 
     /**

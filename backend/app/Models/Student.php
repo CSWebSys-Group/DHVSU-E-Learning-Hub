@@ -20,7 +20,7 @@ class Student extends Model
         'gender',
         'birthday',
         'section_id',
-        'tasks',
+        'activities',
         'grades',
         'profile_picture',
         'middle_name',
@@ -41,7 +41,7 @@ class Student extends Model
     ];
 
     protected $casts = [
-        'tasks' => 'array',
+        'activities' => 'array',
         'grades' => 'array',
         'birthday' => 'date'
     ];
@@ -56,6 +56,6 @@ class Student extends Model
      */
     public function getBirthdayAttribute($value)
     {
-        return Carbon::parse($value)->format('m-d-Y');
+        return Carbon::parse($value)->format('Y-m-d');
     }
 }

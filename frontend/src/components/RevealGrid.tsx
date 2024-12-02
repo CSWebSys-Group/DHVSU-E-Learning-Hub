@@ -14,7 +14,7 @@ const RevealGrid = ({ user }: { user: UsersType }) => {
         transition={{
           staggerChildren: 0.05,
         }}
-        className="grid grid-flow-dense grid-cols-12 grid-rows-4 gap-4"
+        className="grid grid-flow-dense lg:grid-cols-12 grid-rows-4 gap-4"
       >
         <HeaderBlock fn={user.user_creds.fn} ln={user.user_creds.ln} />
         <SocialsBlock />
@@ -49,7 +49,7 @@ const Block = ({ className, ...rest }: BlockProps) => {
         damping: 50,
       }}
       className={twMerge(
-        "col-span-4 rounded-3xl bordertext-3xl leading-snug p-5 shadow-drop-1",
+        "col-span-4 rounded-3xl bordertext-3xl leading-snug p-5 shadow-drop-1 flex-shrink-0",
         className
       )}
       {...rest}

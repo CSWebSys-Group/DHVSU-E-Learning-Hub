@@ -16,10 +16,12 @@ class ActivityUpload extends Model
         'title',
         'description',
         'attachments',
-        'total_score'
+        'total_score',
+        'deadline_id'
     ];
 
     protected $casts = [
         'attachments' => 'array',
+        'total_score' => 'integer'
     ];
 }

@@ -20,6 +20,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import KBar from "@/components/kbar";
 
 import { UsersType } from "@/lib/types";
+import { Slash } from "lucide-react";
 
 const RootLayout = ({
   user,
@@ -57,12 +58,16 @@ const RootLayout = ({
                   {sample.map((crumb, index) => (
                     <React.Fragment key={index}>
                       <BreadcrumbItem className="hidden md:block">
-                        <BreadcrumbLink href={crumb}>
+                        <BreadcrumbLink
+                          href={`/${sample.slice(0, index + 1).join("/")}`}
+                        >
                           {crumb.charAt(0).toUpperCase() + crumb.slice(1)}
                         </BreadcrumbLink>
                       </BreadcrumbItem>
-                      {index > 1 && (
-                        <BreadcrumbSeparator className="hidden md:block" />
+                      {index < sample.length - 1 && (
+                        <BreadcrumbSeparator>
+                          <Slash />
+                        </BreadcrumbSeparator>
                       )}
                     </React.Fragment>
                   ))}
