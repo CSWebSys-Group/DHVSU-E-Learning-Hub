@@ -8,6 +8,7 @@ import ifaImg from "../../assets/images/about-team-img/ifa.png";
 import josephImg from "../../assets/images/about-team-img/joseph.png";
 import kielImg from "../../assets/images/about-team-img/kiel.png";
 import kyleImg from "../../assets/images/about-team-img/kyle.png";
+import cyrusImg from "@/assets/images/about-team-img/cyrus.png";
 
 import teamBg from "../../assets/images/about-team-img/team-bg.png";
 import {
@@ -141,8 +142,8 @@ const teamMembers = [
   },
   {
     name: "Cyrus Ezekiel Macapagal",
-    role: "back flip Developer",
-    image: "",
+    role: "UX/UI Designer",
+    image: cyrusImg,
     description:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur nemo aliquam illum libero voluptate, cum natus quibusdam repellendu",
     socialLinks: {
@@ -270,7 +271,7 @@ const About = () => {
         <div className="max-w-screen-xl lg:mt-10 flex flex-col justify-center items-center py-4">
           <div className="text-center max-w-screen-lg mx-auto">
             <h1 className="text-brand font-bold uppercase text-5xl lg:text-5xl">
-              Meet The Best Team
+              Meet The Team
             </h1>
             <hr className="mb-5 mt-2 w-full border-t-[5px] rounded-full border-brand" />
           </div>
