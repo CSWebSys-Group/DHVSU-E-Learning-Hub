@@ -123,7 +123,7 @@ function App() {
                   />
                   <Route path="subjects" element={<Subjects />} />
                   <Route path="help" element={<Help />} />
-                  <Route path="grades" element={<Grades />} />{" "}
+                  <Route path="grades" element={<Grades user={user!} />} />{" "}
                 </Route>
               </>
             )}

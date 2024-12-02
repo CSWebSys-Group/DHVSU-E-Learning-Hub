@@ -34,10 +34,6 @@ export const navItems: NavItem[] = [
         title: "Grades",
         url: "/user/grades",
       },
-      {
-        title: "Subject Enrolled",
-        url: "/user/subject-enrolled",
-      },
     ],
   },
   {

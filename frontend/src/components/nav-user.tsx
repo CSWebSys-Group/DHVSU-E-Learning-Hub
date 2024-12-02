@@ -111,7 +111,6 @@ export function NavUser({
                     alt={user?.user_creds.id.toString()}
                   />
                   <AvatarFallback className="rounded-lg">
-                    {" "}
                     {user.user_creds.fn[0].toUpperCase() +
                       user.user_creds.ln[0].toUpperCase()}
                   </AvatarFallback>

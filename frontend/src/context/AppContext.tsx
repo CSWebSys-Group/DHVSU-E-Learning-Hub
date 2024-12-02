@@ -25,22 +25,6 @@ export default function AppProvider({ children }: ParamType) {
     setUser(userData);
   }
 
-  // async function getUser() {
-  //   try {
-  //     const res = await fetch("/api/user", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     if (!res.ok) throw new Error(`Failed to fetch user: ${res.status}`);
-  //     const data = await res.json();
-  //     setUser(data);
-  //   } catch (error) {
-  //     console.error("Error fetching user:", error);
-  //     setUser(null); // Reset user state on error
-  //   }
-  // }
-
   // Memoize the context value to prevent unnecessary re-renders
   const contextValue = useMemo(
     () => ({ token, setToken, user, setUser }),

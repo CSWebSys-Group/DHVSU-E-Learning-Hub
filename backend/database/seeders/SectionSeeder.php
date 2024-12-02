@@ -23,8 +23,8 @@ class SectionSeeder extends Seeder
                 Section::create([
                     'year' => 3, // Assuming year 3, adjust as needed
                     'course_id' => $course->id,
-                    'students' => json_encode([]), // Start with an empty student list
-                    'subjects' => json_encode([]), // Start with an empty subject list
+                    'students' => [], // Start with an empty student list
+                    'subjects' => [], // Start with an empty subject list
                     'name' => '3' . $suffix, // Section name like '3A', '3B', '3C'
                 ]);
             }

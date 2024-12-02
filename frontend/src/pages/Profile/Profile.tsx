@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { StudentCreds, UsersType } from "@/lib/types";
+import { CourseType, StudentCreds, UsersType } from "@/lib/types";
 import { AnimatePresence } from "framer-motion";
 import { PencilIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import { Heading } from "@/components/heading";
 import ProfileSetModal from "@/components/ProfileSetModal";
 import { fetchUser } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const Profile = ({
   user,
@@ -20,9 +21,9 @@ const Profile = ({
   setUser: React.Dispatch<React.SetStateAction<UsersType | null>>;
 }) => {
   const user_creds = user.user_creds as StudentCreds;
-
+  const [courseName, setCourseName] = useState<string | null>(null);
   const [editProfile, setEditProfile] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [notifications, setNotifications] = useState<
     { id: number; successMessage: string }[]
   >([]);
@@ -49,6 +50,35 @@ const Profile = ({
     zip_code: user_creds.zip_code || null,
   });
   const [errors, setErrors] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function getCourse() {
+      setIsLoading(true); // Start loading
+      try {
+        const res = await fetch("/api/courses");
+        if (!res.ok) throw new Error("Failed to fetch courses");
+        const data = await res.json();
+
+        const sectionRes = await fetch(
+          `/api/sections/${user_creds.section_id}`
+        );
+        if (!sectionRes.ok) throw new Error("Failed to fetch section");
+
+        const sectionData = await sectionRes.json();
+
+        data.forEach((course: CourseType) => {
+          if (course.id === sectionData.section.course_id) {
+            setCourseName(course.course_name);
+          }
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    getCourse();
+  }, [user_creds.section_id]);
 
   useEffect(() => {
     if (errors.length > 0) {
@@ -116,6 +146,8 @@ const Profile = ({
     }));
   };
 
+  if (isLoading) return <LoadingSpinner loading={true} />;
+
   return (
     <>
       <div className="px-6 py-4">
@@ -125,9 +157,10 @@ const Profile = ({
         <div className="flex gap-3">
           <div className="w-96 ml-0 bg-form rounded-lg shadow-drop-1 min-w-0">
             <div className="bg-form rounded-t-lg p-6 flex flex-col items-center">
-              <div className="w-16 h-16 bg-DHVSU-white rounded-full flex items-center justify-center font-semibold border border-dhvsu dark:border-dhvsu-lighter">
-                <Avatar className="h-8 w-8 rounded-lg">
+              <div className="relative z-10 w-16 h-16 bg-DHVSU-white rounded-full flex items-center justify-center font-semibold border border-dhvsu dark:border-dhvsu-lighter">
+                <Avatar className="h-16 w-16 rounded-full overflow-hidden flex items-center justify-center">
                   <AvatarImage
+                    className="h-full w-full object-cover object-center"
                     src={user.user_creds.profile_picture!}
                     alt={user?.user_creds.id.toString()}
                   />
@@ -144,11 +177,17 @@ const Profile = ({
                   {user_creds.middle_name
                     ? user_creds.middle_name[0].toUpperCase() + "."
                     : ""}{" "}
-                  (Student)
+                  {user.user.user_type === "S"
+                    ? "(Student)"
+                    : user.user.user_type === "T"
+                    ? "(Teacher)"
+                    : ""}
                 </p>
-                <p className="text-sm">
-                  Bachelor of Science in Computer Science
-                </p>
+                {courseName && (
+                  <p className="text-sm">
+                    Bachelor of Science in Computer Science
+                  </p>
+                )}
                 <p className="text-sm">{user.user.id}</p>
               </div>
 
