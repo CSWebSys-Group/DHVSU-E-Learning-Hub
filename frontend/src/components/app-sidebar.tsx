@@ -37,11 +37,6 @@ import { Link, useLocation } from "react-router-dom";
 import { UsersType } from "@/lib/types";
 
 const items = {
-  user: {
-    name: "ishowspeed",
-    email: "2022308552@dhvsu.ph",
-    avatar: "/avatars/shadcn.jpg",
-  },
   subMenuList: [
     {
       title: "Student",
@@ -66,7 +61,7 @@ const items = {
   navSecondary: [
     {
       title: "Settings",
-      url: "/user/settings",
+      url: "/user/profile",
       icon: Settings,
     },
     {
@@ -95,7 +90,7 @@ export function AppSidebar({
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
+              <Link to={"/user/dashboard"}>
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
                   <img src={dhvsuLogo} loading="lazy" />
                 </div>
@@ -104,7 +99,7 @@ export function AppSidebar({
                     DON HONORIO VENTURA STATE UNIVERSITY
                   </span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -172,7 +167,7 @@ export function AppSidebar({
       </SidebarContent>
       <SidebarFooter>
         <NavUser
-          user={user}
+          user={user!}
           token={token}
           setToken={setToken}
           setUser={setUser}

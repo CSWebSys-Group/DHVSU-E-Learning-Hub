@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 // Pages
@@ -108,19 +108,26 @@ function App() {
                   }
                 >
                   <Route
+                    index
+                    element={<Navigate to="/user/dashboard" replace />}
+                  />
+                  <Route
                     path="dashboard"
                     element={<Dashboard user={user!} />}
                   />
                   <Route path="calendar" element={<Calendar />} />
                   <Route
                     path="profile"
-                    element={<Profile user={user!} token={token!} />}
+                    element={
+                      <Profile user={user!} token={token!} setUser={setUser} />
+                    }
                   />
                   <Route path="subjects" element={<Subjects />} />
                   <Route path="help" element={<Help />} />
-                  <Route path="grades" element={<Grades />} />
+
                   <Route path="submissions" element={<Submissions />} />
                   <Route path="task" element={<SubjectTask />} />
+                  <Route path="grades" element={<Grades user={user!} />} />{" "}
                 </Route>
               </>
             )}

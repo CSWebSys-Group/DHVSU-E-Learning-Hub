@@ -1,14 +1,30 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { FiAlertCircle } from "react-icons/fi";
 import FileInput from "./ui/file-input";
+import { useEffect, useState } from "react";
 
 const ProfileSetModal = ({
   isOpen,
   setIsOpen,
+  userId,
+  token,
+  setErrors,
 }: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  userId: number;
+  token: string;
+  setErrors: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
+  const [uploadDone, setUploadDone] = useState(false);
+
+  useEffect(() => {
+    if (uploadDone) {
+      setIsOpen(false);
+      window.location.reload();
+    }
+  }, [uploadDone]);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -28,21 +44,14 @@ const ProfileSetModal = ({
           >
             <div className="relative z-10">
               <h1 className="font-bold">Upload your profile.</h1>
-              <FileInput className="p-16 mt-5 mb-5 border-2 border-neutral-200 border-dashed" />
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="bg-transparent hover:bg-white/10 transition-colors text-white font-semibold w-full py-2 rounded"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="bg-white hover:opacity-90 transition-opacity text-dhvsu font-semibold w-full py-2 rounded"
-                >
-                  Upload
-                </button>
-              </div>
+              <FileInput
+                userId={userId}
+                setUploadDone={setUploadDone}
+                token={token}
+                setIsOpen={setIsOpen}
+                setErrors={setErrors}
+                className="p-16 mt-5 mb-5 border-2 border-neutral-200 border-dashed"
+              />
             </div>
           </motion.div>
         </motion.div>

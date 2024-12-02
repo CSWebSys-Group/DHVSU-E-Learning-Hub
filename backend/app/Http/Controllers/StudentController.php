@@ -80,7 +80,7 @@ class StudentController extends Controller implements HasMiddleware
             'middle_name' => 'nullable|sometimes|string|max:100',
             'ext_name' => 'nullable|sometimes|string|max:10',
             'place_of_birth' => 'nullable|sometimes|string',
-            'civil_status' => 'nullable|sometimes|in:$civil_status',
+            'civil_status' => 'nullable|sometimes|in:single,married,widowed',
             'nationality' => 'nullable|sometimes|string',
             'religion' => 'nullable|sometimes|string',
             'contact_number' => 'nullable|sometimes|string',
@@ -127,7 +127,7 @@ class StudentController extends Controller implements HasMiddleware
     public function updateProfilePicture(Request $request, Student $student)
     {
         $request->validate([
-            'file' => 'required|file|image|max:2048', // Accept only images up to 2MB
+            'file' => 'required|file|mimes:jpeg,png,jpg|max:2048', // Accept only images up to 2MB
         ]);
 
         // Get the authenticated user
@@ -148,6 +148,7 @@ class StudentController extends Controller implements HasMiddleware
         }
 
         if ($request->hasFile('file')) {
+
             // Delete old profile picture from Cloudinary
             if ($student->profile_picture !== null) {
                 $publicId = preg_replace('/^.+\/Project_Impossible\/(.+)\..+$/', 'Project_Impossible/$1', $student->profile_picture);

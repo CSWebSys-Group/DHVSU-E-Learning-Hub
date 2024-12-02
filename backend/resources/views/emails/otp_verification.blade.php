@@ -9,7 +9,7 @@
     <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; margin-top: 20px; border-collapse: collapse;">
       <tr>
         <td style="background-color: #701d0b; color: #ffffff; text-align: center; padding: 40px 20px;">
-         <img src="https://res.cloudinary.com/drhys0n0f/image/upload/v1732936520/dhvsu-logo-v2_vxksfo.png" width="50" height="50" />
+         <img src="https://res.cloudinary.com/drhys0n0f/image/upload/v1733127173/dhvsu-logo-v2_iiudfh.png" width="50" height="50" />
           <h1 style="margin: 0; font-size: 24px; font-weight: bold;">Verify Your Account</h1>
           <p style="margin: 10px 0; font-size: 16px;">
             Enter the code below to complete your registration.

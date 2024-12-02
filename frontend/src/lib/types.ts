@@ -118,3 +118,41 @@ export type Subject = {
   subject_name: string;
   profileImage: string | null;
 };
+
+export type CourseType = {
+  id: number;
+  course_code: string;
+  course_name: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type SubjectType = {
+  id: number;
+  subject_code: string;
+  subject_name: string;
+  section_id: number;
+  teacher_id: number;
+  classroom_uploads: string[];
+  type: "core" | "minor";
+  created_at: string;
+  updated_at: string;
+};
+
+export type GradeType = {
+  id: number;
+  student_id: number;
+  subject_code: string;
+  grade: number;
+};
+
+export type SectionType = {
+  id: number;
+  year: number;
+  name: string;
+  course_id: number;
+  students: number[];
+  subjects: number[];
+  created_at: string;
+  updated_at: string;
+};

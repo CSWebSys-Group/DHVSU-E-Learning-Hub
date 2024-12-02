@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { StudentCreds, UsersType } from "@/lib/types";
+import { CourseType, StudentCreds, UsersType } from "@/lib/types";
 import { AnimatePresence } from "framer-motion";
 import { PencilIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -8,6 +8,8 @@ import { Heading } from "@/components/heading";
 
 import ProfileSetModal from "@/components/ProfileSetModal";
 import { fetchUser } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const Profile = ({
   user,
@@ -19,9 +21,9 @@ const Profile = ({
   setUser: React.Dispatch<React.SetStateAction<UsersType | null>>;
 }) => {
   const user_creds = user.user_creds as StudentCreds;
-
+  const [courseName, setCourseName] = useState<string | null>(null);
   const [editProfile, setEditProfile] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [notifications, setNotifications] = useState<
     { id: number; successMessage: string }[]
   >([]);
@@ -48,6 +50,35 @@ const Profile = ({
     zip_code: user_creds.zip_code || null,
   });
   const [errors, setErrors] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function getCourse() {
+      setIsLoading(true); // Start loading
+      try {
+        const res = await fetch("/api/courses");
+        if (!res.ok) throw new Error("Failed to fetch courses");
+        const data = await res.json();
+
+        const sectionRes = await fetch(
+          `/api/sections/${user_creds.section_id}`
+        );
+        if (!sectionRes.ok) throw new Error("Failed to fetch section");
+
+        const sectionData = await sectionRes.json();
+
+        data.forEach((course: CourseType) => {
+          if (course.id === sectionData.section.course_id) {
+            setCourseName(course.course_name);
+          }
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    getCourse();
+  }, [user_creds.section_id]);
 
   useEffect(() => {
     if (errors.length > 0) {
@@ -115,6 +146,8 @@ const Profile = ({
     }));
   };
 
+  if (isLoading) return <LoadingSpinner loading={true} />;
+
   return (
     <>
       <div className="px-6 py-4">
@@ -124,19 +157,37 @@ const Profile = ({
         <div className="flex gap-3">
           <div className="w-96 ml-0 bg-form rounded-lg shadow-drop-1 min-w-0">
             <div className="bg-form rounded-t-lg p-6 flex flex-col items-center">
-              <div className="w-16 h-16 bg-DHVSU-white rounded-full flex items-center justify-center font-semibold border border-dhvsu dark:border-dhvsu-lighter">
-                Image
+              <div className="relative z-10 w-16 h-16 bg-DHVSU-white rounded-full flex items-center justify-center font-semibold border border-dhvsu dark:border-dhvsu-lighter">
+                <Avatar className="h-16 w-16 rounded-full overflow-hidden flex items-center justify-center">
+                  <AvatarImage
+                    className="h-full w-full object-cover object-center"
+                    src={user.user_creds.profile_picture!}
+                    alt={user?.user_creds.id.toString()}
+                  />
+                  <AvatarFallback className="rounded-lg">
+                    {user.user_creds.fn[0].toUpperCase() +
+                      user.user_creds.ln[0].toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
               </div>
 
               <div className="text-center mt-4 text-brand dark:text-white">
                 <p className="text-lg font-bold">
                   {user_creds.ln}, {user_creds.fn}{" "}
-                  {user_creds.middle_name ? user_creds.middle_name + "." : ""}{" "}
-                  (Student)
+                  {user_creds.middle_name
+                    ? user_creds.middle_name[0].toUpperCase() + "."
+                    : ""}{" "}
+                  {user.user.user_type === "S"
+                    ? "(Student)"
+                    : user.user.user_type === "T"
+                    ? "(Teacher)"
+                    : ""}
                 </p>
-                <p className="text-sm">
-                  Bachelor of Science in Computer Science
-                </p>
+                {courseName && (
+                  <p className="text-sm">
+                    Bachelor of Science in Computer Science
+                  </p>
+                )}
                 <p className="text-sm">{user.user.id}</p>
               </div>
 
@@ -149,7 +200,15 @@ const Profile = ({
             </div>
           </div>
 
-          <ProfileSetModal isOpen={editProfile} setIsOpen={setEditProfile} />
+          {editProfile && (
+            <ProfileSetModal
+              isOpen={editProfile}
+              setIsOpen={setEditProfile}
+              userId={user.user.id}
+              token={token}
+              setErrors={setErrors}
+            />
+          )}
 
           <div className="flex-grow p-10 bg-dhvsu-light dark:bg-dhvsu-lighter rounded-xl w-full shadow-md">
             <span className="text-dhvsu-lighter font-semibold mx-3 dark:text-dhvsu-light">
@@ -339,7 +398,7 @@ const Profile = ({
                 <div className="flex flex-col col-span-2">
                   <label className=" font-semibold mb-2">Blood Type</label>
                   <input
-                    type="email"
+                    type="text"
                     className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
                     value={studentInfo.blood_type}
                     onChange={handleChange}
