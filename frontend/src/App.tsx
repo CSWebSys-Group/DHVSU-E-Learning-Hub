@@ -40,6 +40,7 @@ import Help from "./pages/Help/Help";
 import ProtectedAuthRoutes from "./layouts/ProtectedAuthRoutes";
 import ProtectedNotAuthRoutes from "./layouts/ProtectedNotAuthRoutes";
 import Submissions from "./pages/Submissions/Submissions";
+import SubjectTask from "./pages/SubjectTask/SubjectTask";
 
 function App() {
   const context = useContext(AppContext);
@@ -123,6 +124,9 @@ function App() {
                   />
                   <Route path="subjects" element={<Subjects />} />
                   <Route path="help" element={<Help />} />
+
+                  <Route path="submissions" element={<Submissions />} />
+                  <Route path="task" element={<SubjectTask />} />
                   <Route path="grades" element={<Grades user={user!} />} />{" "}
                 </Route>
               </>

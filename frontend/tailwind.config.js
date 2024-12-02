@@ -52,7 +52,6 @@ export default {
           DEFAULT: "#FF7474",
         },
         error: "#b80000",
-        green: "#3DD9B3",
         blue: "#56B8FF",
         pink: "#EEA8FD",
         orange: "#F9AB72",
@@ -85,6 +84,7 @@ export default {
       },
       fontFamily: {
         poppins: ["var(--font-poppins)"],
+        inter: ["var(--font-inter)"],
       },
       keyframes: {
         "bounce-updown": {
