@@ -19,22 +19,26 @@ const Task = ({
 }: Props) => {
   return (
     <Link to={`/`} className="flex-none w-full md:w-1/2 lg:w-1/3 px-2">
-      <div className="bg-dhvsu-light rounded-xl p-6 text-white h-full flex flex-col justify-between hover:bg-dhvsu-black">
+      <div className="group bg-white border-2 shadow-md border-brand rounded-[30px] p-6 text-white h-full flex flex-col justify-between transition-all duration-300 ease-in-out hover:bg-brand">
         <div className="flex items-center space-x-2">
           <img
             src="./img/sample-img.jpg"
             alt="sample image"
-            className="w-8 h-8 rounded-full border-[2px] border-DHVSU-white border-solid"
+            className="w-8 h-8 rounded-full border-[2px] border-brand border-solid transition-all duration-300 ease-in-out group-hover:border-white"
           />
-          <h3 className="text-lg font-bold">{subject_code}</h3>
+          <h3 className="text-lg font-bold text-brand transition-colors duration-300 ease-in-out group-hover:text-white">
+            {subject_code}
+          </h3>
         </div>
-        <hr className="border-[0.12rem] m-0 border-white" />
-        <div className="bg-white rounded-lg p-5 h-[55%] content-center">
-          <p className="text-sm text-justify line-clamp-3 text-dhvsu">
+        <hr className="border-[0.12rem] m-0 border-brand transition-colors duration-300 ease-in-out group-hover:border-white" />
+        <div className="bg-brand rounded-[20px] p-5 h-[55%] content-center transition-colors duration-300 ease-in-out group-hover:bg-white">
+          <p className="text-sm font-semibold text-justify line-clamp-3 text-white transition-colors duration-300 ease-in-out group-hover:text-brand">
             {task_description}
           </p>
         </div>
-        <p className="text-xs text-right underline">{formatDate(due_date)}</p>
+        <p className="text-xs font-semibold text-right underline text-brand transition-colors duration-300 ease-in-out group-hover:text-white">
+          {formatDate(due_date)}
+        </p>
       </div>
     </Link>
   );
