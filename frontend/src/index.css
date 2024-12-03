@@ -251,22 +251,6 @@
   .sort-container {
     @apply mt-5 flex items-center sm:mt-0 sm:gap-3 !important;
   }
-  /* ActionsDropdown */
-  .rename-input-field {
-    @apply body-2 shad-no-focus h-[52px] w-full rounded-full border px-4 shadow-drop-1 !important;
-  }
-  .delete-confirmation {
-    @apply text-center text-light-100 !important;
-  }
-  .delete-file-name {
-    @apply font-medium text-brand-100 !important;
-  }
-  .modal-cancel-button {
-    @apply h-[52px] flex-1 rounded-full bg-white text-light-100 hover:bg-transparent !important;
-  }
-  .modal-submit-button {
-    @apply primary-btn !mx-0 h-[52px] w-full flex-1 !important;
-  }
   /* ActionsModalContent */
   .file-details-thumbnail {
     @apply !mb-1 flex items-center gap-3 rounded-xl border border-light-200/40 bg-light-400/50 p-3 !important;
@@ -350,38 +334,6 @@
   .error-toast {
     @apply bg-red !rounded-[10px] !important;
   }
-  /* Header */
-  .header {
-    @apply hidden items-center justify-between gap-5 p-5 sm:flex lg:py-7 xl:gap-10 !important;
-  }
-  .header-wrapper {
-    @apply flex-center min-w-fit gap-4 !important;
-  }
-  .sign-out-button {
-    @apply flex-center h-[52px] min-w-[54px] items-center rounded-full bg-brand/10 p-0 text-brand shadow-none transition-all hover:bg-brand/20 !important;
-  }
-  /* Mobile Navigation */
-  .mobile-header {
-    @apply flex h-[60px] justify-between px-5 sm:hidden !important;
-  }
-  .header-user {
-    @apply my-3 flex items-center gap-2 rounded-full p-1 text-light-100 sm:justify-center sm:bg-brand/10 lg:justify-start lg:p-3 !important;
-  }
-  .header-user-avatar {
-    @apply aspect-square w-10 rounded-full object-cover !important;
-  }
-  .mobile-nav {
-    @apply h5 flex-1 gap-1 text-brand !important;
-  }
-  .mobile-nav-list {
-    @apply flex flex-1 flex-col gap-4 !important;
-  }
-  .mobile-nav-item {
-    @apply flex text-light-100 gap-4 w-full justify-start items-center h5 px-6 h-[52px] rounded-full !important;
-  }
-  .mobile-sign-out-button {
-    @apply h5 flex h-[52px] w-full items-center gap-4 rounded-full bg-brand/10 px-6 text-brand shadow-none transition-all hover:bg-brand/20 !important;
-  }
   /* OTP Modal */
   .otp-close-button {
     @apply absolute -right-1 -top-7 cursor-pointer sm:-right-2 sm:-top-4  !important;
@@ -401,39 +353,6 @@
   }
   .empty-result {
     @apply body-2 text-center text-light-100 !important;
-  }
-  /* Sidebar */
-  .sidebar {
-    @apply remove-scrollbar hidden h-screen w-[90px] flex-col overflow-auto px-5 py-7 sm:flex lg:w-[280px] xl:w-[325px] !important;
-  }
-  .sidebar-nav {
-    @apply h5 mt-9 flex-1 gap-1 text-brand !important;
-  }
-  .sidebar-nav-item {
-    @apply flex text-light-100 gap-4 rounded-xl lg:w-full justify-center lg:justify-start items-center h5 lg:px-[30px] h-[52px] lg:rounded-full !important;
-  }
-  .sidebar-user-info {
-    @apply mt-4 flex items-center justify-center gap-2 rounded-full bg-brand/10 p-1 text-light-100 lg:justify-start lg:p-3 !important;
-  }
-  .sidebar-user-avatar {
-    @apply aspect-square w-10 rounded-full object-cover !important;
-  }
-  .shad-active {
-    @apply bg-brand text-white shadow-drop-2 !important;
-  }
-  /* Sort */
-  .sort-select {
-    @apply shad-no-focus h-11 w-full rounded-[8px] border-transparent bg-white !shadow-sm sm:w-[210px] !important;
-  }
-  .sort-select-content {
-    @apply !shadow-drop-3 !important;
-  }
-  /* Thumbnail */
-  .thumbnail {
-    @apply flex-center size-[50px] min-w-[50px] overflow-hidden rounded-full bg-brand/10;
-  }
-  .thumbnail-image {
-    @apply size-full object-cover object-center !important;
   }
 }
 
