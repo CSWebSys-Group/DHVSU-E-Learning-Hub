@@ -72,3 +72,18 @@ export const forgotPasswordSchema = z
       path: ["password_confirmation"],
     }
   );
+
+export const createActivitySchema = z.object({
+  title: z.string({
+    required_error: "title is required",
+  }),
+  description: z.string({
+    required_error: "description is required",
+  }),
+  deadline: z.date({
+    required_error: "A deadline is required",
+  }),
+  create_type: z.enum(["module", "activity"], {
+    errorMap: () => ({ message: "Please select a option." }),
+  }),
+});

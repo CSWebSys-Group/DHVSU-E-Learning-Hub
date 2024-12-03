@@ -42,6 +42,7 @@ import ProtectedNotAuthRoutes from "./layouts/ProtectedNotAuthRoutes";
 import Submissions from "./pages/Submissions/Submissions";
 import SubjectTask from "./pages/SubjectTask/SubjectTask";
 import ForgotPassword from "./pages/Auth/ForgotPassword/ForgotPassword";
+import CreateActivity from "./pages/CreateActivity/create-activity";
 
 function App() {
   const context = useContext(AppContext);
@@ -129,6 +130,7 @@ function App() {
                   <Route path="submissions" element={<Submissions />} />
                   <Route path="task" element={<SubjectTask />} />
                   <Route path="grades" element={<Grades user={user!} />} />{" "}
+                  <Route path="create" element={<CreateActivity />} />
                 </Route>
               </>
             )}
