@@ -5,7 +5,7 @@ namespace App\Mail;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class OTPForgotPassword extends Mailable
+class OTPForgotPasswordMail extends Mailable
 {
   use SerializesModels;
 

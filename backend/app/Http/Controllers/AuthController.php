@@ -171,7 +171,7 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|email|exists:users',
             'password' => 'required|string',
-            'confirm_password' => 'required|string'
+            'password_confirmation' => 'required|string'
         ], [
             'email.exists' => 'The provided credentials are incorrect', // Custom message for invalid email
         ]);

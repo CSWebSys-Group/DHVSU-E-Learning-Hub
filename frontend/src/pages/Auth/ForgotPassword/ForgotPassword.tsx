@@ -5,6 +5,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { Notification } from "@/components/SlideInNotifications";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,11 +18,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { motion, useAnimationControls, Variants } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useAnimationControls,
+  Variants,
+} from "framer-motion";
 
 import { ArrowLeft, EyeIcon, EyeOff, LoaderCircle, X } from "lucide-react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import OtpModal from "@/components/OtpModal";
 
 // placeholders only
 const steps = [
@@ -43,6 +51,8 @@ const ForgotPassword = () => {
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
       email: "",
+      password: "",
+      password_confirmation: "",
     },
   });
 
@@ -53,6 +63,15 @@ const ForgotPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const [otpModalActive, setOtpModalActive] = useState(false);
+  const [otpSuccess, setOtpSuccess] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [notifications, setNotifications] = useState<
+    { id: number; successMessage: string }[]
+  >([]);
+
+  const navigate = useNavigate();
+
   // Animation related
   const multiStepProgressBar = useAnimationControls();
 
@@ -61,6 +80,25 @@ const ForgotPassword = () => {
     initial: { width: `${100 / steps.length}%` },
     animate: { width: `${((currentStep + 1) / steps.length) * 100}%` },
   };
+
+  useEffect(() => {
+    if (otpSuccess) {
+      addNotification("OTP is correct");
+      handleForgotPassword();
+    }
+  }, [otpSuccess]);
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach((e) => {
+        addNotification(e);
+      });
+    }
+  }, [errors]);
+
+  useEffect(() => {
+    multiStepProgressBar.start("animate");
+  }, [currentStep, multiStepProgressBar]);
 
   const handleResetPassword = async () => {
     const fields = steps[currentStep].fields;
@@ -97,14 +135,81 @@ const ForgotPassword = () => {
     }
   };
 
-  useEffect(() => {
-    multiStepProgressBar.start("animate");
-  }, [currentStep, multiStepProgressBar]);
+  const handleSubmit = async () => {
+    try {
+      setIsLoading(true);
+      console.log(form.getValues());
+      const res = await fetch("/api/send-otp/forgot-password", {
+        method: "post",
+        body: JSON.stringify({ email: form.getValues("email") }),
+      });
+      const data = await res.json();
+      console.log(data);
+      if (!res.ok) {
+        if (data.errors) {
+          const errorMessages = Object.values(data.errors).flat() as string[];
+          setErrors(errorMessages);
+        }
+      }
+      setOtpModalActive(true);
+    } catch (error) {
+      console.log(error);
+      setCurrentStep(0);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const addNotification = (message: string) => {
+    const id = Date.now();
+    setNotifications((prev) => [...prev, { id, successMessage: message }]);
+  };
+
+  const removeNotification = (id: number) => {
+    setNotifications((prev) => prev.filter((notif) => notif.id !== id));
+  };
+
+  const handleForgotPassword = async () => {
+    try {
+      const res = await fetch("/api/change-password", {
+        method: "post",
+        body: JSON.stringify({ ...form.getValues() }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (data.errors) {
+          const errorMessages = Object.values(data.errors).flat() as string[];
+          setErrors(errorMessages);
+        }
+      }
+
+      addNotification("Successfully changed password");
+      navigate("/auth/login");
+    } catch (error) {
+      console.log(error);
+      setOtpModalActive(false);
+      setOtpSuccess(false);
+    } finally {
+      form.reset();
+      setCurrentStep(0);
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
+      {otpModalActive && (
+        <OtpModal
+          setOtpModalActive={setOtpModalActive}
+          email={form.getValues("email")}
+          setOtpSuccess={setOtpSuccess}
+          type="forgot-password"
+          setErrors={setErrors}
+        />
+      )}
       <Form {...form}>
-        <form className="auth-form">
+        <form className="auth-form" onSubmit={handleSubmit}>
           <div>
             <h1 className="form-title mb-3">Forgot Password</h1>
             <span className="text-light-100">
@@ -164,6 +269,7 @@ const ForgotPassword = () => {
                           <Input
                             placeholder="eg. sample@dhvsu.edu.ph"
                             className="shad-input"
+                            disabled={isLoading}
                             {...field}
                           />
                         </FormControl>
@@ -207,6 +313,7 @@ const ForgotPassword = () => {
                               placeholder="Create a strong password"
                               className="shad-input"
                               type={showPassword ? "text" : "password"}
+                              disabled={isLoading}
                               {...field}
                             />
                             <button
@@ -243,6 +350,7 @@ const ForgotPassword = () => {
                               placeholder="Re-enter your password"
                               className="shad-input"
                               type={showConfirmPassword ? "text" : "password"}
+                              disabled={isLoading}
                               {...field}
                             />
                             <button
@@ -274,7 +382,7 @@ const ForgotPassword = () => {
             {currentStep === 1 ? (
               <Button
                 type="button"
-                onClick={form.handleSubmit(handleResetPassword)}
+                onClick={form.handleSubmit(handleSubmit)}
                 className="form-submit-button grow-[3]"
                 disabled={isLoading}
               >
@@ -288,6 +396,7 @@ const ForgotPassword = () => {
                 type="button"
                 onClick={() => next()}
                 className="form-submit-button grow-[3]"
+                disabled={isLoading}
               >
                 Continue
               </Button>
@@ -306,6 +415,18 @@ const ForgotPassword = () => {
           </Link>
         </form>
       </Form>
+      <div>
+        <AnimatePresence>
+          {notifications.map((notif) => (
+            <Notification
+              key={notif.id}
+              id={notif.id}
+              successMessage={notif.successMessage}
+              removeNotif={removeNotification}
+            />
+          ))}
+        </AnimatePresence>
+      </div>
     </>
   );
 };

@@ -19,7 +19,8 @@ type PropTypes = {
   email: string;
   setOtpSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setErrors: React.Dispatch<React.SetStateAction<string[]>>;
-  fullName: string;
+  fullName?: string;
+  type: "signup" | "forgot-password";
 };
 
 const OtpModal = ({
@@ -28,6 +29,7 @@ const OtpModal = ({
   setOtpSuccess,
   setErrors,
   fullName,
+  type,
 }: PropTypes) => {
   const [isOpen, setIsOpen] = useState(true);
   const [password, setPassword] = useState("");
@@ -35,10 +37,19 @@ const OtpModal = ({
 
   async function sendOTP() {
     try {
-      const res = await fetch("/api/send-otp", {
-        method: "post",
-        body: JSON.stringify({ email, fullName }),
-      });
+      const res = await fetch(
+        `/api/send-otp/${
+          type === "signup"
+            ? "signup"
+            : type === "forgot-password"
+            ? "forgot-password"
+            : ""
+        }`,
+        {
+          method: "post",
+          body: JSON.stringify({ email, fullName }),
+        }
+      );
 
       const data = await res.json();
 
@@ -56,6 +67,10 @@ const OtpModal = ({
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    await verifyOTP();
+  };
+
+  const verifyOTP = async () => {
     setIsLoading(true);
     try {
       const payload = { email, otp: password };

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OTPForgotPasswordMail;
 use App\Mail\OTPVerificationMail;
 use App\Models\Otp;
 use App\Models\Student;
@@ -52,7 +53,7 @@ class OTPController extends Controller
             'email' => 'required|email'
         ]);
 
-        $user = User::where('email', $request->email)->exists();
+        $user = User::where('email', $request->email)->first();
         $fullName = null;
 
         if ($user->user_type === 'T') {
@@ -77,7 +78,7 @@ class OTPController extends Controller
         );
 
         // Send OTP via email using Mailable
-        Mail::to($request->email)->send(new OTPVerificationMail($otp, $request->fullName));
+        Mail::to($request->email)->send(new OTPForgotPasswordMail($otp, $fullName));
 
         return response()->json([
             'message' => 'OTP sent successfully!',
