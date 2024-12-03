@@ -126,8 +126,13 @@ function App() {
                   <Route path="help" element={<Help />} />
 
                   <Route path="submissions" element={<Submissions />} />
-                  <Route path="task" element={<SubjectTask />} />
-                  <Route path="grades" element={<Grades user={user!} />} />{" "}
+
+                  {user.user.user_type === "S" && (
+                    <>
+                      <Route path="grades" element={<Grades user={user!} />} />
+                      <Route path="task" element={<SubjectTask />} />
+                    </>
+                  )}
                 </Route>
               </>
             )}

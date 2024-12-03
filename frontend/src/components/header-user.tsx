@@ -35,9 +35,6 @@ export function UserNav({
         },
       });
 
-      // const data = await res.json();
-      // console.log(data);
-
       if (res.ok) {
         setUser(null);
         setToken(null);
@@ -53,7 +50,7 @@ export function UserNav({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="h-8 w-8">
-          <AvatarImage />
+          <AvatarImage src={user.user_creds.profile_picture!} />
           <AvatarFallback className="rounded-lg">
             {user.user_creds.fn[0].toUpperCase() +
               user.user_creds.ln[0].toUpperCase()}

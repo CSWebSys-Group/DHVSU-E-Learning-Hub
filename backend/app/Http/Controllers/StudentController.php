@@ -75,7 +75,7 @@ class StudentController extends Controller implements HasMiddleware
             'gender' => 'sometimes|string|in:M,F,Others',
             'birthday' => 'nullable|sometimes|date',
             'section_id' => 'nullable|sometimes|integer|exists:sections,id',
-            'tasks' => 'nullable|sometimes|array',
+            'activities' => 'nullable|sometimes|array',
             'grades' => 'nullable|sometimes|array',
             'middle_name' => 'nullable|sometimes|string|max:100',
             'ext_name' => 'nullable|sometimes|string|max:10',

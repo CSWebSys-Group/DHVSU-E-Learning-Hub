@@ -11,6 +11,7 @@ const FileInput = ({
   token,
   setIsOpen,
   setErrors,
+  userType,
 }: {
   userId: number;
   className: string;
@@ -18,6 +19,7 @@ const FileInput = ({
   token: string;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setErrors: React.Dispatch<React.SetStateAction<string[]>>;
+  userType: "S" | "T";
 }) => {
   const [selectedFile, setSelectedFile] = useState<FileWithPreview | null>(
     null
@@ -61,7 +63,9 @@ const FileInput = ({
       setIsLoading(true);
       setErrors([]);
       const res = await fetch(
-        `http://127.0.0.1:8000/api/students/${userId}/update-profile-picture`,
+        `http://127.0.0.1:8000/api/${
+          userType === "S" ? "students" : userType === "T" ? "teachers" : ""
+        }/${userId}/update-profile-picture`,
         {
           method: "post",
           headers: {

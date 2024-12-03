@@ -14,12 +14,12 @@ import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { LoaderCircle, X } from "lucide-react";
 
-
 type PropTypes = {
   setOtpModalActive: React.Dispatch<React.SetStateAction<boolean>>;
   email: string;
   setOtpSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setErrors: React.Dispatch<React.SetStateAction<string[]>>;
+  fullName: string;
 };
 
 const OtpModal = ({
@@ -27,6 +27,7 @@ const OtpModal = ({
   email,
   setOtpSuccess,
   setErrors,
+  fullName,
 }: PropTypes) => {
   const [isOpen, setIsOpen] = useState(true);
   const [password, setPassword] = useState("");
@@ -36,7 +37,7 @@ const OtpModal = ({
     try {
       const res = await fetch("/api/send-otp", {
         method: "post",
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, fullName }),
       });
 
       const data = await res.json();

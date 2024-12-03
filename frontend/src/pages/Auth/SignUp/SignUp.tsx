@@ -119,7 +119,6 @@ const SignUp = ({
           data.token.plainTextToken
         }; expires=${expires.toUTCString()}; path=/; secure; SameSite=Strict`;
         setToken(data.token.plainTextToken);
-        console.log(data);
         navigate("/user/dashboard");
       }
     } catch (error) {
@@ -216,6 +215,7 @@ const SignUp = ({
         <OtpModal
           setOtpModalActive={setOtpModalActive}
           email={form.getValues("email")}
+          fullName={`${form.getValues("fn")} ${form.getValues("ln")}`}
           setOtpSuccess={setOtpSuccess}
           setErrors={setErrors}
         />

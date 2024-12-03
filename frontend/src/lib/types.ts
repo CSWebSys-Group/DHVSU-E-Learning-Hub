@@ -156,3 +156,8 @@ export type SectionType = {
   created_at: string;
   updated_at: string;
 };
+
+export type AuditLogType = {
+  message: string;
+  user_type: "A" | "S" | "T";
+};
