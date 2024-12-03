@@ -10,7 +10,7 @@ const SubjectCard = ({
 }: Subject) => {
   return (
     <Link
-      to={`/subjects/${id}`}
+      to={`/user/subjects/${id}`}
       className="block cursor-pointer rounded-3xl shadow-lg"
     >
       <div className="bg-white border-2 border-brand rounded-3xl overflow-hidden h-[16.53rem] hover:scale-105 transition-transform duration-150 ease-in-out">
