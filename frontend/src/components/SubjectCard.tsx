@@ -13,14 +13,14 @@ const SubjectCard = ({
       to={`/subjects/${id}`}
       className="block cursor-pointer rounded-3xl shadow-lg"
     >
-      <div className="bg-dhvsu-black rounded-3xl overflow-hidden h-[16.53rem] hover:scale-105 transition-transform duration-150 ease-in-out">
+      <div className="bg-white border-2 border-brand rounded-3xl overflow-hidden h-[16.53rem] hover:scale-105 transition-transform duration-150 ease-in-out">
         <div className="p-4">
-          <h1 className="text-white text-2xl font-bold line-clamp-1">
+          <h1 className="text-brand text-2xl font-bold line-clamp-1">
             {subject_code}
           </h1>
-          <p className="text-white text-sm line-clamp-1">{subject_name}</p>
-          <p className="text-white text-sm line-clamp-1">BSCS 3B</p>
-          <p className="text-white text-sm line-clamp-1 mb-[0.48rem] w-[80%]">
+          <p className="text-brand text-sm line-clamp-1">{subject_name}</p>
+          <p className="text-brand text-sm line-clamp-1">BSCS 3B</p>
+          <p className="text-brand text-sm line-clamp-1 mb-[0.48rem] w-[80%]">
             OCAMPO, RAMONSITO D.
           </p>
         </div>
@@ -36,7 +36,7 @@ const SubjectCard = ({
           )}
         </div>
 
-        <div className="bg-dhvsu-light text-dhvsu-lighter p-4 h-[8.265rem] pt-6">
+        <div className="bg-brand text-dhvsu-lighter p-4 h-[8.265rem] pt-6">
           <div className="line-clamp-4">
             <p className="font-bold">Due Oct 2, 11:59</p>
             <p className="text-sm mt-1 text-justify">
