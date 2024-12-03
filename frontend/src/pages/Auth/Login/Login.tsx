@@ -184,6 +184,16 @@ const Login = ({
                 ))
               : null}
           </AnimatePresence>
+
+          <div className="flex justify-end">
+            <Link
+              to={"/auth/forgot-password"}
+              className="text-dhvsu font-semibold text-right hover:underline transition-all duration-100"
+            >
+              Forgot your password?
+            </Link>
+          </div>
+
           <Button
             type="submit"
             className="form-submit-button"

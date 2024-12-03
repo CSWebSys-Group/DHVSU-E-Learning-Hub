@@ -41,6 +41,7 @@ import ProtectedAuthRoutes from "./layouts/ProtectedAuthRoutes";
 import ProtectedNotAuthRoutes from "./layouts/ProtectedNotAuthRoutes";
 import Submissions from "./pages/Submissions/Submissions";
 import SubjectTask from "./pages/SubjectTask/SubjectTask";
+import ForgotPassword from "./pages/Auth/ForgotPassword/ForgotPassword";
 
 function App() {
   const context = useContext(AppContext);
@@ -87,6 +88,7 @@ function App() {
               <Route index element={<SignUp setToken={setToken} />} />
               <Route path="signup" element={<SignUp setToken={setToken} />} />
               <Route path="login" element={<Login setToken={setToken} />} />
+              <Route path="forgot-password" element={<ForgotPassword />} />
             </Route>
           </Route>
 
@@ -124,7 +126,6 @@ function App() {
                   />
                   <Route path="subjects" element={<Subjects />} />
                   <Route path="help" element={<Help />} />
-
                   <Route path="submissions" element={<Submissions />} />
                   <Route path="task" element={<SubjectTask />} />
                   <Route path="grades" element={<Grades user={user!} />} />{" "}
