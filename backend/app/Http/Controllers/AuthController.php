@@ -165,4 +165,22 @@ class AuthController extends Controller
 
         return ['message' => 'You are logged out'];
     }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users',
+            'password' => 'required|string',
+            'password_confirmation' => 'required|string'
+        ], [
+            'email.exists' => 'The provided credentials are incorrect', // Custom message for invalid email
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return ['message' => 'password reset successful'];
+    }
 }

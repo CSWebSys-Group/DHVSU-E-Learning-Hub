@@ -29,8 +29,10 @@ Route::post('/grades/student', [GradesController::class, 'getStudentGrades']);
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+Route::post('change-password', [AuthController::class, 'changePassword']);
 
-Route::post('/send-otp', [OTPController::class, 'sendOtpSignup']);
+Route::post('/send-otp/signup', [OTPController::class, 'sendOtpSignup']);
+Route::post('/send-otp/forgot-password', [OTPController::class, 'sendOtpForgotPassword']);
 Route::post('/verify-otp', [OTPController::class, 'verifyOTP']);
 
 Route::middleware('auth:sanctum')->group(function () {

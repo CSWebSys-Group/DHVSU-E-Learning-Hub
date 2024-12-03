@@ -71,6 +71,7 @@ class TeacherController extends Controller implements HasMiddleware
             'ln' => 'sometimes|string|max:100',
             'gender' => 'sometimes|string|in:M,F,Others',
             'isAdmin' => 'sometimes|boolean',
+            'birthday' => 'nullable|sometimes|date',
             'subjects' => 'sometimes|array',
             'profile_picture' => 'nullable|sometimes|file|image|max:2048',
         ]);

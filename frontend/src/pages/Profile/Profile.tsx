@@ -77,7 +77,13 @@ const Profile = ({
         setIsLoading(false);
       }
     }
-    getCourse();
+    if (user.user.user_type === "S") {
+      getCourse();
+    }
+
+    if (user.user.user_type === "T") {
+      setIsLoading(false);
+    }
   }, [user_creds.section_id]);
 
   useEffect(() => {
@@ -108,14 +114,23 @@ const Profile = ({
     try {
       setIsLoading(true);
       setErrors([]);
-      const res = await fetch(`/api/students/${user.user?.id}`, {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include the token here
-        },
-        body: JSON.stringify(studentInfo),
-      });
+      const res = await fetch(
+        `/api/${
+          user.user.user_type === "S"
+            ? "students"
+            : user.user.user_type === "T"
+            ? "teachers"
+            : ""
+        }/${user.user?.id}`,
+        {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include the token here
+          },
+          body: JSON.stringify(studentInfo),
+        }
+      );
       const data = await res.json();
       if (!res.ok) {
         if (data.errors) {
@@ -206,6 +221,7 @@ const Profile = ({
               setIsOpen={setEditProfile}
               userId={user.user.id}
               token={token}
+              user_type={user.user.user_type}
               setErrors={setErrors}
             />
           )}
@@ -242,27 +258,30 @@ const Profile = ({
                   />
                 </div>
 
-                <div className="flex flex-col col-span-1">
-                  <label className="font-semibold mb-2">Middle Name</label>
-                  <input
-                    type="text"
-                    className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full text-black"
-                    value={studentInfo.middle_name}
-                    onChange={handleChange}
-                    name="middle_name"
-                  />
-                </div>
-
-                <div className="flex flex-col col-span-1">
-                  <label className="font-semibold mb-2">Ext.</label>
-                  <input
-                    type="text"
-                    className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full text-black"
-                    value={studentInfo.ext_name}
-                    onChange={handleChange}
-                    name="ext_name"
-                  />
-                </div>
+                {user.user.user_type === "S" && (
+                  <>
+                    <div className="flex flex-col col-span-1">
+                      <label className="font-semibold mb-2">Middle Name</label>
+                      <input
+                        type="text"
+                        className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full text-black"
+                        value={studentInfo.middle_name}
+                        onChange={handleChange}
+                        name="middle_name"
+                      />
+                    </div>
+                    <div className="flex flex-col col-span-1">
+                      <label className="font-semibold mb-2">Ext.</label>
+                      <input
+                        type="text"
+                        className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full text-black"
+                        value={studentInfo.ext_name}
+                        onChange={handleChange}
+                        name="ext_name"
+                      />
+                    </div>
+                  </>
+                )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-6 gap-4 text-dhvsu dark:text-white">
@@ -296,57 +315,69 @@ const Profile = ({
                   />
                 </div>
 
-                <div className="flex flex-col col-span-2">
-                  <label className=" font-semibold mb-2">Place of Birth</label>
-                  <input
-                    type="text"
-                    className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                    value={studentInfo.place_of_birth}
-                    onChange={handleChange}
-                    name="place_of_birth"
-                  />
-                </div>
+                {user.user.user_type === "S" && (
+                  <>
+                    <div className="flex flex-col col-span-2">
+                      <label className=" font-semibold mb-2">
+                        Place of Birth
+                      </label>
+                      <input
+                        type="text"
+                        className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                        value={studentInfo.place_of_birth}
+                        onChange={handleChange}
+                        name="place_of_birth"
+                      />
+                    </div>
 
-                <div className="flex flex-col col-span-1">
-                  <label className=" font-semibold mb-2">Civil Status</label>
-                  <select
-                    className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                    value={studentInfo.civil_status}
-                    onChange={handleChange}
-                    name="civil_status"
-                  >
-                    <option value="" disabled>
-                      Select an option
-                    </option>
-                    <option value="single">Single</option>
-                    <option value="married">Married</option>
-                    <option value="widowed">Widowed</option>
-                  </select>
-                </div>
+                    <div className="flex flex-col col-span-1">
+                      <label className=" font-semibold mb-2">
+                        Civil Status
+                      </label>
+                      <select
+                        className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                        value={studentInfo.civil_status}
+                        onChange={handleChange}
+                        name="civil_status"
+                      >
+                        <option value="" disabled>
+                          Select an option
+                        </option>
+                        <option value="single">Single</option>
+                        <option value="married">Married</option>
+                        <option value="widowed">Widowed</option>
+                      </select>
+                    </div>
+                  </>
+                )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-6 gap-4 text-dhvsu-light dark:text-white">
-                <div className="flex flex-col col-span-1">
-                  <label className=" font-semibold mb-2">Nationality</label>
-                  <input
-                    type="text"
-                    className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                    value={studentInfo.nationality}
-                    onChange={handleChange}
-                    name="nationality"
-                  />
-                </div>
+                {user.user.user_type === "S" && (
+                  <>
+                    <div className="flex flex-col col-span-1">
+                      <label className=" font-semibold mb-2">Nationality</label>
+                      <input
+                        type="text"
+                        className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                        value={studentInfo.nationality}
+                        onChange={handleChange}
+                        name="nationality"
+                      />
+                    </div>
 
-                <div className="flex flex-col col-span-2">
-                  <label className=" font-semibold mb-2">Religion</label>
-                  <input
-                    type="text"
-                    className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                    value={studentInfo.religion}
-                    onChange={handleChange}
-                    name="religion"
-                  />
-                </div>
+                    <div className="flex flex-col col-span-2">
+                      <label className=" font-semibold mb-2">Religion</label>
+                      <input
+                        type="text"
+                        className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                        value={studentInfo.religion}
+                        onChange={handleChange}
+                        name="religion"
+                      />
+                    </div>
+                  </>
+                )}
 
                 <div className="flex flex-col col-span-2">
                   <label className=" font-semibold mb-2">Email</label>
@@ -359,115 +390,119 @@ const Profile = ({
                     name="email"
                   />
                 </div>
-
-                <div className="flex flex-col col-span-1">
-                  <label className=" font-semibold mb-2">Contact #</label>
-                  <input
-                    type="text"
-                    className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                    value={studentInfo.contact_number}
-                    onChange={handleChange}
-                    name="contact_number"
-                  />
-                </div>
+                {user.user.user_type === "S" && (
+                  <>
+                    <div className="flex flex-col col-span-1">
+                      <label className=" font-semibold mb-2">Contact #</label>
+                      <input
+                        type="text"
+                        className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                        value={studentInfo.contact_number}
+                        onChange={handleChange}
+                        name="contact_number"
+                      />
+                    </div>{" "}
+                  </>
+                )}
               </div>
+              {user.user.user_type === "S" && (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-6 gap-4 text-dhvsu-light dark:text-white">
+                    <div className="flex flex-col col-span-1">
+                      <label className=" font-semibold mb-2">Heigth (cm)</label>
+                      <input
+                        type="number"
+                        className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                        value={studentInfo.height || ""}
+                        onChange={handleChange}
+                        name="height"
+                      />
+                    </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-6 gap-4 text-dhvsu-light dark:text-white">
-                <div className="flex flex-col col-span-1">
-                  <label className=" font-semibold mb-2">Heigth (cm)</label>
-                  <input
-                    type="number"
-                    className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                    value={studentInfo.height || ""}
-                    onChange={handleChange}
-                    name="height"
-                  />
-                </div>
+                    <div className="flex flex-col col-span-2">
+                      <label className=" font-semibold mb-2">Weight</label>
+                      <input
+                        type="number"
+                        className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                        value={studentInfo.weight || ""}
+                        onChange={handleChange}
+                        name="weight"
+                      />
+                    </div>
 
-                <div className="flex flex-col col-span-2">
-                  <label className=" font-semibold mb-2">Weight</label>
-                  <input
-                    type="number"
-                    className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                    value={studentInfo.weight || ""}
-                    onChange={handleChange}
-                    name="weight"
-                  />
-                </div>
-
-                <div className="flex flex-col col-span-2">
-                  <label className=" font-semibold mb-2">Blood Type</label>
-                  <input
-                    type="text"
-                    className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                    value={studentInfo.blood_type}
-                    onChange={handleChange}
-                    name="blood_type"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-6 gap-4 text-dhvsu-light dark:text-white">
-                <div className="flex flex-col col-span-6">
-                  <label className=" font-semibold mb-2">
-                    Address (House #/Block/Street/Subdivision/Building)
-                  </label>
-                  <input
-                    type="text"
-                    className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                    value={studentInfo.address}
-                    onChange={handleChange}
-                    name="address"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <div className="grid grid-cols-1 md:grid-cols-6 gap-4 text-dhvsu-light dark:text-white">
-                  <div className="flex flex-col col-span-1">
-                    <label className=" font-semibold mb-2">Province</label>
-                    <input
-                      type="text"
-                      className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                      value={studentInfo.province}
-                      onChange={handleChange}
-                      name="province"
-                    />
+                    <div className="flex flex-col col-span-2">
+                      <label className=" font-semibold mb-2">Blood Type</label>
+                      <input
+                        type="text"
+                        className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                        value={studentInfo.blood_type}
+                        onChange={handleChange}
+                        name="blood_type"
+                      />
+                    </div>
                   </div>
-                  <div className="flex flex-col col-span-1">
-                    <label className=" font-semibold mb-2">
-                      Municipality / City
-                    </label>
-                    <input
-                      type="text"
-                      className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                      value={studentInfo.city}
-                      onChange={handleChange}
-                      name="city"
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-6 gap-4 text-dhvsu-light dark:text-white">
+                    <div className="flex flex-col col-span-6">
+                      <label className=" font-semibold mb-2">
+                        Address (House #/Block/Street/Subdivision/Building)
+                      </label>
+                      <input
+                        type="text"
+                        className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                        value={studentInfo.address}
+                        onChange={handleChange}
+                        name="address"
+                      />
+                    </div>
                   </div>
-                  <div className="flex flex-col col-span-1">
-                    <label className=" font-semibold mb-2">Barangay</label>
-                    <input
-                      type="text"
-                      className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                      value={studentInfo.barangay}
-                      onChange={handleChange}
-                      name="barangay"
-                    />
-                  </div>
-                  <div className="flex flex-col col-span-1">
-                    <label className=" font-semibold mb-2">ZIP Code</label>
-                    <input
-                      type="number"
-                      className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
-                      value={studentInfo.zip_code || ""}
-                      onChange={handleChange}
-                      name="zip_code"
-                    />
+                  <div>
+                    <div className="grid grid-cols-1 md:grid-cols-6 gap-4 text-dhvsu-light dark:text-white">
+                      <div className="flex flex-col col-span-1">
+                        <label className=" font-semibold mb-2">Province</label>
+                        <input
+                          type="text"
+                          className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                          value={studentInfo.province}
+                          onChange={handleChange}
+                          name="province"
+                        />
+                      </div>
+                      <div className="flex flex-col col-span-1">
+                        <label className=" font-semibold mb-2">
+                          Municipality / City
+                        </label>
+                        <input
+                          type="text"
+                          className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                          value={studentInfo.city}
+                          onChange={handleChange}
+                          name="city"
+                        />
+                      </div>
+                      <div className="flex flex-col col-span-1">
+                        <label className=" font-semibold mb-2">Barangay</label>
+                        <input
+                          type="text"
+                          className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                          value={studentInfo.barangay}
+                          onChange={handleChange}
+                          name="barangay"
+                        />
+                      </div>
+                      <div className="flex flex-col col-span-1">
+                        <label className=" font-semibold mb-2">ZIP Code</label>
+                        <input
+                          type="number"
+                          className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full"
+                          value={studentInfo.zip_code || ""}
+                          onChange={handleChange}
+                          name="zip_code"
+                        />
+                      </div>{" "}
+                    </div>
                   </div>{" "}
-                </div>
-              </div>
+                </>
+              )}
               <Button type="submit" disabled={isLoading}>
                 {isLoading ? "Saving..." : "Save profile"}
               </Button>

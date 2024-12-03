@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verify Your Account</title>
+    <title>Change Password</title>
   </head>
   <body style="font-family: Arial, sans-serif; margin: 0; padding: 0;">
     <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="background-color: #ffffff; margin-top: 20px; border-collapse: collapse;">
       <tr>
         <td style="background-color: #701d0b; color: #ffffff; text-align: center; padding: 40px 20px;">
          <img src="https://res.cloudinary.com/drhys0n0f/image/upload/v1733127173/dhvsu-logo-v2_iiudfh.png" width="50" height="50" />
-          <h1 style="margin: 0; font-size: 24px; font-weight: bold;">Verify Your Account</h1>
+          <h1 style="margin: 0; font-size: 24px; font-weight: bold;">Change Password</h1>
           <p style="margin: 10px 0; font-size: 16px;">
-            Enter the code below to complete your registration.
+            Enter the code below to change your password.
           </p>
         </td>
       </tr>
@@ -20,7 +20,7 @@
         <td style="padding: 20px; color: #4b5563; font-size: 14px;">
         <h4 style="color: #374151">Hello {{$fullName}},</h4>
           <p style="line-height: 1.5; color: #4b5563">
-            Enter this code on the verification page to complete your registration.
+            Enter this code on the forgot password page to change your password.
           </p>
           <p style="color: #701d0b; font-weight: bold; font-size: 24px">{{$otp}}</p>
           <p style="margin-top: 1rem; line-height: 1.75; color: #4b5563">

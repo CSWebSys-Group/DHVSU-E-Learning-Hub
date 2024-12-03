@@ -51,7 +51,7 @@ const steps = [
   {
     id: "3",
     name: "Create you password",
-    fields: ["password", "passwordConfirm"],
+    fields: ["password", "password_confirm"],
   },
   {
     id: "4",
@@ -119,7 +119,6 @@ const SignUp = ({
           data.token.plainTextToken
         }; expires=${expires.toUTCString()}; path=/; secure; SameSite=Strict`;
         setToken(data.token.plainTextToken);
-        console.log(data);
         navigate("/user/dashboard");
       }
     } catch (error) {
@@ -156,7 +155,7 @@ const SignUp = ({
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch("/api/send-otp", {
+      const res = await fetch("/api/send-otp/signup", {
         method: "post",
         body: JSON.stringify({ email: form.getValues("email") }),
       });
@@ -169,12 +168,12 @@ const SignUp = ({
           setErrors(errorMessages);
         }
       }
-      setIsLoading(false);
       setOtpModalActive(true);
     } catch (error) {
       console.log(error);
-      setIsLoading(false);
       setCurrentStep(0);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -216,8 +215,10 @@ const SignUp = ({
         <OtpModal
           setOtpModalActive={setOtpModalActive}
           email={form.getValues("email")}
+          fullName={`${form.getValues("fn")} ${form.getValues("ln")}`}
           setOtpSuccess={setOtpSuccess}
           setErrors={setErrors}
+          type="signup"
         />
       )}
       <Form {...form}>

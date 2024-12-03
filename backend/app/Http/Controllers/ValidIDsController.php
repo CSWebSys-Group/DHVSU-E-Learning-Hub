@@ -5,9 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\ValidIDs;
 use App\Http\Requests\StoreValidIDsRequest;
 use App\Http\Requests\UpdateValidIDsRequest;
+use App\Models\Teacher;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 
-class ValidIDsController extends Controller
+class ValidIDsController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            new Middleware('auth:sanctum', except: ['index', 'show'])
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -27,9 +39,23 @@ class ValidIDsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreValidIDsRequest $request)
+    public function store(Request $request)
     {
-        //
+        $user = Auth::user();
+        $teacher = Teacher::where('id', $user->id)->first();
+
+        if (!$user || !$teacher || !$teacher->isAdmin) {
+            return response()->json(['message' => 'Unauthorized'], 400);
+        }
+
+        $fields = $request->validate([
+            'id' => 'required|integer|unique:valid_i_ds',
+            'user_type' => 'required|string|in:S,T'
+        ]);
+
+        $validID = ValidIDs::create($fields);
+
+        return ['validID' => $validID];
     }
 
     /**
