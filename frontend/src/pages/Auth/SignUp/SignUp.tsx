@@ -51,7 +51,7 @@ const steps = [
   {
     id: "3",
     name: "Create you password",
-    fields: ["password", "passwordConfirm"],
+    fields: ["password", "password_confirm"],
   },
   {
     id: "4",
