@@ -1,5 +1,6 @@
 import { AppContextType, UsersType } from "@/lib/types";
 import { fetchUser, getCookie } from "@/lib/utils";
+import Cookies from "js-cookie";
 import { createContext, useEffect, useMemo, useState } from "react";
 
 export const AppContext = createContext<AppContextType | null>(null);
@@ -22,7 +23,13 @@ export default function AppProvider({ children }: ParamType) {
 
   async function fetchUserData() {
     const userData = await fetchUser(token);
-    setUser(userData);
+    if (!userData) {
+      Cookies.remove("authToken");
+      setUser(null);
+      setToken(null);
+    } else {
+      setUser(userData);
+    }
   }
 
   // Memoize the context value to prevent unnecessary re-renders

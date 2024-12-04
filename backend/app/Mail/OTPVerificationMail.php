@@ -10,11 +10,13 @@ class OTPVerificationMail extends Mailable
     use SerializesModels;
 
     public $otp;
+    public $fullName;
 
     // Constructor to pass OTP
-    public function __construct($otp)
+    public function __construct($otp, $fullName)
     {
         $this->otp = $otp;
+        $this->fullName = $fullName;
     }
 
     public function build()

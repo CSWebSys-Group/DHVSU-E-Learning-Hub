@@ -5,15 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Module;
 use App\Http\Requests\StoreModuleRequest;
 use App\Http\Requests\UpdateModuleRequest;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ModuleController extends Controller
+class ModuleController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            new Middleware('auth:sanctum', except: ['index', 'show'])
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return response()->json(Module::all(), 200);
     }
 
     /**
@@ -37,7 +46,7 @@ class ModuleController extends Controller
      */
     public function show(Module $module)
     {
-        //
+        return ['module' => $module];
     }
 
     /**

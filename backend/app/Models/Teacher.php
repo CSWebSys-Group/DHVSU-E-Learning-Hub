@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,8 +30,8 @@ class Teacher extends Model
         'birthday' => 'date'
     ];
 
-    public function formattedBirthday()
+    public function getBirthdayAttribute($value)
     {
-        return $this->birthday ? $this->birthday->format('m-d-Y') : null;
+        return Carbon::parse($value)->format('Y-m-d');
     }
 }

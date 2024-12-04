@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OTPForgotPasswordMail;
 use App\Mail\OTPVerificationMail;
 use App\Models\Otp;
+use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -17,6 +20,7 @@ class OTPController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
+            'fullName' => 'sometimes|string'
         ]);
 
         $emailExists = User::where('email', $request->email)->exists();
@@ -36,7 +40,45 @@ class OTPController extends Controller
         );
 
         // Send OTP via email using Mailable
-        Mail::to($request->email)->send(new OTPVerificationMail($otp));
+        Mail::to($request->email)->send(new OTPVerificationMail($otp, $request->fullName));
+
+        return response()->json([
+            'message' => 'OTP sent successfully!',
+        ], 200);
+    }
+
+    public function sendOtpForgotPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        $fullName = null;
+
+        if ($user->user_type === 'T') {
+            $teacher = Teacher::where('id', $user->id)->first();
+            $fullName = $teacher->fn . ' ' . $teacher->ln;
+        } else if ($user->user_type === 'S') {
+            $student = Student::where('id', $user->id)->first();
+            $fullName = $student->fn . ' ' . $student->ln;
+        }
+
+        if (!$user || !$fullName) {
+            return response()->json(['errors' => [
+                'message' => ['User does not exist.']
+            ]], 400);
+        }
+
+        $otp = Str::random(6);
+
+        $otpRecord = Otp::updateOrCreate(
+            ['email' => $request->email],
+            ['otp' => $otp, 'expires_at' => Carbon::now()->addMinutes(5)]
+        );
+
+        // Send OTP via email using Mailable
+        Mail::to($request->email)->send(new OTPForgotPasswordMail($otp, $fullName));
 
         return response()->json([
             'message' => 'OTP sent successfully!',

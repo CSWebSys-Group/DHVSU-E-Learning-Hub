@@ -5,15 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\ActivitySubmission;
 use App\Http\Requests\StoreActivitySubmissionRequest;
 use App\Http\Requests\UpdateActivitySubmissionRequest;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ActivitySubmissionController extends Controller
+class ActivitySubmissionController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            new Middleware('auth:sanctum', except: ['index', 'show'])
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return response()->json(ActivitySubmission::all(), 200);
     }
 
     /**
@@ -37,7 +45,7 @@ class ActivitySubmissionController extends Controller
      */
     public function show(ActivitySubmission $activitySubmission)
     {
-        //
+        return ['activity_submission' => $activitySubmission];
     }
 
     /**

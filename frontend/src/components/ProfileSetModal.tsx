@@ -9,12 +9,14 @@ const ProfileSetModal = ({
   userId,
   token,
   setErrors,
+  user_type,
 }: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   userId: number;
   token: string;
   setErrors: React.Dispatch<React.SetStateAction<string[]>>;
+  user_type: "S" | "T";
 }) => {
   const [uploadDone, setUploadDone] = useState(false);
 
@@ -50,6 +52,7 @@ const ProfileSetModal = ({
                 token={token}
                 setIsOpen={setIsOpen}
                 setErrors={setErrors}
+                userType={user_type}
                 className="p-16 mt-5 mb-5 border-2 border-neutral-200 border-dashed"
               />
             </div>

@@ -16,7 +16,7 @@ import SanFernandoCampus from "./pages/Home/Campuses/SanFernandoCampus";
 import SantoTomaxCampus from "./pages/Home/Campuses/SantoTomasCampus";
 
 import AboutUs from "./pages/Home/AboutUs";
-import Features from "./pages/Home/Features";
+import ContactUs from "./pages/Home/ContactUs";
 
 import SignUp from "./pages/Auth/SignUp/SignUp";
 import Login from "./pages/Auth/Login/Login";
@@ -41,6 +41,10 @@ import ProtectedAuthRoutes from "./layouts/ProtectedAuthRoutes";
 import ProtectedNotAuthRoutes from "./layouts/ProtectedNotAuthRoutes";
 import Submissions from "./pages/Submissions/Submissions";
 import SubjectTask from "./pages/SubjectTask/SubjectTask";
+
+import EnrolledSubject from "./pages/Subjects/EnrolledSubjects/EnrolledSubject";
+import Index from "./pages/Subjects/Index";
+
 import ForgotPassword from "./pages/Auth/ForgotPassword/ForgotPassword";
 import CreateActivity from "./pages/CreateActivity/create-activity";
 import Student from "./pages/Admin/Student/Student";
@@ -84,7 +88,7 @@ function App() {
             </Route>
 
             <Route path="about-us" element={<AboutUs />} />
-            <Route path="features" element={<Features />} />
+            <Route path="contact-us" element={<ContactUs />} />
           </Route>
 
           {/* Protected routes for unauthenticated users */}
@@ -129,17 +133,36 @@ function App() {
                       <Profile user={user!} token={token!} setUser={setUser} />
                     }
                   />
-                  <Route path="subjects" element={<Subjects />} />
+                  <Route path="subjects" element={<Subjects />}>
+                    <Route
+                      index
+                      element={<Index user={user!} token={token!} />}
+                    />
+                    <Route
+                      path=":id"
+                      element={<EnrolledSubject token={token!} user={user} />}
+                    />
+                  </Route>
                   <Route path="help" element={<Help />} />
                   <Route path="submissions" element={<Submissions />} />
+
                   <Route path="task" element={<SubjectTask />} />
                   <Route path="grades" element={<Grades user={user!} />} />{" "}
                   <Route path="create" element={<CreateActivity />} />
+                  
                   {/* admin routes */}
                   <Route path="student-table" element={<Student />} />
                   <Route path="section-table" element={<Section />} />
                   <Route path="course-table" element={<Course />} />
                   <Route path="subject-table" element={<Subject />} />
+
+
+                  {user.user.user_type === "S" && (
+                    <>
+                      <Route path="grades" element={<Grades user={user!} />} />
+                      <Route path="activities/:id" element={<SubjectTask />} />
+                    </>
+                  )}
                 </Route>
               </>
             )}

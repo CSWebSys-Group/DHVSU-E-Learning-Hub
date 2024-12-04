@@ -86,10 +86,10 @@ export default function Home() {
               </li>
               <li>
                 <NavLink
-                  to="/features"
+                  to="/contact-us"
                   className={({ isActive }) => getNavLinkClasses(isActive)}
                 >
-                  Features
+                  Contact Us
                 </NavLink>
               </li>
             </ul>
