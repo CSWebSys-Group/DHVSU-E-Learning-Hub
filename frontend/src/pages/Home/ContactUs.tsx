@@ -37,23 +37,23 @@ const ContactUs = () => {
             <input
               type="text"
               placeholder="Enter your name"
-              className="border rounded-[5px] border-brand px-[8px] py-[8px] w-full placeholder:text-[#D7C0BB] shadow-md"
+              className="border rounded-[5px] text-brand border-brand px-[8px] py-[8px] w-full placeholder:text-[#D7C0BB] shadow-md focus:outline-none focus:border-brand"
             />
             <input
               type="text"
               placeholder="Enter your email"
-              className="border rounded-[5px] border-brand px-[8px] py-[8px] w-full placeholder:text-[#D7C0BB] shadow-md"
+              className="border rounded-[5px] border-brand px-[8px] py-[8px] w-full placeholder:text-[#D7C0BB] shadow-md focus:outline-none focus:border-brand"
             />
             <input
               type="text"
               placeholder="Enter your phone number"
-              className="border rounded-[5px] border-brand px-[8px] py-[8px] w-full placeholder:text-[#D7C0BB] shadow-md"
+              className="border rounded-[5px] border-brand px-[8px] py-[8px] w-full placeholder:text-[#D7C0BB] shadow-md focus:outline-none focus:border-brand"
             />
             <textarea
               name=""
               id=""
               placeholder="Enter your message..."
-              className="resize-y border rounded-[5px] border-brand px-[8px] py-[8px] w-full placeholder:text-[#D7C0BB] shadow-md"
+              className="resize-y border rounded-[5px] border-brand px-[8px] py-[8px] w-full placeholder:text-[#D7C0BB] shadow-md focus:outline-none focus:border-brand"
             ></textarea>
             <button className="px-2 py-2 w-[200px] rounded-lg  border-2 border-brand text-white bg-brand font-bold relative overflow-hidden group">
               <div className="absolute inset-0 bg-white translate-y-[100%] group-hover:translate-y-[0%] transition-transform duration-300" />
@@ -70,12 +70,12 @@ const ContactUs = () => {
         </h2>
         <p className="text-sm text-gray-700 max-w-3xl mx-auto">
           We believe in building trust through transparent communication and
-          exceptional support. Whether you’re seeking assistance or simply have
-          feedback, our team is here for you. Reach out to us anytime.
+          exceptional support. Whether you&#39;re seeking assistance or simply
+          have feedback, our team is here for you. Reach out to us anytime.
         </p>
         <div className="mt-6">
           <p className="text-lg text-brand font-semibold">
-            Your journey matters to us. Let’s make it a great one together!
+            Your journey matters to us. Let&#39;s make it a great one together!
           </p>
         </div>
       </div>
