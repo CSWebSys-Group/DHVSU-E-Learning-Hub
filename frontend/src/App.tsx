@@ -43,6 +43,10 @@ import Submissions from "./pages/Submissions/Submissions";
 import SubjectTask from "./pages/SubjectTask/SubjectTask";
 import ForgotPassword from "./pages/Auth/ForgotPassword/ForgotPassword";
 import CreateActivity from "./pages/CreateActivity/create-activity";
+import Student from "./pages/Admin/Student/Student";
+import Section from "./pages/Admin/Section/Section";
+import Course from "./pages/Admin/Course/Course";
+import Subject from "./pages/Admin/Subject/Subject";
 
 function App() {
   const context = useContext(AppContext);
@@ -131,6 +135,11 @@ function App() {
                   <Route path="task" element={<SubjectTask />} />
                   <Route path="grades" element={<Grades user={user!} />} />{" "}
                   <Route path="create" element={<CreateActivity />} />
+                  {/* admin routes */}
+                  <Route path="student-table" element={<Student />} />
+                  <Route path="section-table" element={<Section />} />
+                  <Route path="course-table" element={<Course />} />
+                  <Route path="subject-table" element={<Subject />} />
                 </Route>
               </>
             )}

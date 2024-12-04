@@ -68,7 +68,7 @@ const Submissions = () => {
         </div>
         <Separator />
       </div>
-      <div className="bg-dhvsu-lighter h-full p-10">
+      <div className="h-full p-10">
         <main className="grid flex-1 items-start gap-4 sm:py-0 md:gap-8">
           <Tabs defaultValue="all">
             <div className="flex items-center">

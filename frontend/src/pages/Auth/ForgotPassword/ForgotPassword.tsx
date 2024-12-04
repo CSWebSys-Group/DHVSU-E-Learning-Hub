@@ -43,6 +43,8 @@ const ForgotPassword = () => {
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
       email: "",
+      password: "",
+      password_confirmation: "",
     },
   });
 
