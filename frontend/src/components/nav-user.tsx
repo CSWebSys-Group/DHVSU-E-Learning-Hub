@@ -3,6 +3,7 @@
 import {
   BadgeCheck,
   Bell,
+  BookOpen,
   ChevronsUpDown,
   CreditCard,
   LogOut,
@@ -130,7 +131,10 @@ export function NavUser({
                 </DropdownMenuItem>
               </Link>
               <Link to="/user/subjects">
-                <DropdownMenuItem>Subjects</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <BookOpen />
+                  Subjects
+                </DropdownMenuItem>
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
