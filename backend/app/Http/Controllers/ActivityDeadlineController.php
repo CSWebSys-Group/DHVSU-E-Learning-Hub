@@ -5,15 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\ActivityDeadline;
 use App\Http\Requests\StoreActivityDeadlineRequest;
 use App\Http\Requests\UpdateActivityDeadlineRequest;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class ActivityDeadlineController extends Controller
+class ActivityDeadlineController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            new Middleware('auth:sanctum', except: ['index', 'show'])
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return response()->json(ActivityDeadline::all(), 200);
     }
 
     /**
@@ -37,7 +46,7 @@ class ActivityDeadlineController extends Controller
      */
     public function show(ActivityDeadline $activityDeadline)
     {
-        //
+        return ['activity_deadline' => $activityDeadline];
     }
 
     /**
@@ -62,5 +71,18 @@ class ActivityDeadlineController extends Controller
     public function destroy(ActivityDeadline $activityDeadline)
     {
         //
+    }
+
+    public function getActivityDeadline(Request $request)
+    {
+        $request->validate(['id' => 'required|integer']);
+
+        $activityDeadline = ActivityDeadline::where('id', $request->id)->first();
+
+        if (!$activityDeadline) {
+            return response()->json(['message' => 'Cannot find the deadline']);
+        }
+
+        return ['activity_deadline' => $activityDeadline];
     }
 }

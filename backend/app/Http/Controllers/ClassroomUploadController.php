@@ -284,4 +284,21 @@ class ClassroomUploadController extends Controller implements HasMiddleware
 
         return response()->json(['message' => 'Classroom upload deleted successfully'], 200);
     }
+
+    public function showClassroomUploadBySubjectId(Request $request)
+    {
+        $request->validate([
+            'subject_id' => 'required|integer'
+        ]);
+
+        $subject = Subject::where('id', $request->subject_id)->first();
+
+        if (!$subject) {
+            return response()->json(['message' => 'Subject not found'], 400);
+        }
+
+        $classroomUploads = ClassroomUpload::where('subject_id', $subject->id)->get();
+
+        return ['classroomUploads' => $classroomUploads];
+    }
 }

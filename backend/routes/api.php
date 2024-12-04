@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\ActivityDeadlineController;
+use App\Http\Controllers\ActivitySubmissionController;
+use App\Http\Controllers\ActivityUploadController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassroomUploadController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\GradesController;
+use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
@@ -24,6 +28,10 @@ Route::apiResource('subjects', SubjectController::class);
 Route::apiResource('courses', CourseController::class);
 Route::apiResource('grades', GradesController::class);
 Route::apiResource('valid-ids', ValidIDsController::class);
+Route::apiResource('activity-deadline', ActivityDeadlineController::class);
+Route::apiResource('activity-upload', ActivityUploadController::class);
+Route::apiResource('activity-submission', ActivitySubmissionController::class);
+Route::apiResource('modules', ModuleController::class);
 
 Route::post('/grades/student', [GradesController::class, 'getStudentGrades']);
 
@@ -75,7 +83,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/sections/{section}/add-student', [SectionController::class, 'addStudent']);
     Route::delete('/sections/{section}/remove-student', [SectionController::class, 'removeStudent']);
 
+    Route::post('/subjects/{subject}/add-teacher', [SubjectController::class, 'addTeacher']);
+    Route::delete('/subjects/{subject}/remove-teacher', [SubjectController::class, 'removeTeacher']);
 
+    Route::post('get-activity-deadline', [ActivityDeadlineController::class, 'getActivityDeadline']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

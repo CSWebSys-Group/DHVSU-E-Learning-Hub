@@ -42,7 +42,7 @@ export interface TeacherCreds {
   id: number;
   fn: string;
   ln: string;
-  subjects: number[] | null;
+  subjects: number[];
   gender: "M" | "F" | "Others" | null;
   birthday: string | null;
   isAdmin: boolean;
@@ -131,9 +131,9 @@ export type SubjectType = {
   id: number;
   subject_code: string;
   subject_name: string;
-  section_id: number;
-  teacher_id: number;
-  classroom_uploads: string[];
+  section_id: number | null;
+  teacher_id: number | null;
+  classroom_uploads: number[];
   type: "core" | "minor";
   created_at: string;
   updated_at: string;
