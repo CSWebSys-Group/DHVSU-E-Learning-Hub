@@ -204,7 +204,7 @@ export default function Home() {
                   Let's make your future great together
                 </h1>
               </div>
-              <div className="flex justify-center items-center  text-brand bg-white w-[120px] gap-2 rounded-full px-2 py-[5px] mt-4 lg:w-[150px] lg:h-[40px] lg:text-lg  lg:mt-5">
+              <div className="flex justify-center border border-white items-center text-brand bg-white w-[120px] gap-2 rounded-full px-2 py-[5px] mt-4 lg:w-[150px] lg:h-[40px] lg:text-lg lg:mt-5 hover:bg-brand hover:text-white hover:border-white cursor-pointer transition-all duration-300">
                 <Link to="#" className="font-bold">
                   Sign In
                 </Link>
@@ -219,30 +219,30 @@ export default function Home() {
                   Futures for Tomorrow's Leaders.
                 </h1>
               </div>
-              <div className="flex gap-2">
-                <div className="flex justify-center items-center gap-2 border px-[10px] py-[2px] rounded-full md:py-[5px] md:px-[12px] lg:w-[150px] lg:h-[40px] lg:mt-2">
-                  <div className="flex justify-center items-center p-[6px]  text-brand  bg-light-400   w-[20px] h-[20px] rounded-full md:w-[23px] md:h-[23px] ">
+              <div className="flex gap-2 font-semibold">
+                <div className="group flex justify-center items-center gap-2 border px-[10px] py-[2px] rounded-full md:py-[5px] md:px-[12px] lg:w-[150px] lg:h-[40px] lg:mt-2 transition duration-300 ease-in-out transform hover:bg-light-300 hover:scale-105">
+                  <div className="flex justify-center items-center p-[6px] text-brand bg-light-400 w-[20px] h-[20px] rounded-full md:w-[23px] md:h-[23px] transition duration-300 ease-in-out transform group-hover:scale-110">
                     <FaFacebookF />
                   </div>
-                  <div>
+                  <div className="group-hover:text-brand transition duration-300 ease-in-out">
                     <Link to="/fb">Facebook</Link>
                   </div>
                 </div>
 
-                <div className="flex justify-center items-center gap-2 border px-[10px] py-[2px] rounded-full md:py-[5px] md:px-[12px] lg:w-[150px] lg:h-[40px] lg:mt-2">
-                  <div className="flex justify-center items-center p-[4px] text-brand  bg-light-400  w-[20px] h-[20px] rounded-full md:w-[23px] md:h-[23px]">
+                <div className="group flex justify-center items-center gap-2 border px-[10px] py-[2px] rounded-full md:py-[5px] md:px-[12px] lg:w-[150px] lg:h-[40px] lg:mt-2 transition duration-300 ease-in-out transform hover:bg-light-300 hover:scale-105">
+                  <div className="flex justify-center items-center p-[4px] text-brand bg-light-400 w-[20px] h-[20px] rounded-full md:w-[23px] md:h-[23px] transition duration-300 ease-in-out transform group-hover:scale-110">
                     <FaXTwitter />
                   </div>
-                  <div>
+                  <div className="group-hover:text-brand transition duration-300 ease-in-out">
                     <Link to="/fb">Twitter</Link>
                   </div>
                 </div>
 
-                <div className="flex justify-center items-center gap-2 border px-[10px] py-[2px] rounded-full md:py-[5px] md:px-[12px] lg:w-[150px] lg:h-[40px] lg:mt-2">
-                  <div className="flex justify-center items-center p-[4px]  text-brand  bg-light-400   w-[20px] h-[20px] rounded-full md:w-[23px] md:h-[23px]">
+                <div className="group flex justify-center items-center gap-2 border px-[10px] py-[2px] rounded-full md:py-[5px] md:px-[12px] lg:w-[150px] lg:h-[40px] lg:mt-2 transition duration-300 ease-in-out transform hover:bg-light-300 hover:scale-105">
+                  <div className="flex justify-center items-center p-[4px] text-brand bg-light-400 w-[20px] h-[20px] rounded-full md:w-[23px] md:h-[23px] transition duration-300 ease-in-out transform group-hover:scale-110">
                     <FaInstagram />
                   </div>
-                  <div>
+                  <div className="group-hover:text-brand transition duration-300 ease-in-out">
                     <Link to="/fb">Instagram</Link>
                   </div>
                 </div>
@@ -256,12 +256,21 @@ export default function Home() {
             <div className=" flex justify-between items-center px-2 ">
               <div className="hidden md:block text-light-400">
                 <ul className="flex gap-3 text-sm lg:text-lg cursor-pointer">
-                  <li>Home</li>
-                  <li>Campuses</li>
-                  <li>Features</li>
-                  <li>Sign In</li>
+                  <li className="transform transition-all duration-300 hover:scale-110">
+                    Home
+                  </li>
+                  <li className="transform transition-all duration-300 hover:scale-110">
+                    Campuses
+                  </li>
+                  <li className="transform transition-all duration-300 hover:scale-110">
+                    Features
+                  </li>
+                  <li className="transform transition-all duration-300 hover:scale-110">
+                    Sign In
+                  </li>
                 </ul>
               </div>
+
               <div>
                 <p className="text-xs text-light-400 md:text-sm">
                   &copy; 2024 DHVSU. All rights reserved.
