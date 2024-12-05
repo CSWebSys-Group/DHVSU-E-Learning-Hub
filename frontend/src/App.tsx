@@ -51,6 +51,8 @@ import Student from "./pages/Admin/Student/Student";
 import Section from "./pages/Admin/Section/Section";
 import Course from "./pages/Admin/Course/Course";
 import Subject from "./pages/Admin/Subject/Subject";
+import ValidIds from "./pages/Admin/ValidIds/ValidIds";
+import AuditLogs from "./pages/Admin/AuditLogs/AuditLogs";
 
 function App() {
   const context = useContext(AppContext);
@@ -152,6 +154,8 @@ function App() {
                   <Route path="section-table" element={<Section />} />
                   <Route path="course-table" element={<Course />} />
                   <Route path="subject-table" element={<Subject />} />
+                  <Route path="valid-ids" element={<ValidIds />} />
+                  <Route path="audit-logs" element={<AuditLogs />} />
                   <Route
                     path="activities/:id"
                     element={<SubjectTask user={user} token={token!} />}
