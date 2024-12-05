@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Subject;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
+use App\Models\Teacher;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 
 class SubjectController extends Controller implements HasMiddleware
 {
@@ -72,5 +76,65 @@ class SubjectController extends Controller implements HasMiddleware
     public function destroy(Subject $subject)
     {
         //
+    }
+
+    public function addTeacher(Request $request, Subject $subject)
+    {
+        $user = User::where('id', Auth::id())->first();
+        $teacher = Teacher::where('id', $user->id)->first();
+
+        if ($user->user_type !== 'T' || !$teacher || !$teacher->isAdmin) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $request->validate([
+            'id' => 'required|integer'
+        ]);
+
+        $teacher = Teacher::where('id', $request->id)->first();
+
+        if (!$teacher) {
+            return response()->json(['message' => 'Teacher not found'], 400);
+        }
+
+        if (in_array($subject->id, $teacher->subjects)) {
+            return response()->json(['message' => 'Teacher is already in the subject'], 400);
+        }
+
+        $teacher->subjects[] = $subject->id;
+        $teacher->save();
+
+        return response()->json(['message' => 'Teacher added to subject successfully'], 200);
+    }
+
+    public function removeTeacher(Request $request, Subject $subject)
+    {
+        $user = User::where('id', Auth::id())->first();
+        $teacher = Teacher::where('id', $user->id)->first();
+
+        if ($user->user_type !== 'T' || !$teacher || !$teacher->isAdmin) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $request->validate([
+            'id' => 'required|integer'
+        ]);
+
+        $teacher = Teacher::where('id', $request->id)->first();
+
+        if (!$teacher) {
+            return response()->json(['message' => 'Teacher not found'], 400);
+        }
+
+        if (!in_array($subject->id, $teacher->subjects)) {
+            return response()->json(['message' => 'Teacher is not in the subject'], 400);
+        }
+
+        $subject->teacher_id = null;
+        $teacher->subjects = array_values(array_diff($teacher->subjects, [$subject->id]));
+
+        $teacher->save();
+
+        return response()->json(['message' => 'Teacher removed from subject successfully'], 200);
     }
 }
