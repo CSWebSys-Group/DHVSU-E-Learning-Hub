@@ -1,4 +1,4 @@
-import { navItems } from "@/constants/data";
+import { navItemsStudent, navItemsTeacher } from "@/constants/data";
 import {
   KBarAnimator,
   KBarPortal,
@@ -9,8 +9,15 @@ import {
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import RenderResults from "./render-result";
+import { UsersType } from "@/lib/types";
 
-export default function KBar({ children }: { children: React.ReactNode }) {
+export default function KBar({
+  user,
+  children,
+}: {
+  user: UsersType;
+  children: React.ReactNode;
+}) {
   const navigate = useNavigate();
   const navigateTo = (url: string) => {
     navigate(url);
@@ -18,36 +25,38 @@ export default function KBar({ children }: { children: React.ReactNode }) {
 
   const actions = useMemo(
     () =>
-      navItems.flatMap((navItem) => {
-        // Only include base action if the navItem has a real URL and is not just a container
-        const baseAction =
-          navItem.url !== "#"
-            ? {
-                id: `${navItem.title.toLowerCase()}Action`,
-                name: navItem.title,
-                shortcut: navItem.shortcut,
-                keywords: navItem.title.toLowerCase(),
-                section: "Navigation",
-                subtitle: `Go to ${navItem.title}`,
-                perform: () => navigateTo(navItem.url),
-              }
-            : null;
+      (user.user.user_type === "S" ? navItemsStudent : navItemsTeacher).flatMap(
+        (navItem) => {
+          // Only include base action if the navItem has a real URL and is not just a container
+          const baseAction =
+            navItem.url !== "#"
+              ? {
+                  id: `${navItem.title.toLowerCase()}Action`,
+                  name: navItem.title,
+                  shortcut: navItem.shortcut,
+                  keywords: navItem.title.toLowerCase(),
+                  section: "Navigation",
+                  subtitle: `Go to ${navItem.title}`,
+                  perform: () => navigateTo(navItem.url),
+                }
+              : null;
 
-        // Map child items into actions
-        const childActions =
-          navItem.items?.map((childItem) => ({
-            id: `${childItem.title.toLowerCase()}Action`,
-            name: childItem.title,
-            shortcut: childItem.shortcut,
-            keywords: childItem.title.toLowerCase(),
-            section: navItem.title,
-            subtitle: `Go to ${childItem.title}`,
-            perform: () => navigateTo(childItem.url),
-          })) ?? [];
+          // Map child items into actions
+          const childActions =
+            navItem.items?.map((childItem) => ({
+              id: `${childItem.title.toLowerCase()}Action`,
+              name: childItem.title,
+              shortcut: childItem.shortcut,
+              keywords: childItem.title.toLowerCase(),
+              section: navItem.title,
+              subtitle: `Go to ${childItem.title}`,
+              perform: () => navigateTo(childItem.url),
+            })) ?? [];
 
-        // Return only valid actions (ignoring null base actions for containers)
-        return baseAction ? [baseAction, ...childActions] : childActions;
-      }),
+          // Return only valid actions (ignoring null base actions for containers)
+          return baseAction ? [baseAction, ...childActions] : childActions;
+        }
+      ),
     []
   );
 

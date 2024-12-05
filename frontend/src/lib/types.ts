@@ -32,7 +32,7 @@ export interface StudentCreds {
   zip_code: number | null;
   profile_picture: string | null;
   section_id: number | null;
-  tasks: Task | null;
+  activities: number[];
   grades: { subject_id: number; grade: number } | null;
   created_at: string | null;
   updated_at: string | null;
@@ -160,4 +160,36 @@ export type SectionType = {
 export type AuditLogType = {
   message: string;
   user_type: "A" | "S" | "T";
+};
+
+export type ActivityUploadType = {
+  id: number;
+  title: string;
+  description: string | null;
+  attachments: string[];
+  total_score: number;
+  deadline_id: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ActivityDeadlineType = {
+  id: number;
+  activity_upload_id: number;
+  deadline: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ActivitySubmissionType = {
+  id: number;
+  student_id: number;
+  activity_upload_id: number;
+  attachments: string[];
+  description: string | null;
+  score: number | null;
+  submitted: boolean;
+  late: boolean;
+  created_at: string;
+  updated_at: string;
 };

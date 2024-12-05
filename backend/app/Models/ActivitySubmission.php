@@ -20,6 +20,9 @@ class ActivitySubmission extends Model
     ];
 
     protected $casts = [
+        'student_id' => 'integer',
+        'activity_upload_id' => 'integer',
+        'score' => 'integer',
         'attachments' => 'array',
         'submitted' => 'boolean'
     ];

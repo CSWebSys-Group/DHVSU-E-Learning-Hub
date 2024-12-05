@@ -38,14 +38,14 @@ const SubjectCard = ({
             <b>{subject.subject_name}</b>
           </p>
           <br />
-          <p className="text-brand text-sm line-clamp-1 mb-[0.48rem] w-[80%]">
-            {(teacher && (
+
+          {teacher && (
+            <p className="text-brand text-sm line-clamp-1 mb-[0.48rem] w-[80%]">
               <b>
                 {teacher.ln.toUpperCase() + ", " + teacher.fn.toUpperCase()}
               </b>
-            )) ||
-              ""}
-          </p>
+            </p>
+          )}
         </div>
 
         <div className="relative flex justify-end mr-3">

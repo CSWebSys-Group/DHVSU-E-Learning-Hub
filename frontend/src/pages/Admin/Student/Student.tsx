@@ -44,6 +44,7 @@ async function getData(searchTerm: string = ""): Promise<StudentTable[]> {
       name: "Yainnier Layague",
       year_section: "BSCS-3B",
     },
+
     // ...
   ];
 

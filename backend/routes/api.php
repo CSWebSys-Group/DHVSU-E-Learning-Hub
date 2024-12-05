@@ -88,5 +88,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('get-activity-deadline', [ActivityDeadlineController::class, 'getActivityDeadline']);
 
+    Route::post('get-student-submission', [ActivitySubmissionController::class, 'findSubmissionByStudentIdAndActivityId']);
+
     Route::post('logout', [AuthController::class, 'logout']);
 });

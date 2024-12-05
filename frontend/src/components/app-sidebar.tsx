@@ -32,9 +32,9 @@ import {
 } from "./ui/collapsible";
 import { NavSecondary } from "./nav-secondary";
 import { NavUser } from "./nav-user";
-import { navItems } from "@/constants/data";
 import { Link, useLocation } from "react-router-dom";
 import { UsersType } from "@/lib/types";
+import { navItemsStudent, navItemsTeacher } from "@/constants/data";
 
 const items = {
   subMenuList: [
@@ -109,7 +109,10 @@ export function AppSidebar({
         <SidebarGroup>
           <SidebarGroupLabel>Overview</SidebarGroupLabel>
           <SidebarMenu>
-            {navItems.map((item) => {
+            {(user.user.user_type === "S"
+              ? navItemsStudent
+              : navItemsTeacher
+            ).map((item) => {
               return item?.items && item?.items?.length > 0 ? (
                 <Collapsible
                   key={item.title}

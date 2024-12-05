@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('fn');
             $table->string('ln');
             $table->json('subjects')->nullable();
-            $table->enum('gender', ['M', 'F', 'Others']);
+            $table->enum('gender', ['M', 'F', 'Others'])->nullable();
             $table->date('birthday')->nullable();
             $table->boolean('isAdmin')->default(false);
             $table->string('profile_picture')->nullable();

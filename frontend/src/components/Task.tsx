@@ -1,4 +1,4 @@
-import { formatDate } from "@/lib/utils";
+import { formatDate, isPastDeadline } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -12,6 +12,7 @@ type Props = {
   teacher_profile: string | null;
   teacher_profile_fallback: string;
   course_section?: string;
+  user_type: "S" | "T";
 };
 
 const Task = ({
@@ -23,6 +24,7 @@ const Task = ({
   teacher_profile,
   teacher_profile_fallback,
   course_section,
+  user_type,
 }: Props) => {
   return (
     <Link
@@ -38,6 +40,11 @@ const Task = ({
           <h3 className="text-lg font-bold text-brand transition-colors duration-300 ease-in-out group-hover:text-white">
             {subject_code} {course_section ? " - " + course_section : ""}
           </h3>
+          {isPastDeadline(due_date) && user_type === "S" && (
+            <h4 className="text-lg font-bold text-red-500 transition-colors duration-300 ease-in-out group-hover:text-white">
+              LATE
+            </h4>
+          )}
         </div>
         <h3 className="text-lg my-2 font-bold text-brand transition-colors duration-300 ease-in-out group-hover:text-white">
           {title}

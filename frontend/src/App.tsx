@@ -145,22 +145,20 @@ function App() {
                   </Route>
                   <Route path="help" element={<Help />} />
                   <Route path="submissions" element={<Submissions />} />
-
-                  <Route path="task" element={<SubjectTask />} />
                   <Route path="grades" element={<Grades user={user!} />} />{" "}
                   <Route path="create" element={<CreateActivity />} />
-                  
                   {/* admin routes */}
                   <Route path="student-table" element={<Student />} />
                   <Route path="section-table" element={<Section />} />
                   <Route path="course-table" element={<Course />} />
                   <Route path="subject-table" element={<Subject />} />
-
-
+                  <Route
+                    path="activities/:id"
+                    element={<SubjectTask user={user} token={token!} />}
+                  />
                   {user.user.user_type === "S" && (
                     <>
                       <Route path="grades" element={<Grades user={user!} />} />
-                      <Route path="activities/:id" element={<SubjectTask />} />
                     </>
                   )}
                 </Route>

@@ -47,7 +47,6 @@ class AuthController extends Controller
                 'fn' => 'required|string|max:100',
                 'ln' => 'required|string|max:100',
                 'section_id' => 'nullable|integer',
-                'tasks' => 'nullable|array',
                 'grades' => 'nullable|array'
             ], [
                 'email.ends_with' => 'Use your dhvsu email', // Custom error message for email domain validation
@@ -58,9 +57,10 @@ class AuthController extends Controller
                 'gender' => $request->gender,
                 'fn' => $request->fn,
                 'ln' => $request->ln,
-                'section_id' => $request->section_id,
-                'tasks' => $request->tasks,
-                'grades' => $request->grades
+                'section_id' => 2,
+                // 'section_id' => $request->section_id,
+                'grades' => $request->grades,
+                'activities' => []
             ]);
         } else if ($request->user_type === 'T') {
             $field = $request->validate([
@@ -72,7 +72,6 @@ class AuthController extends Controller
                 'password' => 'required|string|min:8|confirmed',
                 'fn' => 'required|string|max:100',
                 'ln' => 'required|string|max:100',
-                'subjects' => 'present|array',
             ], [
                 'email.ends_with' => 'Use your dhvsu email', // Custom error message for email domain validation
             ]);
@@ -83,7 +82,7 @@ class AuthController extends Controller
                 'fn' => $request->fn,
                 'ln' => $request->ln,
                 'isAdmin' => false,
-                'subjects' => $request->subjects
+                'subjects' => []
             ]);
         }
 

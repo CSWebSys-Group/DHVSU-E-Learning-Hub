@@ -60,9 +60,8 @@ class ClassroomUploadController extends Controller implements HasMiddleware
                     return response()->json(['message' => 'Cloudinary upload failed'], 500);
                 }
             }
-            return $uploadedAttachments;
         }
-        return response()->json(['message' => 'No file uploaded'], 400);
+        return $uploadedAttachments;
     }
 
     private function handleFileDeletes(array $files)
@@ -142,7 +141,7 @@ class ClassroomUploadController extends Controller implements HasMiddleware
             'total_score' => 'sometimes|integer',
             'deadline' => 'sometimes|date_format:Y-m-d H:i:s',
             'files' => 'sometimes|array',
-            'files.*' => 'file|max:20480'
+            'files.*' => 'file|max:20480',
         ]);
 
         $subject = Subject::where('id', $request->subject_id)->first();

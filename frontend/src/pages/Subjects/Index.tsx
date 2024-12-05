@@ -55,6 +55,7 @@ const Index = ({ user, token }: PropType) => {
       setIsLoading(true);
       setSubjects([]);
       setDueActivities([]);
+      setErrors([]);
       try {
         if (user.user.user_type === "S") {
           await fetchStudentData();
@@ -84,6 +85,7 @@ const Index = ({ user, token }: PropType) => {
 
   async function fetchStudentData() {
     const { section_id } = user.user_creds as StudentCreds;
+    const { activities } = user.user_creds as StudentCreds;
     const sectionData = await fetchWithErrorHandling(
       `/api/sections/${section_id}`
     );
@@ -166,15 +168,43 @@ const Index = ({ user, token }: PropType) => {
       })
     );
 
+    const activitySubmissions = await Promise.all(
+      activities.map(async (existingActivity) => {
+        // Fetch activity submission by ID
+        const activitySubmissionData = await fetchWithErrorHandling(
+          `/api/activity-submission/${existingActivity}`
+        );
+
+        // Fetch the related activity upload using the activity_upload_id
+        const activityUploadData = await fetchWithErrorHandling(
+          `/api/activity-upload/${activitySubmissionData.activity_submission.activity_upload_id}`
+        );
+
+        return activityUploadData.activity_upload.id; // Return the activity_upload_id
+      })
+    );
+
     // Flatten the array of arrays and filter out any potential nulls
     const flattenedActivities = activitiesDue
       .flat()
       .filter(Boolean) as ActivityDeadline[];
 
     // Sort the activities
-    const sortedActivities = flattenedActivities.sort(
-      (a, b) => a.deadline.getTime() - b.deadline.getTime()
-    );
+    const sortedActivities = flattenedActivities
+      .sort((a, b) => {
+        // Check if a or b is past the deadline for non-user_type "T"
+        const aIsLate = a.deadline.getTime() < Date.now();
+        const bIsLate = b.deadline.getTime() < Date.now();
+
+        // If a is late and b is not, b should come first
+        if (aIsLate && !bIsLate) return 1;
+        // If b is late and a is not, a should come first
+        if (!aIsLate && bIsLate) return -1;
+
+        // If both are either late or on time, sort by deadline
+        return a.deadline.getTime() - b.deadline.getTime();
+      })
+      .filter((activity) => !activitySubmissions.includes(activity.id));
 
     // Update state
     setDueActivities(sortedActivities);
@@ -272,9 +302,11 @@ const Index = ({ user, token }: PropType) => {
       .filter(Boolean) as ActivityDeadline[];
 
     // Sort the activities
-    const sortedActivities = flattenedActivities.sort(
-      (a, b) => a.deadline.getTime() - b.deadline.getTime()
-    );
+    const sortedActivities = flattenedActivities
+      .sort((a, b) => a.deadline.getTime() - b.deadline.getTime())
+      .filter(
+        (activity) => activity.deadline.getTime() > Date.now() // Keep only activities that are not past the deadline
+      );
 
     // Update state
     setDueActivities(sortedActivities);
@@ -330,77 +362,82 @@ const Index = ({ user, token }: PropType) => {
   return (
     <>
       <div className="p-5">
-        <div className="flex flex-col w-full  bg-[#F7F1EF] shadow-md rounded-[20px] py-5 mt-4">
-          <div className="flex items-center justify-between w-full">
-            <button
-              onClick={handlePrev}
-              disabled={currentIndex === 0}
-              className="flex items-center pr-2 hover:bg-white transition-all duration-300 py-20 rounded-r-lg hover:text-DHVSU-red"
-            >
-              <div className="text-brand pl-2 lg:pr-2 lg:pl-3 focus:outline-none z-10 py-0 px-0 h-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+        {dueActivities.length ? (
+          <>
+            <div className="flex flex-col w-full  bg-[#F7F1EF] shadow-md rounded-[20px] py-5 mt-4">
+              <div className="flex items-center justify-between w-full">
+                <button
+                  onClick={handlePrev}
+                  disabled={currentIndex === 0}
+                  className="flex items-center pr-2 hover:bg-white transition-all duration-300 py-20 rounded-r-lg hover:text-DHVSU-red"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </div>
-            </button>
+                  <div className="text-brand pl-2 lg:pr-2 lg:pl-3 focus:outline-none z-10 py-0 px-0 h-full">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-8 w-8"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                  </div>
+                </button>
 
-            <div className="overflow-hidden w-full mx-0">
-              <div className="flex transition-transform duration-500 h-56 md:h-60 lg:h-64 w-full">
-                {dueActivities
-                  .slice(currentIndex, currentIndex + tasksPerPage)
-                  .map((activity) => (
-                    <Task
-                      key={activity.id}
-                      id={activity.id}
-                      subject_code={activity.subject_code}
-                      title={activity.title}
-                      description={activity.description}
-                      due_date={activity.deadline}
-                      teacher_profile={activity.teacher_profile}
-                      teacher_profile_fallback={
-                        activity.teacher_profile_fallback
-                      }
-                      course_section={activity.course_section}
-                    />
-                  ))}
+                <div className="overflow-hidden w-full mx-0">
+                  <div className="flex transition-transform duration-500 h-56 md:h-60 lg:h-64 w-full">
+                    {dueActivities
+                      .slice(currentIndex, currentIndex + tasksPerPage)
+                      .map((activity) => (
+                        <Task
+                          key={activity.id}
+                          id={activity.id}
+                          subject_code={activity.subject_code}
+                          title={activity.title}
+                          description={activity.description}
+                          due_date={activity.deadline}
+                          teacher_profile={activity.teacher_profile}
+                          teacher_profile_fallback={
+                            activity.teacher_profile_fallback
+                          }
+                          course_section={activity.course_section}
+                          user_type={user.user.user_type}
+                        />
+                      ))}
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleNext}
+                  disabled={currentIndex + tasksPerPage >= dueActivities.length}
+                  className="flex items-center pl-2 hover:bg-white transition-all duration-300 py-20 rounded-l-lg hover:text-DHVSU-red"
+                >
+                  <div className="text-brand pr-2 lg:pr-3 lg:pl-2 focus:outline-none z-10 py-0 px-0 h-full">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-8 w-8"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
+                </button>
               </div>
             </div>
-
-            <button
-              onClick={handleNext}
-              disabled={currentIndex + tasksPerPage >= dueActivities.length}
-              className="flex items-center pl-2 hover:bg-white transition-all duration-300 py-20 rounded-l-lg hover:text-DHVSU-red"
-            >
-              <div className="text-brand pr-2 lg:pr-3 lg:pl-2 focus:outline-none z-10 py-0 px-0 h-full">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </div>
-            </button>
-          </div>
-        </div>
+          </>
+        ) : null}
 
         <div className="text-lg font-bold text-left text-brand py-6 pl-6 pt-10 pb-2 lg:px-14">
           Subjects

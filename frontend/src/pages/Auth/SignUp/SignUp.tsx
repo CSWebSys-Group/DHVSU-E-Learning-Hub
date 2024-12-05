@@ -104,6 +104,7 @@ const SignUp = ({
       const data = await res.json();
 
       if (!res.ok) {
+        console.log(data);
         if (data.errors) {
           const errorMessages = Object.values(data.errors).flat() as string[];
           setErrors(errorMessages);
@@ -157,7 +158,10 @@ const SignUp = ({
       setIsLoading(true);
       const res = await fetch("/api/send-otp/signup", {
         method: "post",
-        body: JSON.stringify({ email: form.getValues("email") }),
+        body: JSON.stringify({
+          email: form.getValues("email"),
+          fullName: `${form.getValues("fn")} ${form.getValues("ln")}`,
+        }),
       });
 
       const data = await res.json();

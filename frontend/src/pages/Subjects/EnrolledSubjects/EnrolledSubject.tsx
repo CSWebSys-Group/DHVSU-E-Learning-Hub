@@ -18,6 +18,7 @@ type ActivityType = {
   title: string;
   description: string | null;
   deadline: Date;
+  created_at: Date;
 };
 
 type ModuleType = {
@@ -118,6 +119,7 @@ const EnrolledSubject = ({ token, user }: PropType) => {
               title: activityUpload.activity_upload.title,
               description: activityUpload.activity_upload.description || null,
               deadline: new Date(deadlineData.activity_deadline.deadline),
+              created_at: new Date(deadlineData.activity_deadline.created_at),
             };
           }
           return null;
@@ -171,7 +173,7 @@ const EnrolledSubject = ({ token, user }: PropType) => {
       .flat()
       .filter(Boolean) as ActivityType[];
     const sortedActivities = flattenedActivities.sort(
-      (a, b) => a.deadline.getTime() - b.deadline.getTime()
+      (a, b) => b.deadline.getTime() - a.deadline.getTime()
     );
 
     const flattenedModules = modulesData.flat().filter(Boolean) as ModuleType[];
@@ -259,7 +261,7 @@ const EnrolledSubject = ({ token, user }: PropType) => {
               <h1 className="text-3xl font-bold text-brand">Activities</h1>
               <hr className="w-[150px] h-[5px] bg-brand" />
               {activities.slice(0, 3).map((activity) => (
-                <Link to={`/users/activities/${activity.id}`} key={activity.id}>
+                <Link to={`/user/activities/${activity.id}`} key={activity.id}>
                   <div className="border-2 text-brand border-brand rounded-md p-2 mt-2 shadow-sm hover:shadow-md hover:text-white hover:bg-brand transition">
                     <h1 className="font-bold text-lg">{activity.title}</h1>
                     <p>{activity.description}</p>
@@ -269,7 +271,7 @@ const EnrolledSubject = ({ token, user }: PropType) => {
               {showAllActivities &&
                 activities.slice(3).map((activity) => (
                   <Link
-                    to={`/users/activities/${activity.id}`}
+                    to={`/user/activities/${activity.id}`}
                     key={activity.id}
                   >
                     <div className="border-2 text-brand border-brand rounded-md p-2 mt-2 shadow-sm hover:shadow-md hover:text-white hover:bg-brand transition">
@@ -301,19 +303,23 @@ const EnrolledSubject = ({ token, user }: PropType) => {
             <h1 className="text-3xl font-bold text-brand">Modules</h1>
             <hr className="w-[150px] h-[5px] bg-brand" />
             {modules.slice(0, 5).map((module) => (
-              <div key={module.id} className="mt-2 font-semibold text-lg">
-                <div className="bg-brand px-4 p-2 rounded-lg text-white shadow-sm hover:shadow-md transition">
-                  {module.title}
-                </div>
-              </div>
-            ))}
-            {showAllModules &&
-              modules.slice(5).map((module) => (
-                <div key={module.id} className="mt-2 font-semibold text-lg">
+              <Link to={`/user/modules/${module.id}`} key={module.id}>
+                <div className="mt-2 font-semibold text-lg">
                   <div className="bg-brand px-4 p-2 rounded-lg text-white shadow-sm hover:shadow-md transition">
                     {module.title}
                   </div>
                 </div>
+              </Link>
+            ))}
+            {showAllModules &&
+              modules.slice(5).map((module) => (
+                <Link to={`/user/modules/${module.id}`} key={module.id}>
+                  <div className="mt-2 font-semibold text-lg">
+                    <div className="bg-brand px-4 p-2 rounded-lg text-white shadow-sm hover:shadow-md transition">
+                      {module.title}
+                    </div>
+                  </div>
+                </Link>
               ))}
             {modules.length ? (
               <div className="flex justify-center items-center text-white text-center mt-4 p-2 px-5 rounded-md font-semibold bg-brand w-[200px] mx-auto shadow-sm hover:shadow-md transition">

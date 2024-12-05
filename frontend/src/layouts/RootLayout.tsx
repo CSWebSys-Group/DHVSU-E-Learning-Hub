@@ -39,7 +39,7 @@ const RootLayout = ({
   const sample = pathname.split("/").filter(Boolean);
 
   return (
-    <KBar>
+    <KBar user={user!}>
       <SidebarProvider>
         <AppSidebar
           user={user!}

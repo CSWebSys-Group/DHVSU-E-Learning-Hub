@@ -17,6 +17,33 @@ export const formatDate = (date: Date): string => {
   return new Intl.DateTimeFormat("en-US", options).format(date);
 };
 
+export function isPastDeadline(deadline: string | Date): boolean {
+  // Convert deadline to a Date object if it's a string
+  const deadlineDate = new Date(deadline);
+
+  // Get the current date and time
+  const now = new Date();
+
+  // Compare the current date with the deadline
+  return now > deadlineDate;
+}
+
+export function formatDateTime(dateInput: string): string {
+  const date = new Date(dateInput);
+
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "long", // Full day name (e.g., "Thursday")
+    month: "long", // Full month name (e.g., "December")
+    day: "numeric", // Numeric day (e.g., "12")
+    year: "numeric", // Full year (e.g., "2024")
+    hour: "numeric", // Hour in 12-hour format
+    minute: "2-digit", // Two-digit minute
+    hour12: true, // AM/PM format
+  };
+
+  return new Intl.DateTimeFormat("en-US", options).format(date);
+}
+
 export const formatDateForInput = (dateString: string): string => {
   if (!dateString) return "";
   const date = new Date(dateString);
