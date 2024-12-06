@@ -11,7 +11,7 @@ import {
 import { AnimatePresence } from "framer-motion";
 import { Notification } from "@/components/SlideInNotifications";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import placeholder from "@/assets/images/placeholder-image.jpg";
 
 type ActivityType = {
   id: number;
@@ -231,20 +231,19 @@ const EnrolledSubject = ({ token, user }: PropType) => {
             </p>
           </div>
           <div className="right-side hidden md:block">
-            <div className="bg-white rounded-full h-[70px] w-[70px] shadow-lg">
-              <Avatar className="h-8 w-8 rounded-full">
-                <AvatarImage
-                  src={teacher?.profile_picture!}
-                  alt="Teacher's profile"
-                />
-                <AvatarFallback>
-                  {teacher &&
-                    teacher.fn[0].toUpperCase() +
-                      " " +
-                      teacher.ln[0].toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-            </div>
+            {teacher?.profile_picture ? (
+              <img
+                src={placeholder}
+                alt=""
+                className="bg-white rounded-full h-[70px] w-[70px] shadow-lg mr-2"
+              />
+            ) : (
+              <span className="h-[70px] w-[70px] rounded-full border-2 border-slate-100 max-w-20 min-w-10 flex items-center justify-center bg-white text-neutral-800 text-lg mr-2">
+                JP
+                {/* {user.user_creds.fn[0].toUpperCase() +
+                user.user_creds.ln[0].toUpperCase()} */}
+              </span>
+            )}
           </div>
         </div>
         {user.user.user_type === "T" && (
