@@ -1,6 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle2, LoaderCircle, Plus, Upload, X } from "lucide-react";
+import {
+  CheckCircle2,
+  FileText,
+  LoaderCircle,
+  Plus,
+  Upload,
+  X,
+} from "lucide-react";
 
 import { useState, useRef, useEffect, FormEvent, ChangeEvent } from "react";
 
@@ -9,7 +16,6 @@ import { Notification } from "@/components/SlideInNotifications";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn, formatDate, formatDateTime, isPastDeadline } from "@/lib/utils";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
-import { ImageConfig } from "@/config/ImageConfig";
 import { Link, useParams } from "react-router-dom";
 import {
   ActivityDeadlineType,
@@ -26,9 +32,7 @@ type PropType = {
   token: string;
 };
 
-type FileStateType = { name: string; type: string; src: any };
-// { name: "202230567.jpg", type: "JPG", src: ImageConfig.jpg }
-// { name: "assignment.pdf", type: "PDF", src: ImageConfig.pdf }
+type FileStateType = { name: string; type: string };
 
 const SubjectTask = ({ user, token }: PropType) => {
   const { id } = useParams();
@@ -127,7 +131,6 @@ const SubjectTask = ({ user, token }: PropType) => {
     const newDisplayFiles: FileStateType[] = selectedFiles.map((file) => ({
       name: file.name,
       type: file.type.split("/")[1].toUpperCase(),
-      src: getFileDisplayIcon(file.type),
     }));
 
     // Update both states
@@ -182,16 +185,6 @@ const SubjectTask = ({ user, token }: PropType) => {
     } finally {
       setSubmitting(false);
     }
-  };
-
-  // Map file types to display icons
-  const getFileDisplayIcon = (type: string) => {
-    if (type.includes("jpg")) return ImageConfig.jpg;
-    if (type.includes("pdf")) return ImageConfig.pdf;
-    if (type.includes("txt")) return ImageConfig.txt;
-    if (type.includes("png")) return ImageConfig.png;
-    if (type.includes("docx")) return ImageConfig.docx;
-    return type;
   };
 
   async function fetchWithErrorHandling(url: string, headers: any = {}) {
@@ -306,12 +299,7 @@ const SubjectTask = ({ user, token }: PropType) => {
                     key={index}
                   >
                     <div className=" p-2 border-r border-gray-200">
-                      <img
-                        src={file.src}
-                        alt={file.name}
-                        width={35}
-                        height={35}
-                      />
+                      <FileText size={36} />
                     </div>
                     <div className="p-2">
                       <span className="font-semibold">{file.name}</span>
