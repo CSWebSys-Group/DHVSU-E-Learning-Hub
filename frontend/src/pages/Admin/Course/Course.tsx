@@ -36,6 +36,7 @@ const Course = ({ token }: { token: string }) => {
   }, [search]);
 
   async function getData(searchTerm: string = ""): Promise<CourseTable[]> {
+    setData([]);
     const allCourses = await fetchWithErrorHandling("/api/courses");
     const allData = (allCourses as CourseType[]).map((c) => ({
       id: c.id,

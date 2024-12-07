@@ -74,6 +74,7 @@ const Subject = ({ token }: { token: string }) => {
   }, [search]);
 
   async function getData(searchTerm: string = ""): Promise<SubjectTable[]> {
+    setData([]);
     const allSubjects = await fetchWithErrorHandling("/api/subjects");
     const allCourses = await fetchWithErrorHandling("/api/courses");
     const allSections = await fetchWithErrorHandling("/api/sections");

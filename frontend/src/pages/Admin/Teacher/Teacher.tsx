@@ -38,6 +38,7 @@ const Teacher = () => {
 
   async function getData(searchTerm: string = ""): Promise<TeacherTable[]> {
     try {
+      setData([]);
       // Fetch students data
       const teachersData = await fetchWithErrorHandling("/api/teachers");
 

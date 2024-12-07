@@ -5,6 +5,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import {
@@ -19,42 +20,60 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { CourseType } from "@/lib/types";
+import { useState } from "react";
 
 const sectionFormSchema = z.object({
-  courseName: z.enum(
-    [
-      "Bachelor of Science in Nursing",
-      "Bachelor of Science in Aeronautical Engineering",
-      "Bachelor of Science in Computer Science",
-    ],
-    {
-      errorMap: () => ({ message: "Please select a option." }),
-    }
-  ),
   year: z.enum(["1", "2", "3", "4"], {
     errorMap: () => ({ message: "Please select a option." }),
   }),
   name: z.string().min(2, { message: "Section is required" }),
-  students: z.enum([""], {
-    errorMap: () => ({ message: "Please select a option." }),
-  }),
-  subjects: z.enum([""], {
-    errorMap: () => ({ message: "Please select a option." }),
-  }),
+  course_id: z.number().min(1, { message: "Please select a course" }),
 });
 
 type SectionFormSchemaType = z.infer<typeof sectionFormSchema>;
 
-const SectionCreateForm = ({ modalClose }: { modalClose: () => void }) => {
+const SectionCreateForm = ({
+  modalClose,
+  token,
+  setErrors,
+  fetchWithErrorHandling,
+  allCourses,
+}: {
+  modalClose: () => void;
+  token: string;
+  setErrors: React.Dispatch<React.SetStateAction<string[]>>;
+  fetchWithErrorHandling: (url: string, headers?: any) => Promise<any>;
+  allCourses: CourseType[];
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<SectionFormSchemaType>({
     resolver: zodResolver(sectionFormSchema),
-    defaultValues: {},
+    defaultValues: {
+      course_id: 0,
+    },
   });
+  const onSubmit = async (values: SectionFormSchemaType) => {
+    try {
+      setIsLoading(true);
+      setErrors([]);
+      const resData = await fetchWithErrorHandling("/api/sections", {
+        method: "post",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          year: Number(values.year),
+          name: values.name,
+          course_id: values.course_id,
+        }),
+      });
 
-  const onSubmit = (values: SectionFormSchemaType) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+      if (resData) window.location.reload();
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -71,39 +90,7 @@ const SectionCreateForm = ({ modalClose }: { modalClose: () => void }) => {
           autoComplete="off"
         >
           <div className="grid gap-x-8 gap-y-4">
-            <FormField
-              control={form.control}
-              name="courseName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <div className="p-3 bg-white border border-slate-200 rounded-lg">
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        {...field}
-                      >
-                        <SelectTrigger className="border-none shadow-none focus:ring-none focus:outline-none p-0">
-                          <SelectValue placeholder="Select course" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="bscs">
-                            Bachelor of Science in Computer Science
-                          </SelectItem>
-                          <SelectItem value="bsn">
-                            Bachelor of Science in Nursing
-                          </SelectItem>
-                          <SelectItem value="bsae">
-                            Bachelor of Science in Aeronautical Engineering
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <FormLabel>Year Level</FormLabel>
             <FormField
               control={form.control}
               name="year"
@@ -130,6 +117,7 @@ const SectionCreateForm = ({ modalClose }: { modalClose: () => void }) => {
                 </FormItem>
               )}
             />
+            <FormLabel>Section Name</FormLabel>
             <FormField
               control={form.control}
               name="name"
@@ -137,7 +125,7 @@ const SectionCreateForm = ({ modalClose }: { modalClose: () => void }) => {
                 <FormItem>
                   <FormControl>
                     <Input
-                      placeholder="Section"
+                      placeholder="1A, 2B, 3C, 4E"
                       {...field}
                       className="px-4 py-6 bg-white border border-slate-200 rounded-lg"
                     />
@@ -146,56 +134,28 @@ const SectionCreateForm = ({ modalClose }: { modalClose: () => void }) => {
                 </FormItem>
               )}
             />
+            <FormLabel>Course</FormLabel>
             <FormField
               control={form.control}
-              name="students"
+              name="course_id"
               render={({ field }) => (
                 <FormItem>
-                  <div className="px-4 py-2 bg-white border border-slate-200 rounded-lg">
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
+                  <FormControl>
+                    <select
+                      className="border border-dhvsu rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-DHVSU-hover w-full text-black"
                       {...field}
+                      onChange={(e) => field.onChange(parseInt(e.target.value))} // Ensure value is parsed as a number
                     >
-                      <SelectTrigger className="border-none shadow-none focus:ring-none focus:outline-none p-0">
-                        <SelectValue placeholder="Select student" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {/* add ka nalang select item here or .map */}
-                        <SelectItem value="2022308552">
-                          Ezekiel Jhon G. Carreon
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="subjects"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="px-4 py-2 bg-white border border-slate-200 rounded-lg">
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      {...field}
-                    >
-                      <SelectTrigger className="border-none shadow-none focus:ring-none focus:outline-none p-0">
-                        <SelectValue placeholder="Select subject" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="CSIAS">
-                          Information Assurance and Security
-                        </SelectItem>
-                        <SelectItem value="CSAC">
-                          Space and Time Complexity
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                      <option value={0} disabled>
+                        Select a course
+                      </option>
+                      {allCourses.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.course_name}
+                        </option>
+                      ))}
+                    </select>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

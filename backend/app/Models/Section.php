@@ -14,6 +14,7 @@ class Section extends Model
 
     protected $fillable = [
         'year',
+        'name',
         'section',
         'course_id',
         'students',

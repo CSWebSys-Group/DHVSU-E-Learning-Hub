@@ -1,9 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 export type SectionTable = {
-  id: string;
+  id: number;
   courseName: string;
-  year: string;
+  year: number;
   section: string;
 };
 

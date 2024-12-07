@@ -42,21 +42,27 @@ class SectionController extends Controller implements HasMiddleware
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        $fields = $request->validate([
+        $request->validate([
             'year' => 'required|integer',
             'name' => [
                 'required',
                 'string',
                 Rule::unique('sections')->where(function ($query) use ($request) {
-                    return $query->where('year', $request->year);
+                    return $query
+                        ->where('year', $request->year)
+                        ->where('course_id', $request->course_id);
                 }),
             ],
             'course_id' => 'required|integer',
-            'students' => 'sometimes|array|nullable',
-            'subjects' => 'sometimes|array|nullable'
         ]);
 
-        $section = Section::create($fields);
+        $section = Section::create([
+            'year' => $request->year,
+            'name' => $request->name,
+            'course_id' => $request->course_id,
+            'students' => [],
+            'subjects' => []
+        ]);
 
         return ['section' => $section];
     }
