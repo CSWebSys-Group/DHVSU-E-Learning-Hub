@@ -51,11 +51,14 @@ import Student from "./pages/Admin/Student/Student";
 import Section from "./pages/Admin/Section/Section";
 import Course from "./pages/Admin/Course/Course";
 import Subject from "./pages/Admin/Subject/Subject";
+
 import { TeacherCreds } from "./lib/types";
 import Teacher from "./pages/Admin/Teacher/Teacher";
 import AdminIndex from "./pages/Admin/AdminIndex";
 import EditStudent from "./pages/Admin/Student/EditStudent";
 import EditTeacher from "./pages/Admin/Teacher/EditTeacher";
+import ValidIds from "./pages/Admin/ValidIds/ValidIds";
+import AuditLogs from "./pages/Admin/AuditLogs/AuditLogs";
 
 function App() {
   const context = useContext(AppContext);
@@ -184,6 +187,8 @@ function App() {
                             path="subjects"
                             element={<Subject token={token!} />}
                           />
+                          <Route path="valid-ids" element={<ValidIds />} />
+                          <Route path="audit-logs" element={<AuditLogs />} />
                         </Route>
                       </>
                     )}
