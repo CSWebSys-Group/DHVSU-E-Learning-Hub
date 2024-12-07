@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Section;
-use App\Http\Requests\StoreSectionRequest;
-use App\Http\Requests\UpdateSectionRequest;
+use Illuminate\Validation\Rule;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
@@ -45,7 +44,13 @@ class SectionController extends Controller implements HasMiddleware
 
         $fields = $request->validate([
             'year' => 'required|integer',
-            'name' => 'required|string|unique:sections,name',
+            'name' => [
+                'required',
+                'string',
+                Rule::unique('sections')->where(function ($query) use ($request) {
+                    return $query->where('year', $request->year);
+                }),
+            ],
             'course_id' => 'required|integer',
             'students' => 'sometimes|array|nullable',
             'subjects' => 'sometimes|array|nullable'

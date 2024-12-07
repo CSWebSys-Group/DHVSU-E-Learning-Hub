@@ -39,7 +39,15 @@ class CourseController extends Controller implements HasMiddleware
      */
     public function store(StoreCourseRequest $request)
     {
-        //
+        $fields = $request->validate([
+            'course_code' => 'required|string|unique:courses,course_code',
+            'course_name' => 'required|string|unique:courses,course_name',
+        ]);
+
+        // Create the course after validation
+        $course = Course::create($fields);
+
+        return response()->json(['course' => $course], 201);
     }
 
     /**

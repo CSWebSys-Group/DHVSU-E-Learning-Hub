@@ -90,5 +90,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('get-student-submission', [ActivitySubmissionController::class, 'findSubmissionByStudentIdAndActivityId']);
 
+    Route::get('/admin/edit/{user}', [AuthController::class, 'getUser']);
+
     Route::post('logout', [AuthController::class, 'logout']);
 });

@@ -47,6 +47,9 @@ const Section = () => {
 
   return (
     <div className="container mx-auto py-10">
+      <div>
+        <h2 className="text-3xl tracking-tight text-dhvsu">Sections</h2>
+      </div>
       <SectionTableActions />
       <DataTable columns={columns} data={data} />
     </div>

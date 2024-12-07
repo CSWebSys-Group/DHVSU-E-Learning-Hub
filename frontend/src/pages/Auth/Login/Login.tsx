@@ -64,6 +64,8 @@ const Login = ({
               setErrors((prevErrors) => [...prevErrors, message]);
             });
           });
+        } else if (data.message) {
+          setErrors((prevErrors) => [...prevErrors, data.message]);
         } else {
           setErrors((prevErrors) => [
             ...prevErrors,

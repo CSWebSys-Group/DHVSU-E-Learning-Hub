@@ -127,12 +127,6 @@ class ClassroomUploadController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-        $user = User::where('id', Auth::id())->first();
-
-        if ($user->user_type !== 'T') {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
         $request->validate([
             'type' => 'required|string|in:module,activity',
             'subject_id' => 'required|integer',
@@ -143,6 +137,12 @@ class ClassroomUploadController extends Controller implements HasMiddleware
             'files' => 'sometimes|array',
             'files.*' => 'file|max:20480',
         ]);
+
+        $user = User::where('id', Auth::id())->first();
+
+        if ($user->user_type !== 'T') {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
 
         $subject = Subject::where('id', $request->subject_id)->first();
 

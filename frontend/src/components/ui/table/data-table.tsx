@@ -37,12 +37,14 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  type: "students" | "teachers" | "sections" | "subjects" | "courses";
   pageSizeOptions?: number[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  type,
   pageSizeOptions = [10, 20, 30],
 }: DataTableProps<TData, TValue>) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -107,13 +109,16 @@ export function DataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => {
+                  {row.getVisibleCells().map((cell, i) => {
                     const { id, column } = cell;
 
                     return (
                       <TableCell key={id}>
                         {column.id === "name" ? (
-                          <Link to={`/profile/`} className="hover:underline">
+                          <Link
+                            to={`/user/admin/${type}/${row.original.id}`}
+                            className="hover:underline"
+                          >
                             {flexRender(
                               column.columnDef.cell,
                               cell.getContext()

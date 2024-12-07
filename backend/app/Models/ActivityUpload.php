@@ -10,7 +10,6 @@ class ActivityUpload extends Model
     /** @use HasFactory<\Database\Factories\ActivityUploadFactory> */
     use HasFactory;
 
-
     protected $fillable = [
         'id',
         'title',
@@ -22,6 +21,7 @@ class ActivityUpload extends Model
 
     protected $casts = [
         'attachments' => 'array',
-        'total_score' => 'integer'
+        'total_score' => 'integer',
+        'deadline_id' => 'integer'
     ];
 }

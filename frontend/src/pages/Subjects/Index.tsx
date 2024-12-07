@@ -330,9 +330,19 @@ const Index = ({ user, token }: PropType) => {
   }
 
   const handleApiErrors = (data: any) => {
-    const errorMessages = data.errors
-      ? Object.values(data.errors).flat()
-      : ["Something went wrong"];
+    let errorMessages;
+
+    if (data.errors) {
+      errorMessages = Object.values(data.errors).flat();
+    } else if (data.error) {
+      errorMessages = Array.isArray(data.error) ? data.error : [data.error];
+    } else if (data.message) {
+      errorMessages = Array.isArray(data.message)
+        ? data.message
+        : [data.message];
+    } else {
+      errorMessages = ["Something went wrong"];
+    }
     setErrors((prev: any) => [...prev, ...errorMessages]);
   };
 

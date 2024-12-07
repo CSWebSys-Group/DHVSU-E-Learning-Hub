@@ -28,6 +28,10 @@ export function isPastDeadline(deadline: string | Date): boolean {
   return now > deadlineDate;
 }
 
+export function formatDateToUniversal(date: Date) {
+  return date.toISOString().slice(0, 19).replace("T", " ");
+}
+
 export function formatDateTime(dateInput: string): string {
   const date = new Date(dateInput);
 

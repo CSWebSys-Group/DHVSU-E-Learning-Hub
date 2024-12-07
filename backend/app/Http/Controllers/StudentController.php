@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Section;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
@@ -93,6 +94,14 @@ class StudentController extends Controller implements HasMiddleware
             'barangay' => 'nullable|sometimes|string',
             'zip_code' => 'nullable|sometimes|integer',
         ]);
+
+        if ($student->section_id === null && $request->section_id) {
+            $section = Section::where('id', $request->section_id)->first();
+            $studentsSection = $section->students ?? [];
+            $studentsSection[] = $student->id;
+            $section->students = $studentsSection;
+            $section->save();
+        }
 
         $student->update($fields);
 

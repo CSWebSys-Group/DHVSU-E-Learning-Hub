@@ -1,23 +1,25 @@
 import { useState, useEffect } from "react";
 
-import { StudentTable, columns } from "./columns";
+import { TeacherTable, columns } from "./columns";
 import { DataTable } from "../../../components/ui/table/data-table";
 import { Notification } from "@/components/SlideInNotifications";
 import { useSearchParams } from "react-router-dom";
-import StudentTableActions from "./student-table-action";
-import { AnimatePresence } from "framer-motion";
-import { StudentCreds } from "@/lib/types";
+import TeacherTableActions from "./teacher-table-action";
+import { TeacherCreds } from "@/lib/types";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { AnimatePresence } from "framer-motion";
 
-const Student = () => {
-  const [data, setData] = useState<StudentTable[]>([]);
+const Teacher = () => {
+  const [data, setData] = useState<TeacherTable[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [notifications, setNotifications] = useState<
     { id: number; successMessage: string }[]
   >([]);
-  const [searchParams] = useSearchParams();
-  const search = searchParams.get("search") || "";
   const [isLoading, setIsLoading] = useState(true);
+
+  const [searchParams] = useSearchParams();
+
+  const search = searchParams.get("search") || "";
 
   useEffect(() => {
     if (errors.length > 0) {
@@ -34,44 +36,20 @@ const Student = () => {
       .finally(() => setIsLoading(false)); // Ensure loading state is false after fetching
   }, [search]);
 
-  async function getData(searchTerm: string = ""): Promise<StudentTable[]> {
+  async function getData(searchTerm: string = ""): Promise<TeacherTable[]> {
     try {
       // Fetch students data
-      const studentsData = await fetchWithErrorHandling("/api/students");
+      const teachersData = await fetchWithErrorHandling("/api/teachers");
 
-      if (!studentsData) return []; // Handle case where no data is returned
+      if (!teachersData) return []; // Handle case where no data is returned
 
       // Fetch related data for each student
       const allData = await Promise.all(
-        studentsData.map(async (student: StudentCreds) => {
-          if (student.section_id) {
-            // Fetch section data
-            const sectionData = await fetchWithErrorHandling(
-              `/api/sections/${student.section_id}`
-            );
-            if (!sectionData) return null;
-
-            // Fetch course data
-            const courseData = await fetchWithErrorHandling(
-              `/api/courses/${sectionData.section.course_id}`
-            );
-            if (!courseData) return null;
-
-            // Return the combined data
-            return {
-              id: student.id,
-              name: `${student.fn}, ${student.ln}`,
-              type: "student",
-              year_section: `${courseData.course.course_code} ${sectionData.section.name}`,
-            };
-          } else {
-            return {
-              id: student.id,
-              name: `${student.fn}, ${student.ln}`,
-              type: "student",
-              year_section: "",
-            };
-          }
+        teachersData.map(async (teacher: TeacherCreds) => {
+          return {
+            id: teacher.id,
+            name: `${teacher.ln}, ${teacher.fn}`,
+          };
         })
       );
 
@@ -80,10 +58,8 @@ const Student = () => {
 
       // Apply search term filtering if provided
       if (searchTerm) {
-        return resolvedData.filter(
-          (item) =>
-            item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.year_section.toLowerCase().includes(searchTerm.toLowerCase())
+        return resolvedData.filter((item) =>
+          item.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
       }
 
@@ -138,15 +114,15 @@ const Student = () => {
 
   return (
     <>
-      <div className="container mx-auto py-10">
+      <div className="container mx-auto py-1">
         <div>
-          <h2 className="text-3xl tracking-tight text-dhvsu">Students</h2>
+          <h2 className="text-3xl tracking-tight text-dhvsu">Teachers</h2>
         </div>
-        <StudentTableActions />
+        <TeacherTableActions />
         {isLoading ? (
           <LoadingSpinner loading={true} />
         ) : (
-          <DataTable columns={columns} type="students" data={data} />
+          <DataTable columns={columns} type="teachers" data={data} />
         )}
       </div>
       <div>
@@ -165,4 +141,4 @@ const Student = () => {
   );
 };
 
-export default Student;
+export default Teacher;

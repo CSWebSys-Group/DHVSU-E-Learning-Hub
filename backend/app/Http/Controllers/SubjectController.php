@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Subject;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
+use App\Models\Section;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -41,9 +42,52 @@ class SubjectController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSubjectRequest $request)
+    public function store(Request $request)
     {
-        //
+        $user = User::where('id', Auth::id())->first();
+
+        $authteacher = Teacher::where('id', $user->id)->first();
+
+        // Only admins
+        if (!$authteacher || !$authteacher->isAdmin) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $fields = $request->validate([
+            'subject_code' => 'required|string',
+            'subject_name' => 'required|string',
+            'section_id' => 'required|integer|exists:sections,id', // Ensure section_id exists
+            'teacher_id' => 'required|integer|exists:teachers,id',  // Ensure teacher_id exists
+            'type' => 'required|string|in:minor,major'
+        ]);
+
+        $section = Section::where('id', $request->section_id)->first();
+        $assignedTeacher = Teacher::where('id', $request->teacher_id)->first();
+
+        if (!$section) return response()->json(['message' => 'No section found'], 400);
+        if (!$assignedTeacher) return response()->json(['message' => 'No teacher found'], 400);
+
+        foreach ($section->subjects as $sectionSubject) {
+            $currentSubject = Subject::where('id', $sectionSubject)->first();
+
+            if ($currentSubject->subject_code === $request->subject_code || $currentSubject->subject_name === $request->subject_name) {
+                return response()->json(['message' => 'Cannot have duplicate Subject Code or Subject Name in one section.'], 400);
+            }
+        }
+
+        $subject = Subject::create($fields);
+
+        $assignedTeacher_SUBJECTS = $assignedTeacher->subjects ?? [];
+        $assignedTeacher_SUBJECTS[] = $subject->id;
+        $assignedTeacher->subjects = $assignedTeacher_SUBJECTS;
+        $assignedTeacher->save();
+
+        $section_SUBJECTS = $section->subjects ?? [];
+        $section_SUBJECTS[] = $subject->id;
+        $section->subjects = $section_SUBJECTS;
+        $section->save();
+
+        return ['subject' => $subject];
     }
 
     /**
