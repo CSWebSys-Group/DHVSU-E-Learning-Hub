@@ -12,7 +12,6 @@
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-alert-dialog": "^1.1.2",
-    "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-collapsible": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-dropdown-menu": "^2.1.2",
@@ -38,6 +37,7 @@
     "kbar": "^0.1.0-beta.45",
     "lucide-react": "^0.456.0",
     "react": "^18.3.1",
+    "react-avatar": "^5.0.3",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
     "react-dropzone": "^14.3.5",

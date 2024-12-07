@@ -1,6 +1,7 @@
-import { UploadIcon } from "lucide-react";
-import { useCallback, useState } from "react";
+import { Image, UploadIcon } from "lucide-react";
+import { useCallback, useState, useRef } from "react";
 import { useDropzone } from "react-dropzone";
+import { FaUpload } from "react-icons/fa";
 
 type FileWithPreview = File & { preview: string };
 
@@ -24,28 +25,17 @@ const FileInput = ({
   const [selectedFile, setSelectedFile] = useState<FileWithPreview | null>(
     null
   );
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [image, setImage] = useState<string | null>("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length > 0) {
-      const file = acceptedFiles[0]; // Get the first file only
-      setSelectedFile(
-        Object.assign(file, { preview: URL.createObjectURL(file) })
-      );
-      setErrors([]); // Clear any previous error messages
-    } else {
-      setErrors((e) => [...e, "Please select a valid file."]);
+  const handleInputClick = () => {
+    if (inputRef.current) {
+      inputRef.current.click();
     }
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: {
-      "image/*": [],
-    },
-    maxSize: 400 * 400,
-    multiple: false, // Restrict to a single file
-    onDrop,
-  });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,20 +89,35 @@ const FileInput = ({
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <div
-          {...getRootProps({
-            className: className,
-          })}
-        >
-          <input {...getInputProps({ name: "file" })} />
-          <div className="flex flex-col items-center justify-center gap-4 cursor-pointer">
-            <UploadIcon className="w-5 h-5" />
-            {isDragActive ? (
-              <p>Drop the files here ...</p>
-            ) : (
-              <p>Drag & drop files here, or click to select files</p>
-            )}
+        <div className="flex justify-center flex-col rounded-lg w-full h-auto bg-white p-5 mb-3 mt-3">
+          <div
+            className="p-3 grid placeitems-center border-2 border-dashed rounded-lg cursor-pointer"
+            onClick={() => handleInputClick()}
+          >
+            <h4 className="flex gap-2 text-neutral-800 items-center justify-center">
+              <FaUpload />
+              Choose image to upload.
+            </h4>
+            <input
+              ref={inputRef}
+              type="file"
+              hidden
+              onChange={(e) => {
+                e.preventDefault();
+                const file = e.target.files[0];
+                if (file) {
+                  const imageURL = URL.createObjectURL(file);
+                  setImage(imageURL);
+                }
+              }}
+            />
           </div>
+
+          {image && (
+            <div className="mt-5">
+              <img src={image} />
+            </div>
+          )}
         </div>
         <div className="flex gap-2">
           {!isLoading && (
