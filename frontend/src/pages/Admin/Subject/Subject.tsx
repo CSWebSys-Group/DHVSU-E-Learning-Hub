@@ -172,7 +172,12 @@ const Subject = ({ token }: { token: string }) => {
         {isLoading ? (
           <LoadingSpinner loading={true} />
         ) : (
-          <DataTable columns={columns} type="subjects" data={data} />
+          <DataTable
+            columns={columns}
+            hasLinks={false}
+            type="subjects"
+            data={data}
+          />
         )}
       </div>
       <div className="flex flex-col gap-1 w-72 fixed top-2 right-2 z-50 pointer-events-none">

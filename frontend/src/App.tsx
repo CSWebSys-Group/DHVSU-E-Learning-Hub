@@ -176,7 +176,10 @@ function App() {
                             element={<EditTeacher token={token!} />}
                           />
                           <Route path="sections" element={<Section />} />
-                          <Route path="courses" element={<Course />} />
+                          <Route
+                            path="courses"
+                            element={<Course token={token!} />}
+                          />
                           <Route
                             path="subjects"
                             element={<Subject token={token!} />}

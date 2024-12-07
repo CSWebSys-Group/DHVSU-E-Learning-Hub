@@ -64,6 +64,7 @@ const SubjectCreateForm = ({
 
   const onSubmit = async (values: SubjectFormSchemaType) => {
     try {
+      setIsLoading(true);
       setErrors([]);
       const resData = await fetchWithErrorHandling(`/api/subjects`, {
         method: "post",

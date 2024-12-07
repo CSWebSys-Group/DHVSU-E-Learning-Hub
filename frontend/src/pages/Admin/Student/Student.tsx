@@ -146,7 +146,12 @@ const Student = () => {
         {isLoading ? (
           <LoadingSpinner loading={true} />
         ) : (
-          <DataTable columns={columns} type="students" data={data} />
+          <DataTable
+            columns={columns}
+            hasLinks={true}
+            type="students"
+            data={data}
+          />
         )}
       </div>
       <div>

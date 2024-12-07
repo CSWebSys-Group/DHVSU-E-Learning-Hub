@@ -39,6 +39,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   type: "students" | "teachers" | "sections" | "subjects" | "courses";
   pageSizeOptions?: number[];
+  hasLinks: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -46,6 +47,7 @@ export function DataTable<TData, TValue>({
   data,
   type,
   pageSizeOptions = [10, 20, 30],
+  hasLinks,
 }: DataTableProps<TData, TValue>) {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -115,15 +117,24 @@ export function DataTable<TData, TValue>({
                     return (
                       <TableCell key={id}>
                         {column.id === "name" ? (
-                          <Link
-                            to={`/user/admin/${type}/${row.original.id}`}
-                            className="hover:underline"
-                          >
-                            {flexRender(
-                              column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </Link>
+                          hasLinks ? (
+                            <Link
+                              to={`/user/admin/${type}/${row.original.id}`}
+                              className="hover:underline"
+                            >
+                              {flexRender(
+                                column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </Link>
+                          ) : (
+                            <TableRow>
+                              {flexRender(
+                                column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </TableRow>
+                          )
                         ) : (
                           flexRender(column.columnDef.cell, cell.getContext())
                         )}

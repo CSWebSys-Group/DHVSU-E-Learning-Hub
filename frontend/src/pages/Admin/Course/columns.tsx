@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 export type CourseTable = {
-  id: string;
+  id: number;
   name: string;
   code: string;
 };
