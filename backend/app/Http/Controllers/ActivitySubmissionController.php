@@ -8,12 +8,17 @@ use App\Http\Requests\UpdateActivitySubmissionRequest;
 use App\Models\ActivityDeadline;
 use App\Models\ActivityUpload;
 use App\Models\AuditLog;
+use App\Models\ClassroomUpload;
 use App\Models\Student;
+use App\Models\Subject;
+use App\Models\Teacher;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Cloudinary\Cloudinary;
+use Illuminate\Support\Facades\Auth;
 
 class ActivitySubmissionController extends Controller implements HasMiddleware
 {
@@ -239,5 +244,33 @@ class ActivitySubmissionController extends Controller implements HasMiddleware
         }
 
         return ['studentSubmission' => $studentSubmission];
+    }
+
+    public function gradeSubmission(Request $request, ActivitySubmission $activitySubmission)
+    {
+        $classroomUpload = ClassroomUpload::where('id', $activitySubmission->activity_upload_id)->first();
+        $activityUpload = ActivityUpload::where('id', $classroomUpload->id)->first();
+        $subject = Subject::where('id', $classroomUpload->subject_id)->first();
+
+        $teacher = Teacher::where('id', Auth::id())->first();
+
+        if ($subject->teacher_id !== Auth::id() || !$teacher) return response()->json(['message' => 'Unauthorized'], 403);
+
+        $student = Student::where('id', $activitySubmission->student_id)->fist();
+
+        $request->validate(['score' => 'required|integer']);
+
+        if ($request->score > $activityUpload->total_score) return response()->json(['message' => 'Score should not be greater than the total score'], 400);
+
+        $activitySubmission->score = $request->score;
+        $activitySubmission->submitted = true;
+        $activitySubmission->save();
+
+        AuditLog::create([
+            'description' => "{$teacher->fn} {$teacher->ln} graded {$student->fn} {$student->ln}'s activity",
+            "type" => "T"
+        ]);
+
+        return ['activitySubmission' => $activitySubmission];
     }
 }

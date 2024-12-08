@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('grades', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('student_id');
-            $table->unsignedBigInteger('subject_code');
+            $table->unsignedBigInteger('subject_id');
             $table->decimal('grade', 2, 1)->check('grade >= 1.0 AND grade <= 5.0');
             $table->timestamps();
         });
