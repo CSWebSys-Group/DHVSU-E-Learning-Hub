@@ -1,8 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 export type StudentTable = {
-  id: string;
+  id: number;
   name: string;
+  type: "student";
   year_section: string;
 };
 

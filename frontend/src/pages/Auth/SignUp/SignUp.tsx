@@ -104,10 +104,21 @@ const SignUp = ({
       const data = await res.json();
 
       if (!res.ok) {
-        console.log(data);
         if (data.errors) {
-          const errorMessages = Object.values(data.errors).flat() as string[];
-          setErrors(errorMessages);
+          // Type casting the value of data.errors to string[]
+          Object.values(data.errors).forEach((errorMessages) => {
+            // Type casting errorMessages to string[] explicitly
+            (errorMessages as string[]).forEach((message) => {
+              setErrors((prevErrors) => [...prevErrors, message]);
+            });
+          });
+        } else if (data.message) {
+          setErrors((prevErrors) => [...prevErrors, data.message]);
+        } else {
+          setErrors((prevErrors) => [
+            ...prevErrors,
+            "Something went wrong with logging in",
+          ]);
         }
       }
 

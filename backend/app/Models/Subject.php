@@ -15,7 +15,8 @@ class Subject extends Model
         'subject_name',
         'section_id',
         'teacher_id',
-        'classroom_uploads'
+        'classroom_uploads',
+        'type'
     ];
 
     protected $casts = [

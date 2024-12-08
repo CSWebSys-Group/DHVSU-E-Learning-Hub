@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuditLog;
+use App\Models\Section;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
@@ -51,6 +53,9 @@ class StudentController extends Controller implements HasMiddleware
     {
         $user = User::where('id', Auth::id())->first();
 
+        $USER_TYPE = null;
+        $USER_FULLNAME = null;
+
         if ($user->user_type === "T") {
             $authteacher = Teacher::where('id', $user->id)->first();
 
@@ -58,12 +63,17 @@ class StudentController extends Controller implements HasMiddleware
             if (!$authteacher || (!$authteacher->isAdmin && $user->id !== $student->id)) {
                 return response()->json(['message' => 'Unauthorized'], 403);
             }
+            $USER_TYPE = $authteacher->isAdmin ? "A" : "T";
+            $USER_FULLNAME = $authteacher->fn . " " . $authteacher->ln;
         } else if ($user->user_type === "S") {
             $authstudent = Student::where('id', $user->id)->first();
 
             if (!$authstudent || $user->id !== $student->id) {
                 return response()->json(['message' => 'Unauthorized'], 403);
             }
+
+            $USER_TYPE = "S";
+            $USER_FULLNAME = $authstudent->fn . " " . $authstudent->ln;
         } else {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
@@ -94,7 +104,21 @@ class StudentController extends Controller implements HasMiddleware
             'zip_code' => 'nullable|sometimes|integer',
         ]);
 
-        $student->update($fields);
+        if ($student->section_id === null && $request->section_id) {
+            $section = Section::where('id', $request->section_id)->first();
+            $studentsSection = $section->students ?? [];
+            $studentsSection[] = $student->id;
+            $section->students = $studentsSection;
+            $section->save();
+            $student->update($fields);
+        } else {
+            return response()->json(['message' => 'Cannot change sections'], 400);
+        }
+
+        AuditLog::create([
+            'description' => "{$USER_FULLNAME} with ID: {$user->id} made changes to student information with student: {$student->fn} {$student->ln} with ID: {$student->id}.",
+            "user_type" => $USER_TYPE
+        ]);
 
         return response()->json(['student' => $student], 200);
     }
@@ -112,11 +136,18 @@ class StudentController extends Controller implements HasMiddleware
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
+        // NEED TO ALSO DELETE THE STUDENT IN SECTION
 
         try {
+            AuditLog::create([
+                'description' => "{$authAdmin->fn} {$authAdmin->ln} with ID: {$user->id} deleted a student.",
+                "user_type" => "A"
+            ]);
+
             // Attempt to delete the student
             $studentuser->delete();
             $student->delete();
+
             return response()->json(['message' => 'Student deleted successfully'], 200);
         } catch (\Exception $e) {
             // Catch any errors and return them
@@ -130,13 +161,20 @@ class StudentController extends Controller implements HasMiddleware
             'file' => 'required|file|mimes:jpeg,png,jpg|max:2048', // Accept only images up to 2MB
         ]);
 
+        $USER_TYPE = null;
+        $USER_FULLNAME = null;
+
         // Get the authenticated user
         $user = Auth::user(); // Using Laravel's `Auth::user()` for convenience
 
         // Check if the authenticated user is either the owner or an admin
-        if ($user->user_type === 'S' && $user->id !== $student->id) {
-            // Students can only update their own profile picture
-            return response()->json(['message' => 'Unauthorized'], 403);
+        if ($user->user_type === 'S') {
+            $USER_TYPE = 'S';
+            if ($user->id !== $student->id) {
+                // Students can only update their own profile picture
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+            $USER_FULLNAME = $student->fn . " " . $student->ln;
         }
 
         if ($user->user_type === 'T') {
@@ -145,6 +183,8 @@ class StudentController extends Controller implements HasMiddleware
                 // Non-admin teachers cannot update student profiles
                 return response()->json(['message' => 'Unauthorized'], 403);
             }
+            $USER_TYPE = 'A';
+            $USER_FULLNAME = $authteacher->fn . " " . $authteacher->ln;
         }
 
         if ($request->hasFile('file')) {
@@ -177,6 +217,11 @@ class StudentController extends Controller implements HasMiddleware
                 );
 
                 $student->update(['profile_picture' => $uploadedFile['secure_url']]);
+
+                AuditLog::create([
+                    'description' => "{$USER_FULLNAME} with ID: {$user->id} made changes to student information with student: {$student->fn} {$student->ln} with ID: {$student->id}.",
+                    "user_type" => $USER_TYPE
+                ]);
 
                 return response()->json([
                     'message' => 'Profile picture updated successfully',

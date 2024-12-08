@@ -193,3 +193,10 @@ export type ActivitySubmissionType = {
   created_at: string;
   updated_at: string;
 };
+
+export type ValidIdType = {
+  id: number;
+  user_type: "S" | "T";
+  created_at: string;
+  updated_at: string;
+};

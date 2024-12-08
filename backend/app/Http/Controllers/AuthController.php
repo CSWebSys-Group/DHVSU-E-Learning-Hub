@@ -182,4 +182,9 @@ class AuthController extends Controller
 
         return ['message' => 'password reset successful'];
     }
+
+    public function getUser(User $user)
+    {
+        return ['user' => $user];
+    }
 }

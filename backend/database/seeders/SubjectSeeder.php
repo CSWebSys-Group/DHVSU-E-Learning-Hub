@@ -53,7 +53,7 @@ class SubjectSeeder extends Seeder
                     'CSAC 313' => 'Algorithms and Complexity',
                     'CSOS 313' => 'Operating Systems',
                     'CSSE 313' => 'Software Engineering',
-                    'CSWEBYS 313' => 'Web Systems and Technologies',
+                    'CSWEBSYS 313' => 'Web Systems and Technologies',
                     'CSIAS 313' => 'Information Assurance and Security',
                 ],
                 'minor' => [
@@ -66,7 +66,7 @@ class SubjectSeeder extends Seeder
                     'CSAC 414' => 'Advanced Algorithms',
                     'CSOS 414' => 'Advanced Operating Systems',
                     'CSSE 414' => 'Software Architecture',
-                    'CSWEBYS 414' => 'Advanced Web Systems',
+                    'CSWEBSYS 414' => 'Advanced Web Systems',
                     'CSIAS 414' => 'Network Security and Cryptography',
                 ],
                 'minor' => [

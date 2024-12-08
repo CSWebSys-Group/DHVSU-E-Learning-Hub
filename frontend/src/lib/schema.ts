@@ -80,9 +80,11 @@ export const createActivitySchema = z.object({
   description: z.string({
     required_error: "description is required",
   }),
-  deadline: z.date({
-    required_error: "A deadline is required",
-  }),
+  deadline: z.date(),
+  total_score: z
+    .number()
+    .min(10, { message: "Score must be at least 10" })
+    .max(100, { message: "Score must not exceed 100" }),
   create_type: z.enum(["module", "activity"], {
     errorMap: () => ({ message: "Please select a option." }),
   }),

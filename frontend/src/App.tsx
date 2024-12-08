@@ -51,6 +51,12 @@ import Student from "./pages/Admin/Student/Student";
 import Section from "./pages/Admin/Section/Section";
 import Course from "./pages/Admin/Course/Course";
 import Subject from "./pages/Admin/Subject/Subject";
+
+import { TeacherCreds } from "./lib/types";
+import Teacher from "./pages/Admin/Teacher/Teacher";
+import AdminIndex from "./pages/Admin/AdminIndex";
+import EditStudent from "./pages/Admin/Student/EditStudent";
+import EditTeacher from "./pages/Admin/Teacher/EditTeacher";
 import ValidIds from "./pages/Admin/ValidIds/ValidIds";
 import AuditLogs from "./pages/Admin/AuditLogs/AuditLogs";
 import SubmitGrade from "./pages/SubmitGrade/SubmitGrade";
@@ -111,7 +117,7 @@ function App() {
             ) : (
               <>
                 <Route
-                  path="/user"
+                  path="user"
                   element={
                     <RootLayout
                       user={user}
@@ -145,19 +151,55 @@ function App() {
                       path=":id"
                       element={<EnrolledSubject token={token!} user={user} />}
                     />
+                    {user.user.user_type === "T" && (
+                      <>
+                        <Route
+                          path=":id/create"
+                          element={<CreateActivity token={token!} />}
+                        />
+                      </>
+                    )}
                   </Route>
                   <Route path="help" element={<Help />} />
                   <Route path="submissions" element={<Submissions />} />
                   <Route path="submit-grade" element={<SubmitGrade />} />
                   <Route path="grades" element={<Grades user={user!} />} />{" "}
-                  <Route path="create" element={<CreateActivity />} />
                   {/* admin routes */}
-                  <Route path="student-table" element={<Student />} />
-                  <Route path="section-table" element={<Section />} />
-                  <Route path="course-table" element={<Course />} />
-                  <Route path="subject-table" element={<Subject />} />
-                  <Route path="valid-ids" element={<ValidIds />} />
-                  <Route path="audit-logs" element={<AuditLogs />} />
+                  {user.user.user_type === "T" &&
+                    (user.user_creds as TeacherCreds).isAdmin && (
+                      <>
+                        <Route path="admin" element={<AdminIndex />}>
+                          <Route index element={<Student />} />
+                          <Route path="students" element={<Student />} />
+                          <Route
+                            path="students/:id"
+                            element={<EditStudent token={token!} />}
+                          />
+                          <Route path="teachers" element={<Teacher />} />
+                          <Route
+                            path="teachers/:id"
+                            element={<EditTeacher token={token!} />}
+                          />
+                          <Route
+                            path="sections"
+                            element={<Section token={token!} />}
+                          />
+                          <Route
+                            path="courses"
+                            element={<Course token={token!} />}
+                          />
+                          <Route
+                            path="subjects"
+                            element={<Subject token={token!} />}
+                          />
+                          <Route
+                            path="valid-ids"
+                            element={<ValidIds token={token!} />}
+                          />
+                          <Route path="audit-logs" element={<AuditLogs />} />
+                        </Route>
+                      </>
+                    )}
                   <Route
                     path="activities/:id"
                     element={<SubjectTask user={user} token={token!} />}

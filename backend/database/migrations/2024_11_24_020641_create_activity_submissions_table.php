@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->integer('score')->nullable();
             $table->boolean('submitted')->default(false);
-            $table->boolean('late')->default(false);
             $table->timestamps();
         });
     }

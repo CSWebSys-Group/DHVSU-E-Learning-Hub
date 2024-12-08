@@ -62,7 +62,7 @@ const Profile = ({
         const sectionRes = await fetch(
           `/api/sections/${user_creds.section_id}`
         );
-        if (!sectionRes.ok) throw new Error("Failed to fetch section");
+        if (!sectionRes.ok) return;
 
         const sectionData = await sectionRes.json();
 
@@ -198,11 +198,7 @@ const Profile = ({
                     ? "(Teacher)"
                     : ""}
                 </p>
-                {courseName && (
-                  <p className="text-sm">
-                    Bachelor of Science in Computer Science
-                  </p>
-                )}
+                {courseName && <p className="text-sm">{courseName}</p>}
                 <p className="text-sm">{user.user.id}</p>
               </div>
 
@@ -228,7 +224,7 @@ const Profile = ({
 
           <div className="flex-grow p-10 bg-dhvsu-light dark:bg-dhvsu-lighter rounded-xl w-full shadow-md">
             <span className="text-dhvsu-lighter font-semibold mx-3 dark:text-dhvsu-light">
-              STUDENT INFORMATION
+              {user.user.user_type === "S" ? "STUDENT" : "TEACHER"} INFORMATION
             </span>
 
             <form

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Subject;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
+use App\Models\AuditLog;
+use App\Models\Course;
+use App\Models\Section;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -41,9 +44,59 @@ class SubjectController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSubjectRequest $request)
+    public function store(Request $request)
     {
-        //
+        $user = User::where('id', Auth::id())->first();
+
+        $authteacher = Teacher::where('id', $user->id)->first();
+
+        // Only admins
+        if (!$authteacher || !$authteacher->isAdmin) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $fields = $request->validate([
+            'subject_code' => 'required|string',
+            'subject_name' => 'required|string',
+            'section_id' => 'required|integer|exists:sections,id', // Ensure section_id exists
+            'teacher_id' => 'required|integer|exists:teachers,id',  // Ensure teacher_id exists
+            'type' => 'required|string|in:minor,major'
+        ]);
+
+        $section = Section::where('id', $request->section_id)->first();
+        $assignedTeacher = Teacher::where('id', $request->teacher_id)->first();
+        $course = Course::where('id', $section->course_id)->first();
+
+        if (!$section) return response()->json(['message' => 'No section found'], 400);
+        if (!$assignedTeacher) return response()->json(['message' => 'No teacher found'], 400);
+        if (!$course) return response()->json(['message' => 'No course found'], 400);
+
+        foreach ($section->subjects as $sectionSubject) {
+            $currentSubject = Subject::where('id', $sectionSubject)->first();
+
+            if ($currentSubject->subject_code === $request->subject_code || $currentSubject->subject_name === $request->subject_name) {
+                return response()->json(['message' => 'Cannot have duplicate Subject Code or Subject Name in one section.'], 400);
+            }
+        }
+
+        $subject = Subject::create($fields);
+
+        $assignedTeacher_SUBJECTS = $assignedTeacher->subjects ?? [];
+        $assignedTeacher_SUBJECTS[] = $subject->id;
+        $assignedTeacher->subjects = $assignedTeacher_SUBJECTS;
+        $assignedTeacher->save();
+
+        $section_SUBJECTS = $section->subjects ?? [];
+        $section_SUBJECTS[] = $subject->id;
+        $section->subjects = $section_SUBJECTS;
+        $section->save();
+
+        AuditLog::create([
+            'description' => "{$authteacher->fn} {$authteacher->ln} with ID: {$user->id} created a new subject: {$subject->subject_name} for section: {$course->couse_code} {$section->name}.",
+            "user_type" => "A"
+        ]);
+
+        return ['subject' => $subject];
     }
 
     /**
@@ -81,9 +134,9 @@ class SubjectController extends Controller implements HasMiddleware
     public function addTeacher(Request $request, Subject $subject)
     {
         $user = User::where('id', Auth::id())->first();
-        $teacher = Teacher::where('id', $user->id)->first();
+        $authteacher = Teacher::where('id', $user->id)->first();
 
-        if ($user->user_type !== 'T' || !$teacher || !$teacher->isAdmin) {
+        if ($user->user_type !== 'T' || !$authteacher || !$authteacher->isAdmin) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
@@ -92,6 +145,8 @@ class SubjectController extends Controller implements HasMiddleware
         ]);
 
         $teacher = Teacher::where('id', $request->id)->first();
+        $section = Section::where('id', $subject->section_id)->first();
+        $course = Course::where('id', $section->course_id)->first();
 
         if (!$teacher) {
             return response()->json(['message' => 'Teacher not found'], 400);
@@ -104,15 +159,20 @@ class SubjectController extends Controller implements HasMiddleware
         $teacher->subjects[] = $subject->id;
         $teacher->save();
 
+        AuditLog::create([
+            'description' => "{$authteacher->fn} {$authteacher->ln} with ID: {$user->id} added a teacher for subject: {$subject->subject_name} in section: {$course->couse_code} {$section->name}.",
+            "user_type" => "A"
+        ]);
+
         return response()->json(['message' => 'Teacher added to subject successfully'], 200);
     }
 
     public function removeTeacher(Request $request, Subject $subject)
     {
         $user = User::where('id', Auth::id())->first();
-        $teacher = Teacher::where('id', $user->id)->first();
+        $authteacher = Teacher::where('id', $user->id)->first();
 
-        if ($user->user_type !== 'T' || !$teacher || !$teacher->isAdmin) {
+        if ($user->user_type !== 'T' || !$authteacher || !$authteacher->isAdmin) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
@@ -121,6 +181,8 @@ class SubjectController extends Controller implements HasMiddleware
         ]);
 
         $teacher = Teacher::where('id', $request->id)->first();
+        $section = Section::where('id', $subject->section_id)->first();
+        $course = Course::where('id', $section->course_id)->first();
 
         if (!$teacher) {
             return response()->json(['message' => 'Teacher not found'], 400);
@@ -134,6 +196,10 @@ class SubjectController extends Controller implements HasMiddleware
         $teacher->subjects = array_values(array_diff($teacher->subjects, [$subject->id]));
 
         $teacher->save();
+        AuditLog::create([
+            'description' => "{$authteacher->fn} {$authteacher->ln} with ID: {$user->id} added a teacher for subject: {$subject->subject_name} in section: {$course->couse_code} {$section->name}.",
+            "user_type" => "A"
+        ]);
 
         return response()->json(['message' => 'Teacher removed from subject successfully'], 200);
     }

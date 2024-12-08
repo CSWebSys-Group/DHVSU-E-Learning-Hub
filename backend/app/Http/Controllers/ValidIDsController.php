@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ValidIDs;
 use App\Http\Requests\StoreValidIDsRequest;
 use App\Http\Requests\UpdateValidIDsRequest;
+use App\Models\AuditLog;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -54,6 +55,11 @@ class ValidIDsController extends Controller implements HasMiddleware
         ]);
 
         $validID = ValidIDs::create($fields);
+
+        AuditLog::create([
+            'description' => "{$teacher->fn} {$teacher->ln} with ID: {$user->id} created a valid ID: {$validID->id}.",
+            "user_type" => "A"
+        ]);
 
         return ['validID' => $validID];
     }

@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 export type ValidId = {
   id: number;
-  type: "S" | "T";
+  user_type: "S" | "T";
 };
 
 export const columns: ColumnDef<ValidId>[] = [
@@ -12,8 +12,8 @@ export const columns: ColumnDef<ValidId>[] = [
   },
 
   {
-    accessorKey: "type",
+    accessorKey: "user_type",
     header: "Type",
-    cell: ({ row }) => (row.original.type === "S" ? "Student" : "Teacher"),
+    cell: ({ row }) => (row.original.user_type === "S" ? "Student" : "Teacher"),
   },
 ];

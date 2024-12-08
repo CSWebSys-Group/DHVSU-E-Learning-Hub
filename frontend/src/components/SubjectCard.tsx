@@ -67,11 +67,14 @@ const SubjectCard = ({
 
         <div className="bg-brand text-dhvsu-lighter p-4 h-[8.265rem] pt-6">
           <div className="line-clamp-4">
-            <p className="font-bold">{subject.subject_code}</p>
             <p>
-              {course.course_code} {section.name}
+              <b>
+                {course.course_code} {section.name}
+              </b>
             </p>
-            <p className="text-sm mt-1 text-justify">{subject.subject_name}</p>
+            <p className="text-sm mt-1 text-justify">
+              <b>{subject.subject_name}</b>
+            </p>
           </div>
         </div>
       </div>

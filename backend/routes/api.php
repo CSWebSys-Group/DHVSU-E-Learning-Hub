@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActivityDeadlineController;
 use App\Http\Controllers\ActivitySubmissionController;
 use App\Http\Controllers\ActivityUploadController;
+use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassroomUploadController;
 use App\Http\Controllers\CourseController;
@@ -32,6 +33,7 @@ Route::apiResource('activity-deadline', ActivityDeadlineController::class);
 Route::apiResource('activity-upload', ActivityUploadController::class);
 Route::apiResource('activity-submission', ActivitySubmissionController::class);
 Route::apiResource('modules', ModuleController::class);
+Route::apiResource('audit-logs', AuditLogController::class);
 
 Route::post('/grades/student', [GradesController::class, 'getStudentGrades']);
 
@@ -89,6 +91,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('get-activity-deadline', [ActivityDeadlineController::class, 'getActivityDeadline']);
 
     Route::post('get-student-submission', [ActivitySubmissionController::class, 'findSubmissionByStudentIdAndActivityId']);
+
+    Route::get('/admin/edit/{user}', [AuthController::class, 'getUser']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

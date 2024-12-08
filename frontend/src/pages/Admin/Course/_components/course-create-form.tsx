@@ -5,11 +5,13 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -20,16 +22,46 @@ const courseFormScehma = z.object({
 
 type CourseFormScehmaType = z.infer<typeof courseFormScehma>;
 
-const CourseCreateForm = ({ modalClose }: { modalClose: () => void }) => {
+const CourseCreateForm = ({
+  modalClose,
+  token,
+  setErrors,
+  fetchWithErrorHandling,
+}: {
+  modalClose: () => void;
+  token: string;
+  setErrors: React.Dispatch<React.SetStateAction<string[]>>;
+  fetchWithErrorHandling: (url: string, headers?: any) => Promise<any>;
+}) => {
   const form = useForm<CourseFormScehmaType>({
     resolver: zodResolver(courseFormScehma),
     defaultValues: {},
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = (values: CourseFormScehmaType) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  const onSubmit = async (values: CourseFormScehmaType) => {
+    try {
+      setErrors([]);
+      setIsLoading(true);
+      const resData = await fetchWithErrorHandling("/api/courses", {
+        method: "post",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          course_name: values.name,
+          course_code: values.code,
+        }),
+      });
+
+      if (resData) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -46,6 +78,7 @@ const CourseCreateForm = ({ modalClose }: { modalClose: () => void }) => {
           autoComplete="off"
         >
           <div className="grid gap-x-8 gap-y-4">
+            <FormLabel>Course Name</FormLabel>
             <FormField
               control={form.control}
               name="name"
@@ -56,12 +89,14 @@ const CourseCreateForm = ({ modalClose }: { modalClose: () => void }) => {
                       placeholder="Course"
                       {...field}
                       className="px-4 py-6 bg-white border border-slate-200 rounded-lg"
+                      disabled={isLoading}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            <FormLabel>Course Code</FormLabel>
             <FormField
               control={form.control}
               name="code"
@@ -72,6 +107,7 @@ const CourseCreateForm = ({ modalClose }: { modalClose: () => void }) => {
                       placeholder="Code"
                       {...field}
                       className="px-4 py-6 bg-white border border-slate-200 rounded-lg"
+                      disabled={isLoading}
                     />
                   </FormControl>
                   <FormMessage />
@@ -87,6 +123,7 @@ const CourseCreateForm = ({ modalClose }: { modalClose: () => void }) => {
               className="rounded-full "
               size="lg"
               onClick={modalClose}
+              disabled={isLoading}
             >
               Cancel
             </Button>
@@ -94,8 +131,9 @@ const CourseCreateForm = ({ modalClose }: { modalClose: () => void }) => {
               type="submit"
               className="rounded-full bg-dhvsu hover:bg-dhvsu/50"
               size="lg"
+              disabled={isLoading}
             >
-              Create
+              {isLoading ? "Creating..." : "Create"}
             </Button>
           </div>
         </form>

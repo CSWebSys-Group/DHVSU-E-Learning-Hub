@@ -6,8 +6,10 @@ use App\Models\ActivityDeadline;
 use App\Models\ActivitySubmission;
 use App\Models\ClassroomUpload;
 use App\Models\ActivityUpload;
+use App\Models\AuditLog;
 use App\Models\Module;
 use App\Models\Subject;
+use App\Models\Teacher;
 use App\Models\User;
 use Cloudinary\Cloudinary;
 use Illuminate\Http\Request;
@@ -127,12 +129,6 @@ class ClassroomUploadController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-        $user = User::where('id', Auth::id())->first();
-
-        if ($user->user_type !== 'T') {
-            return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
         $request->validate([
             'type' => 'required|string|in:module,activity',
             'subject_id' => 'required|integer',
@@ -143,6 +139,12 @@ class ClassroomUploadController extends Controller implements HasMiddleware
             'files' => 'sometimes|array',
             'files.*' => 'file|max:20480',
         ]);
+
+        $user = User::where('id', Auth::id())->first();
+
+        if ($user->user_type !== 'T') {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
 
         $subject = Subject::where('id', $request->subject_id)->first();
 
@@ -198,6 +200,13 @@ class ClassroomUploadController extends Controller implements HasMiddleware
                 'attachments' => $uploadedAttachments,
             ]);
         }
+
+        $subject_teacher = Teacher::where('id', $user->id)->first();
+
+        AuditLog::create([
+            'description' => "{$subject_teacher->fn} {$subject_teacher->ln} with ID: {$user->id} uploaded a new content in Subject: {$subject->subject_code} with subject ID: {$subject->id}.",
+            "user_type" => "T"
+        ]);
 
         return ['classroom_upload' => $classroomUpload, 'upload_info' => $upload_info];
     }
@@ -280,6 +289,13 @@ class ClassroomUploadController extends Controller implements HasMiddleware
 
         // Delete the classroom upload itself
         $classroomUpload->delete();
+
+        $subject_teacher = Teacher::where('id', $subject->teacher_id)->first();
+
+        AuditLog::create([
+            'description' => "{$subject_teacher->fn} {$subject_teacher->ln} with ID: {$user->id} deleted a content in Subject: {$subject->subject_code} with subject ID: {$subject->id}.",
+            "user_type" => "T"
+        ]);
 
         return response()->json(['message' => 'Classroom upload deleted successfully'], 200);
     }

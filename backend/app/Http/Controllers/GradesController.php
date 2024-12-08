@@ -6,9 +6,12 @@ use App\Models\Grades;
 use App\Http\Requests\StoreGradesRequest;
 use App\Http\Requests\UpdateGradesRequest;
 use App\Models\Student;
+use App\Models\Teacher;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 
 class GradesController extends Controller implements HasMiddleware
 {
@@ -88,5 +91,22 @@ class GradesController extends Controller implements HasMiddleware
         $studentGrades = Grades::where('student_id', $student->id)->get();
 
         return ['studentGrades' => $studentGrades];
+    }
+
+    public function gradeStudent(Request $request)
+    {
+        $user = User::where('id', Auth::id())->first();
+        $teacher = Teacher::where('id', $user->id)->first();
+
+        $request->validate([
+            'subject_id' => 'required|integer|exists:subjects,id',
+            'grade' => [
+                'required',
+                'regex:/^\d+(\.\d{1})?$/', // Ensure exactly one decimal place
+            ],
+            'student_id' => 'required|integer',
+        ], [
+            'grade.regex' => 'The grade must be a number with exactly one decimal place.',
+        ]);
     }
 }

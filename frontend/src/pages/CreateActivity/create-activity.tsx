@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/popover";
 import { createActivitySchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import {
   AlertCircleIcon,
   CalendarIcon,
@@ -29,12 +28,18 @@ import {
   Upload,
   X,
 } from "lucide-react";
-import React, { useState, useRef } from "react";
+import React, {
+  useState,
+  useRef,
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+} from "react";
 
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { cn } from "@/lib/utils";
+import { cn, formatDateToUniversal } from "@/lib/utils";
 
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
@@ -42,206 +47,388 @@ import { Textarea } from "@/components/ui/textarea";
 import { ImageConfig } from "@/config/ImageConfig";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { useNavigate, useParams } from "react-router-dom";
+import { TimePicker12 } from "./time-picker-12";
+import { Notification } from "@/components/SlideInNotifications";
 
-const CreateActivity = () => {
+type FileStateType = { name: string; type: string; src: any };
+
+const CreateActivity = ({ token }: { token: string }) => {
+  const { id } = useParams();
   const form = useForm<z.infer<typeof createActivitySchema>>({
     resolver: zodResolver(createActivitySchema),
     defaultValues: {
       title: "",
       description: "",
+      deadline: new Date(),
+      total_score: 10,
+      create_type: "module",
     },
   });
-
-  const [files, setFiles] = useState([
-    { name: "202230567.jpg", type: "JPG", src: ImageConfig.jpg },
-    { name: "assignment.pdf", type: "PDF", src: ImageConfig.pdf }, // Example initial files
-  ]);
-
+  const navigate = useNavigate();
+  const [classroomUploadType, setClassroomUploadType] =
+    useState<string>("module");
   const [isLoading, setIsLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selected, setSelected] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+  const [filesDisplay, setFilesDisplay] = useState<FileStateType[]>([]);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [notifications, setNotifications] = useState<
+    { id: number; successMessage: string }[]
+  >([]);
 
-  const handleSubmit = async () => {};
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.forEach((e) => {
+        addNotification(e);
+      });
+    }
+  }, [errors]);
 
-  const handleFileChange = () => {};
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setErrors([]);
 
-  const removeAttachment = (fileName: string) => {
-    setFiles(files.filter((file) => file.name !== fileName));
+    const subjectId = id;
+    if (!subjectId) {
+      console.error("Invalid subject ID");
+      setErrors((e) => [...e, "Invalid subject ID"]);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("type", classroomUploadType);
+    formData.append("subject_id", id!);
+    formData.append("title", form.getValues("title"));
+    formData.append("description", form.getValues("description"));
+    files.forEach((file) => formData.append("files[]", file));
+    formData.append("total_score", form.getValues("total_score").toString());
+    formData.append(
+      "deadline",
+      formatDateToUniversal(form.getValues("deadline"))
+    );
+
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    try {
+      const classroomUploadData = await fetchWithErrorHandling(
+        "http://127.0.0.1:8000/api/classroom-upload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+
+      if (classroomUploadData) navigate(`/user/subjects/${id}`);
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  async function fetchWithErrorHandling(url: string, headers: any = {}) {
+    try {
+      const res = await fetch(url, headers);
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data);
+        handleApiErrors(data);
+        return null;
+      }
+      return data;
+    } catch (err) {
+      console.error("Fetch error:", err);
+      return null;
+    }
+  }
+
+  const handleApiErrors = (data: any) => {
+    let errorMessages;
+
+    if (data.errors) {
+      errorMessages = Object.values(data.errors).flat();
+    } else if (data.error) {
+      errorMessages = Array.isArray(data.error) ? data.error : [data.error];
+    } else if (data.message) {
+      errorMessages = Array.isArray(data.message)
+        ? data.message
+        : [data.message];
+    } else {
+      errorMessages = ["Something went wrong"];
+    }
+    setErrors((prev: any) => [...prev, ...errorMessages]);
+  };
+
+  // Handle file input changes
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    if (!event.target.files) return;
+
+    const selectedFiles = Array.from(event.target.files);
+
+    // Create display state for the selected files
+    const newDisplayFiles: FileStateType[] = selectedFiles.map((file) => ({
+      name: file.name,
+      type: file.type.split("/")[1].toUpperCase(),
+      src: getFileDisplayIcon(file.type),
+    }));
+
+    // Update both states
+    setFiles((prev) => [...prev, ...selectedFiles]);
+    setFilesDisplay((prev) => [...prev, ...newDisplayFiles]);
+    setIsModalOpen(false);
+  };
+
+  // Remove a file by index
+  const handleRemoveFile = (index: number): void => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setFilesDisplay((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Map file types to display icons
+  const getFileDisplayIcon = (type: string) => {
+    if (type.includes("jpg")) return ImageConfig.jpg;
+    if (type.includes("pdf")) return ImageConfig.pdf;
+    if (type.includes("txt")) return ImageConfig.txt;
+    if (type.includes("png")) return ImageConfig.png;
+    if (type.includes("docx")) return ImageConfig.docx;
+    return type;
+  };
+
+  const addNotification = (message: string) => {
+    const id = Date.now();
+    setNotifications((prev) => [...prev, { id, successMessage: message }]);
+  };
+
+  const removeNotification = (id: number) => {
+    setNotifications((prev) => prev.filter((notif) => notif.id !== id));
   };
 
   return (
-    <div className="p-5">
-      <Heading title="Create" />
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex justify-between gap-10 mt-3"
-        >
-          <div className="w-full">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem className="mb-3">
-                  <FormLabel>Title</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Title here.." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div>
-              <span className="text-sm font-medium">Type</span>
-              <Controller
-                name="create_type"
-                control={form.control}
-                render={({ field }) => (
-                  <CreateTypeSelect
-                    value={field.value}
-                    onChange={field.onChange}
-                  />
-                )}
-              />
-            </div>
-            <div className="mb-4">
+    <>
+      <div className="p-5">
+        <Heading title="Create" />
+        <Form {...form}>
+          <form
+            onSubmit={handleSubmit}
+            className="flex justify-between gap-10 mt-3"
+          >
+            <div className="w-full">
               <FormField
                 control={form.control}
-                name="deadline"
+                name="title"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Deadline</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-full pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>Deadline</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) =>
-                            date < new Date() || date < new Date("1900-01-01")
-                          }
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
+                  <FormItem className="mb-3">
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Title here.." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div>
+                <span className="text-sm font-medium">Type</span>
+                <Controller
+                  name="create_type"
+                  control={form.control}
+                  render={({ field }) => (
+                    <CreateTypeSelect
+                      value={classroomUploadType}
+                      onChange={(newType) => setClassroomUploadType(newType)}
+                    />
+                  )}
+                />
+              </div>
+              <div className="mb-4">
+                {classroomUploadType === "activity" && (
+                  <>
+                    <FormField
+                      control={form.control}
+                      name="deadline"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                          <FormLabel>Deadline</FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={"outline"}
+                                  className={cn(
+                                    "w-full pl-3 text-left font-normal",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value ? (
+                                    format(field.value, "PPP")
+                                  ) : (
+                                    <span>Deadline</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={(date) =>
+                                  date < new Date() ||
+                                  date < new Date("1900-01-01")
+                                }
+                                initialFocus
+                              />
+                              <div className="m-2">
+                                <TimePicker12
+                                  setDate={field.onChange}
+                                  date={field.value}
+                                />
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <br />
+                    <FormField
+                      control={form.control}
+                      name="total_score"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Total Score</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="50"
+                              className="resize-none w-20"
+                              type="number"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </>
+                )}
+              </div>
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Description..."
+                        rows={10}
+                        {...field}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Description..."
-                      className="resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
 
-          <div className="shadow-drop-1 p-5 rounded-lg w-full md:w-[650px] flex-grow-0">
-            <div className="flex justify-between items-center mb-5">
-              <h2 className="text-2xl font-semibold">Attachments</h2>
-            </div>
+            <div className="shadow-drop-1 p-5 rounded-lg w-full md:w-[650px] flex-grow-0">
+              <div className="flex justify-between items-center mb-5">
+                <h2 className="text-2xl font-semibold">Attachments</h2>
+              </div>
 
-            {/* File display */}
-            {files.length > 0 ? (
-              <div className="flex flex-col gap-2 mb-4">
-                {files.map((file, index) => (
-                  <div
-                    className="border border-gray-200 flex rounded-lg items-center"
-                    key={index}
-                  >
-                    <div className=" p-2 border-r border-gray-200">
-                      <img
-                        src={file.src}
-                        alt={file.name}
-                        width={35}
-                        height={35}
+              {/* File display */}
+              {filesDisplay.length > 0 ? (
+                <div className="flex flex-col gap-2 mb-4">
+                  {filesDisplay.map((file, index) => (
+                    <div
+                      className="border border-gray-200 flex rounded-lg items-center"
+                      key={index}
+                    >
+                      <div className=" p-2 border-r border-gray-200">
+                        <img
+                          src={file.src}
+                          alt={file.name}
+                          width={35}
+                          height={35}
+                        />
+                      </div>
+                      <div className="p-2">
+                        <span className="font-semibold">{file.name}</span>
+                        <p className="text-gray-400">{file.type}</p>
+                      </div>
+                      <X
+                        className="ml-auto mr-4 cursor-pointer"
+                        size={18}
+                        onClick={() => handleRemoveFile(index)}
                       />
                     </div>
-                    <div className="p-2">
-                      <span className="font-semibold">{file.name}</span>
-                      <p className="text-gray-400">{file.type}</p>
-                    </div>
-                    <X
-                      className="ml-auto mr-4 cursor-pointer"
-                      size={18}
-                      onClick={() => removeAttachment(file.name)}
-                    />
-                  </div>
-                ))}
+                  ))}
+                </div>
+              ) : (
+                ""
+              )}
+
+              <div className="flex flex-col gap-2 mb-4">
+                <Button
+                  type="button"
+                  className="uploader-button w-full"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  <Plus />
+                  Add
+                </Button>
+
+                <Button
+                  type="submit"
+                  className="outline-btn w-full"
+                  disabled={isLoading}
+                >
+                  Submit
+                  {isLoading && (
+                    <LoaderCircle size={24} className="ml-2 animate-spin" />
+                  )}
+                </Button>
               </div>
-            ) : (
-              ""
-            )}
-
-            <div className="flex flex-col gap-2 mb-4" onSubmit={handleSubmit}>
-              <Button
-                type="button"
-                className="uploader-button w-full"
-                onClick={() => setIsModalOpen(true)}
-              >
-                <Plus />
-                Add
-              </Button>
-
-              <Button
-                type="submit"
-                className="outline-btn w-full"
-                disabled={isLoading}
-              >
-                Submit
-                {isLoading && (
-                  <LoaderCircle size={24} className="ml-2 animate-spin" />
-                )}
-              </Button>
+            </div>
+          </form>
+        </Form>
+        <ActivityUploadModal open={isModalOpen} setOpen={setIsModalOpen}>
+          <div className="mb-5">
+            <div className="border-4 border-dashed rounded-lg relative overflow-hidden p-15 flex items-center justify-center mx-5 h-[250px]">
+              <input
+                type="file"
+                name="files[]"
+                onChange={handleFileChange}
+                className="absolute w-full h-full top-0 left: 0; opacity-0 cursor-pointer"
+              />
+              <Upload className="mr-4" />
+              <h4 className="font-bold text-xl">Choose a file to submit</h4>
             </div>
           </div>
-        </form>
-      </Form>
-      <ActivityUploadModal open={isModalOpen} setOpen={setIsModalOpen}>
-        <div className="mb-5">
-          <div className="border-4 border-dashed rounded-lg relative overflow-hidden p-15 flex items-center justify-center mx-5 h-[250px]">
-            <input
-              type="file"
-              onChange={handleFileChange}
-              className="absolute w-full h-full top-0 left: 0; opacity-0 cursor-pointer"
+        </ActivityUploadModal>
+      </div>
+      <div>
+        <AnimatePresence>
+          {notifications.map((notif, i) => (
+            <Notification
+              key={i}
+              id={notif.id}
+              successMessage={notif.successMessage}
+              removeNotif={removeNotification}
             />
-            <Upload className="mr-4" />
-            <h4 className="font-bold text-xl">Choose a file to submit</h4>
-          </div>
-        </div>
-      </ActivityUploadModal>
-    </div>
+          ))}
+        </AnimatePresence>
+      </div>
+    </>
   );
 };
 

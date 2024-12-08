@@ -84,7 +84,12 @@ const AuditLogs = () => {
   return (
     <div className="container mx-auto py-10">
       <AuditLogsAction />
-      <DataTable columns={columns} data={data} />
+      <DataTable
+        columns={columns}
+        type="audit-logs"
+        hasLinks={false}
+        data={data}
+      />
     </div>
   );
 };

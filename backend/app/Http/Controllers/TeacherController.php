@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuditLog;
 use App\Models\Teacher;
 use App\Models\User;
 use Cloudinary\Cloudinary;
@@ -91,6 +92,11 @@ class TeacherController extends Controller implements HasMiddleware
 
         $teacher->update($fields);
 
+        AuditLog::create([
+            'description' => "{$authteacher->fn} {$authteacher->ln} with ID: {$user->id} made changes for teacher with name: {$teacher->fn} {$teacher->ln} and ID: {$teacher->id}.",
+            "user_type" => $authteacher->isAdmin ? 'A' : 'T'
+        ]);
+
         return ['teacher' => $teacher];
     }
 
@@ -110,6 +116,10 @@ class TeacherController extends Controller implements HasMiddleware
 
 
         try {
+            AuditLog::create([
+                'description' => "{$authteacher->fn} {$authteacher->ln} with ID: {$user->id} deleted a teacher with name: {$teacher->fn} {$teacher->ln} and ID: {$teacher->id}.",
+                "user_type" => $authteacher->isAdmin ? 'A' : 'T'
+            ]);
             // Attempt to delete the teacher
             $teacheruser->delete();
             $teacher->delete();
@@ -165,6 +175,11 @@ class TeacherController extends Controller implements HasMiddleware
                 );
 
                 $teacher->update(['profile_picture' => $uploadedFile['secure_url']]);
+
+                AuditLog::create([
+                    'description' => "{$authTeacher->fn} {$authTeacher->ln} with ID: {$user->id} made changes to teacher information named: {$teacher->fn} {$teacher->ln} with ID: {$teacher->id}.",
+                    "user_type" => $authTeacher->isAdmin ? 'A' : 'T'
+                ]);
 
                 return response()->json([
                     'message' => 'Profile picture updated successfully',

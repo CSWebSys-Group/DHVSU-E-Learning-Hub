@@ -247,12 +247,15 @@ const EnrolledSubject = ({ token, user }: PropType) => {
           </div>
         </div>
         {user.user.user_type === "T" && (
-          <button className="my-2 py-2 text-white font-semibold px-[10px] rounded-lg flex items-center gap-2 bg-brand ml-auto">
+          <Link
+            to={`/user/subjects/${subject?.id}/create`}
+            className="my-2 py-2 text-white font-semibold px-[10px] rounded-lg flex items-center gap-2 bg-brand ml-auto"
+          >
             <div className="flex items-center gap-2 space-x-4 bg-white text-brand font-bold py-1 px-4 rounded-md">
               Create
               <FaPlus />
             </div>
-          </button>
+          </Link>
         )}
         <div className="container-dl-resources flex flex-col md:flex-row w-full max-w-screen-xl justify-center gap-6 mx-auto">
           <div>
@@ -275,7 +278,13 @@ const EnrolledSubject = ({ token, user }: PropType) => {
                   >
                     <div className="border-2 text-brand border-brand rounded-md p-2 mt-2 shadow-sm hover:shadow-md hover:text-white hover:bg-brand transition">
                       <h1 className="font-bold text-lg">{activity.title}</h1>
-                      <p>{activity.description}</p>
+                      {activity.description && (
+                        <p>
+                          {activity.description.length > 100
+                            ? `${activity.description!.slice(0, 100)}...`
+                            : activity.description}
+                        </p>
+                      )}
                     </div>
                   </Link>
                 ))}
