@@ -262,15 +262,21 @@ const SubjectTask = ({ user, token }: PropType) => {
           <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
             {activity?.attachments.length &&
               activity?.attachments.map((link, i) => (
-                <a href={link} target="_blank">
-                  <div
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      border: "1px solid black",
-                    }}
-                  >{`Attachment ${i + 1}`}</div>
-                </a>
+                <div className="border border-gray-200 flex rounded-lg items-center w-[250px] max-w-[250px]">
+                  <div className="p-2 border-r border-gray-200" key={i}>
+                    <FileText size={36} />
+                  </div>
+                  <div className="p-2">
+                    <a
+                      href={link}
+                      target="_blank"
+                      className="font-semibold hover:underline"
+                    >
+                      shibal.pdf
+                    </a>
+                    <p className="text-gray-400">PNG</p>
+                  </div>
+                </div>
               ))}
           </div>
         </div>
