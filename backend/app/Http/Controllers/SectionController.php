@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuditLog;
+use App\Models\Course;
 use App\Models\Section;
 use Illuminate\Validation\Rule;
 use App\Models\Student;
@@ -56,12 +58,21 @@ class SectionController extends Controller implements HasMiddleware
             'course_id' => 'required|integer',
         ]);
 
+        $course = Course::where('id', $request->course_id)->first();
+
+        if (!$course) return response()->json(['message' => 'No course found'], 400);
+
         $section = Section::create([
             'year' => $request->year,
             'name' => $request->name,
             'course_id' => $request->course_id,
             'students' => [],
             'subjects' => []
+        ]);
+
+        AuditLog::create([
+            'description' => "{$teacher->fn} {$teacher->ln} with ID: {$user->id} created a new section: {$course->course_code} {$section->name}.",
+            "user_type" => "A"
         ]);
 
         return ['section' => $section];
@@ -91,6 +102,10 @@ class SectionController extends Controller implements HasMiddleware
         $user = User::where('id', Auth::id())->first();
         $teacher = Teacher::where('id', $user->id)->first();
 
+        $course = Course::where('id', $section->course_id)->first();
+
+        if (!$course) return response()->json(['message' => 'No course found'], 400);
+
         if ($user->user_type !== 'T' || !$teacher || !$teacher->isAdmin) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
@@ -105,6 +120,11 @@ class SectionController extends Controller implements HasMiddleware
 
         $section->update($fields);
 
+        AuditLog::create([
+            'description' => "{$teacher->fn} {$teacher->ln} with ID: {$user->id} made changes in section: {$course->course_code} {$section->name}.",
+            "user_type" => "A"
+        ]);
+
         return response()->json(['section' => $section]);
     }
 
@@ -115,6 +135,10 @@ class SectionController extends Controller implements HasMiddleware
     {
         $user = User::where('id', Auth::id())->first();
         $teacher = Teacher::where('id', $user->id)->first();
+
+        $course = Course::where('id', $section->course_id)->first();
+
+        if (!$course) return response()->json(['message' => 'No course found'], 400);
 
         if ($user->user_type !== 'T' || !$teacher || !$teacher->isAdmin) {
             return response()->json(['message' => 'Unauthorized'], 403);
@@ -130,6 +154,11 @@ class SectionController extends Controller implements HasMiddleware
             }
         }
 
+        AuditLog::create([
+            'description' => "{$teacher->fn} {$teacher->ln} with ID: {$user->id} deleted section: {$course->course_code} {$section->name}.",
+            "user_type" => "A"
+        ]);
+
         $section->delete();
 
         return ['message' => 'Section successfully deleted'];
@@ -139,6 +168,10 @@ class SectionController extends Controller implements HasMiddleware
     {
         $user = User::where('id', Auth::id())->first();
         $teacher = Teacher::where('id', $user->id)->first();
+
+        $course = Course::where('id', $section->course_id)->first();
+
+        if (!$course) return response()->json(['message' => 'No course found'], 400);
 
         if ($user->user_type !== 'T' || !$teacher || !$teacher->isAdmin) {
             return response()->json(['message' => 'Unauthorized'], 403);
@@ -168,6 +201,11 @@ class SectionController extends Controller implements HasMiddleware
         $student->section_id = $section->id;
         $student->save();
 
+        AuditLog::create([
+            'description' => "{$teacher->fn} {$teacher->ln} with ID: {$user->id} added a student in section: {$course->course_code} {$section->name}.",
+            "user_type" => "A"
+        ]);
+
         return response()->json(['message' => 'Student added successfully'], 200);
     }
 
@@ -175,6 +213,10 @@ class SectionController extends Controller implements HasMiddleware
     {
         $user = User::where('id', Auth::id())->first();
         $teacher = Teacher::where('id', $user->id)->first();
+
+        $course = Course::where('id', $section->course_id)->first();
+
+        if (!$course) return response()->json(['message' => 'No course found'], 400);
 
         if ($user->user_type !== 'T' || !$teacher || !$teacher->isAdmin) {
             return response()->json(['message' => 'Unauthorized'], 403);
@@ -208,6 +250,11 @@ class SectionController extends Controller implements HasMiddleware
         // Optionally, update the student's section_id to null
         $student->section_id = null;
         $student->save();
+
+        AuditLog::create([
+            'description' => "{$teacher->fn} {$teacher->ln} with ID: {$user->id} removed a student in section: {$course->course_code} {$section->name}.",
+            "user_type" => "A"
+        ]);
 
         return response()->json(['message' => 'Student removed successfully'], 200);
     }

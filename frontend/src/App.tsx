@@ -190,7 +190,10 @@ function App() {
                             path="subjects"
                             element={<Subject token={token!} />}
                           />
-                          <Route path="valid-ids" element={<ValidIds />} />
+                          <Route
+                            path="valid-ids"
+                            element={<ValidIds token={token!} />}
+                          />
                           <Route path="audit-logs" element={<AuditLogs />} />
                         </Route>
                       </>

@@ -22,22 +22,6 @@ const Section = ({ token }: { token: string }) => {
   const search = searchParams.get("search") || "";
 
   useEffect(() => {
-    const initializeCourses = async () => {
-      try {
-        setAllCourses([]);
-        setIsLoading(true);
-        const allCoursesData = await fetchWithErrorHandling("/api/courses");
-        setAllCourses(allCoursesData);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    initializeCourses();
-  }, []);
-
-  useEffect(() => {
     if (errors.length > 0) {
       errors.forEach((e) => {
         addNotification(e);
@@ -49,8 +33,22 @@ const Section = ({ token }: { token: string }) => {
     setIsLoading(true); // Set loading state to true before fetching data
     getData(search)
       .then((fetchedData) => setData(fetchedData))
+      .then(() => initializeCourses())
       .finally(() => setIsLoading(false)); // Ensure loading state is false after fetching
   }, [search]);
+
+  const initializeCourses = async () => {
+    try {
+      setAllCourses([]);
+      setIsLoading(true);
+      const allCoursesData = await fetchWithErrorHandling("/api/courses");
+      setAllCourses(allCoursesData);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   async function getData(searchTerm: string = ""): Promise<SectionTable[]> {
     setData([]);
@@ -127,8 +125,6 @@ const Section = ({ token }: { token: string }) => {
   const removeNotification = (id: number) => {
     setNotifications((prev) => prev.filter((notif) => notif.id !== id));
   };
-
-  console.log(allCourses);
 
   return (
     <>

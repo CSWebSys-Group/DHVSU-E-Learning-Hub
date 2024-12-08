@@ -7,6 +7,7 @@ use App\Http\Requests\StoreActivitySubmissionRequest;
 use App\Http\Requests\UpdateActivitySubmissionRequest;
 use App\Models\ActivityDeadline;
 use App\Models\ActivityUpload;
+use App\Models\AuditLog;
 use App\Models\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -181,6 +182,11 @@ class ActivitySubmissionController extends Controller implements HasMiddleware
         $activities[] = $submission->id; // Add the new submission ID
         $student->activities = $activities; // Assign the updated array back
         $student->save(); // Save the changes
+
+        AuditLog::create([
+            'description' => "{$student->fn} {$student->ln} with ID: {$student->id} made a submission in Activity: {$activity->title} with activity ID: {$activity->id}.",
+            "user_type" => "S"
+        ]);
 
         return ['activity_submission' => $submission];
     }

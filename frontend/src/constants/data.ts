@@ -90,6 +90,14 @@ export const navItemsAdmin: NavItem[] = [
         title: "Subjects",
         url: "/user/admin/subjects",
       },
+      {
+        title: "Valid IDs",
+        url: "/user/admin/valid-ids",
+      },
+      {
+        title: "Audit Logs",
+        url: "/user/admin/audit-logs",
+      },
     ],
   },
   {

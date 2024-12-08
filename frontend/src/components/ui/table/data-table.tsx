@@ -37,7 +37,14 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  type: "students" | "teachers" | "sections" | "subjects" | "courses";
+  type:
+    | "students"
+    | "teachers"
+    | "sections"
+    | "subjects"
+    | "courses"
+    | "audit-logs"
+    | "valid-ids";
   pageSizeOptions?: number[];
   hasLinks: boolean;
 }

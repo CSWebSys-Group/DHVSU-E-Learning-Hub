@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
+use App\Models\AuditLog;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -59,6 +60,11 @@ class CourseController extends Controller implements HasMiddleware
 
         // Create the course after validation
         $course = Course::create($fields);
+
+        AuditLog::create([
+            'description' => "{$authteacher->fn} {$authteacher->ln} with ID: {$user->id} created a new Course with course code: {$course->course_code} and course name: {$course->name}.",
+            "user_type" => "A"
+        ]);
 
         return response()->json(['course' => $course], 201);
     }
