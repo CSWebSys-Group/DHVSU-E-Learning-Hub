@@ -53,6 +53,7 @@ import Course from "./pages/Admin/Course/Course";
 import Subject from "./pages/Admin/Subject/Subject";
 import ValidIds from "./pages/Admin/ValidIds/ValidIds";
 import AuditLogs from "./pages/Admin/AuditLogs/AuditLogs";
+import SubmitGrade from "./pages/SubmitGrade/SubmitGrade";
 
 function App() {
   const context = useContext(AppContext);
@@ -147,6 +148,7 @@ function App() {
                   </Route>
                   <Route path="help" element={<Help />} />
                   <Route path="submissions" element={<Submissions />} />
+                  <Route path="submit-grade" element={<SubmitGrade />} />
                   <Route path="grades" element={<Grades user={user!} />} />{" "}
                   <Route path="create" element={<CreateActivity />} />
                   {/* admin routes */}
