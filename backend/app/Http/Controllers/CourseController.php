@@ -44,7 +44,7 @@ class CourseController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-        $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::user()->id)->first();
 
         $authteacher = Teacher::where('id', $user->id)->first();
 

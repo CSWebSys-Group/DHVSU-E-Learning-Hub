@@ -248,15 +248,25 @@ const EnrolledSubject = ({ token, user }: PropType) => {
           </div>
         </div>
         {user.user.user_type === "T" && (
-          <Link
-            to={`/user/subjects/${subject?.id}/create`}
-            className="my-2 py-2 text-white font-semibold px-[10px] rounded-lg flex items-center gap-2 bg-brand ml-auto"
-          >
-            <div className="flex items-center gap-2 space-x-4 bg-white text-brand font-bold py-1 px-4 rounded-md">
-              Create
-              <FaPlus />
-            </div>
-          </Link>
+          <div className="flex gap-5 ml-auto">
+            <Link
+              to={`/user/subjects/${subject?.id}/students`}
+              className="my-2 py-2 text-white font-semibold px-[10px] rounded-lg flex items-center gap-2 bg-brand ml-auto"
+            >
+              <div className="flex items-center gap-2 space-x-4 bg-white text-brand font-bold py-1 px-4 rounded-md">
+                Students
+              </div>
+            </Link>
+            <Link
+              to={`/user/subjects/${subject?.id}/create`}
+              className="my-2 py-2 text-white font-semibold px-[10px] rounded-lg flex items-center gap-2 bg-brand ml-auto"
+            >
+              <div className="flex items-center gap-2 space-x-4 bg-white text-brand font-bold py-1 px-4 rounded-md">
+                Create
+                <FaPlus />
+              </div>
+            </Link>
+          </div>
         )}
         <div className="container-dl-resources flex flex-col md:flex-row w-full max-w-screen-xl justify-center gap-6 mx-auto">
           <div>

@@ -79,8 +79,6 @@ const AuditLogs = () => {
     getData(search).then((fetchedData) => setData(fetchedData));
   }, [search]);
 
-  console.log(data);
-
   return (
     <div className="container mx-auto py-10">
       <AuditLogsAction />

@@ -14,7 +14,6 @@ class ActivitySubmission extends Model
         'student_id',
         'activity_upload_id',
         'attachments',
-        'description',
         'score',
         'submitted'
     ];

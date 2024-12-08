@@ -57,7 +57,7 @@ class TeacherController extends Controller implements HasMiddleware
      */
     public function update(Request $request, Teacher $teacher)
     {
-        $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::user()->id)->first();
 
         $authteacher = Teacher::where('id', $user->id)->first();
 
@@ -103,7 +103,7 @@ class TeacherController extends Controller implements HasMiddleware
     public function destroy(Teacher $teacher)
     {
         // Get the authenticated user
-        $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::user()->id)->first();
 
 
         $teacheruser = User::where('id', $teacher->id)->first();

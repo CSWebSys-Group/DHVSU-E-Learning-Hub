@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('activity_upload_id');
             $table->json('attachments')->nullable();
-            $table->string('description')->nullable();
             $table->integer('score')->nullable();
             $table->boolean('submitted')->default(false);
             $table->timestamps();

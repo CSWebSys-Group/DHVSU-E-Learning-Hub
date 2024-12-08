@@ -48,10 +48,14 @@ class ClassroomUploadController extends Controller implements HasMiddleware
                 if (!$file->isValid()) {
                     return response()->json(['message' => 'Invalid file uploaded'], 400);
                 }
+
+                $fileName = $file->getClientOriginalName();
+
                 $result = $this->cloudinary->uploadApi()->upload(
                     $file->getRealPath(),
                     [
                         'folder' => 'ClassroomAttachments',
+                        'public_id' => pathinfo($fileName, PATHINFO_FILENAME),
                         'resource_type' => 'auto'
                     ]
                 );
@@ -140,7 +144,7 @@ class ClassroomUploadController extends Controller implements HasMiddleware
             'files.*' => 'file|max:20480',
         ]);
 
-        $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::user()->id)->first();
 
         if ($user->user_type !== 'T') {
             return response()->json(['message' => 'Unauthorized'], 403);
@@ -231,7 +235,7 @@ class ClassroomUploadController extends Controller implements HasMiddleware
      */
     public function destroy(ClassroomUpload $classroomUpload)
     {
-        $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::user()->id)->first();
 
         if ($user->user_type !== 'T') {
             return response()->json(['message' => 'Unauthorized'], 403);

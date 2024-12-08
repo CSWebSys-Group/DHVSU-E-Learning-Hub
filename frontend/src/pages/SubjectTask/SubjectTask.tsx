@@ -47,7 +47,6 @@ const SubjectTask = ({ user, token }: PropType) => {
 
   const [files, setFiles] = useState<File[]>([]);
   const [filesDisplay, setFilesDisplay] = useState<FileStateType[]>([]);
-  const [descriptionSubmission, setDescriptionSubmission] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -151,7 +150,6 @@ const SubjectTask = ({ user, token }: PropType) => {
       student_id: user.user.id,
       activity_upload_id: activity?.id!,
       files,
-      description: descriptionSubmission || null,
     };
 
     const formData = new FormData();
@@ -162,9 +160,6 @@ const SubjectTask = ({ user, token }: PropType) => {
       "activity_upload_id",
       submissionData.activity_upload_id.toString()
     );
-    if (submissionData.description) {
-      formData.append("description", submissionData.description);
-    }
 
     try {
       const activitySubmissionData = await fetchWithErrorHandling(
@@ -176,7 +171,7 @@ const SubjectTask = ({ user, token }: PropType) => {
         }
       );
 
-      console.log(activitySubmissionData);
+      if (activitySubmissionData) window.location.reload();
     } catch (error) {
       console.error(error);
     } finally {
@@ -236,6 +231,11 @@ const SubjectTask = ({ user, token }: PropType) => {
     setNotifications((prev) => prev.filter((notif) => notif.id !== id));
   };
 
+  function getFileExtension(url: string): string | null {
+    const match = url.match(/\.([a-zA-Z0-9]+)$/);
+    return match ? match[1] : null;
+  }
+
   if (isLoading) return <LoadingSpinner loading={true} />;
 
   return (
@@ -252,7 +252,18 @@ const SubjectTask = ({ user, token }: PropType) => {
           {teacher?.fn} {teacher?.ln}
           <div className="w-1 h-1 bg-gray-400 rounded-full" />{" "}
           {formatDate(new Date())}
+          {user.user.user_type === "T" && (
+            <Link
+              to={`/user/activities/${activity?.id}/submissions`}
+              className="my-2 py-2 text-white font-semibold px-[10px] rounded-lg flex items-center gap-2 bg-brand ml-auto"
+            >
+              <div className="flex items-center gap-2 space-x-4 bg-white text-brand font-bold py-1 px-4 rounded-md">
+                Submissions
+              </div>
+            </Link>
+          )}
         </p>
+
         <div className="flex justify-between mb-4">
           <p>
             <span className="font-semibold">
@@ -299,7 +310,7 @@ const SubjectTask = ({ user, token }: PropType) => {
           <div className="shadow-drop-1 p-5 rounded-lg w-full md:w-[450px]">
             <div className="flex justify-between items-center mb-5">
               <h2 className="text-2xl font-semibold">Your work</h2>
-              {submittedActivity && (
+              {submittedActivity && submittedActivity.score !== null && (
                 <p className="bg-green-100 px-2 py-2 rounded-md flex items-center gap-1.5 font-semibold text-sm">
                   {" "}
                   <CheckCircle2 color="green" size={18} /> Graded
@@ -308,7 +319,7 @@ const SubjectTask = ({ user, token }: PropType) => {
             </div>
 
             {/* File display */}
-            {filesDisplay.length > 0 ? (
+            {!submittedActivity && filesDisplay.length > 0 ? (
               <div className="flex flex-col gap-2 mb-4">
                 {filesDisplay.map((file, index) => (
                   <div
@@ -339,42 +350,56 @@ const SubjectTask = ({ user, token }: PropType) => {
               ""
             )}
 
+            {submittedActivity && (
+              <div className="flex flex-col gap-2 mb-4">
+                {submittedActivity.attachments.map((file, index) => (
+                  <a
+                    href={file}
+                    target="_blank"
+                    className="border border-gray-200 flex rounded-lg items-center"
+                    key={index}
+                  >
+                    <div className=" p-2 border-r border-gray-200">
+                      <img
+                        src={getFileDisplayIcon(getFileExtension(file)!) || ""}
+                        alt={file}
+                        width={35}
+                        height={35}
+                      />
+                    </div>
+                    <div className="p-2">
+                      <span className="font-semibold">
+                        {file.split("/").pop()}
+                      </span>
+                      <p className="text-gray-400">{file.split("/").pop()}</p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            )}
+
             <form className="flex flex-col gap-2 mb-4" onSubmit={handleSubmit}>
               <Button
                 type="button"
                 className="uploader-button w-full"
                 onClick={() => setOpen(true)}
                 disabled={
-                  !isPastDeadline(deadline?.deadline!) ? submitting : true
+                  submittedActivity !== null ||
+                  (!isPastDeadline(deadline?.deadline!) ? submitting : true)
                 }
               >
                 <Plus />
                 Add
               </Button>
-              <textarea
-                name="description"
-                id="description"
-                placeholder="Add a description here..."
-                style={{
-                  border: "2px solid maroon",
-                  borderRadius: "10px",
-                  padding: "10px",
-                  outline: "none",
-                }}
-                value={descriptionSubmission}
-                onChange={(e) => setDescriptionSubmission(e.target.value)}
-                disabled={
-                  !isPastDeadline(deadline?.deadline!) ? submitting : true
-                }
-              />
               <Button
                 type="submit"
                 className="outline-btn w-full"
                 disabled={
-                  !isPastDeadline(deadline?.deadline!) ? submitting : true
+                  submittedActivity !== null ||
+                  (!isPastDeadline(deadline?.deadline!) ? submitting : true)
                 }
               >
-                Submit
+                {isLoading ? "Submitting..." : "Submit"}
                 {isLoading && (
                   <LoaderCircle size={24} className="ml-2 animate-spin" />
                 )}

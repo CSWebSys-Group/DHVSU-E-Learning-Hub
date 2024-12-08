@@ -14,6 +14,7 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ValidIDsController;
 use App\Models\Student;
 use App\Models\Teacher;
@@ -44,6 +45,9 @@ Route::post('change-password', [AuthController::class, 'changePassword']);
 Route::post('/send-otp/signup', [OTPController::class, 'sendOtpSignup']);
 Route::post('/send-otp/forgot-password', [OTPController::class, 'sendOtpForgotPassword']);
 Route::post('/verify-otp', [OTPController::class, 'verifyOTP']);
+
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{user}', [UserController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $req) {
@@ -93,6 +97,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('get-student-submission', [ActivitySubmissionController::class, 'findSubmissionByStudentIdAndActivityId']);
 
     Route::get('/admin/edit/{user}', [AuthController::class, 'getUser']);
+
+    Route::post('/grade-submission/{ActivitySubmission}', [ActivitySubmissionController::class, 'gradeSubmission']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

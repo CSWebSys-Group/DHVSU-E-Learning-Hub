@@ -46,7 +46,7 @@ class SubjectController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-        $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::user()->id)->first();
 
         $authteacher = Teacher::where('id', $user->id)->first();
 
@@ -133,7 +133,7 @@ class SubjectController extends Controller implements HasMiddleware
 
     public function addTeacher(Request $request, Subject $subject)
     {
-        $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::user()->id)->first();
         $authteacher = Teacher::where('id', $user->id)->first();
 
         if ($user->user_type !== 'T' || !$authteacher || !$authteacher->isAdmin) {
@@ -169,7 +169,7 @@ class SubjectController extends Controller implements HasMiddleware
 
     public function removeTeacher(Request $request, Subject $subject)
     {
-        $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::user()->id)->first();
         $authteacher = Teacher::where('id', $user->id)->first();
 
         if ($user->user_type !== 'T' || !$authteacher || !$authteacher->isAdmin) {

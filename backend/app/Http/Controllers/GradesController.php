@@ -95,7 +95,7 @@ class GradesController extends Controller implements HasMiddleware
 
     public function gradeStudent(Request $request)
     {
-        $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::user()->id)->first();
         $teacher = Teacher::where('id', $user->id)->first();
 
         $request->validate([

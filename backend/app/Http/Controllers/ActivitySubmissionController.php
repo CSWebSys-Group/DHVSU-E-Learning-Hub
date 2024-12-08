@@ -143,7 +143,6 @@ class ActivitySubmissionController extends Controller implements HasMiddleware
         $fields = $request->validate([
             'student_id' => 'required|integer',
             'activity_upload_id' => 'required|integer',
-            'description' => 'sometimes|string|nullable',
             'files' => 'sometimes|array',
             'files.*' => 'file|max:20480',
         ]);
@@ -178,7 +177,6 @@ class ActivitySubmissionController extends Controller implements HasMiddleware
         $submission = ActivitySubmission::create([
             'student_id' => $fields['student_id'],
             'activity_upload_id' => $fields['activity_upload_id'],
-            'description' => $fields['description'],
             'attachments' => $uploadedAttachments,
         ]);
 
@@ -246,21 +244,26 @@ class ActivitySubmissionController extends Controller implements HasMiddleware
         return ['studentSubmission' => $studentSubmission];
     }
 
-    public function gradeSubmission(Request $request, ActivitySubmission $activitySubmission)
+    public function gradeSubmission(Request $request, $activitySubmissionId)
     {
-        $classroomUpload = ClassroomUpload::where('id', $activitySubmission->activity_upload_id)->first();
-        $activityUpload = ActivityUpload::where('id', $classroomUpload->id)->first();
+        $activitySubmissionId = (int) $activitySubmissionId; // Ensure it's an integer
+        $activitySubmission = ActivitySubmission::where('id', $activitySubmissionId)->first();
+        if (!$activitySubmission) return response()->json(['message' => 'Submission not found'], 400);
+
+        $activityUpload = ActivityUpload::where('id', $activitySubmission->activity_upload_id)->first();
+        $classroomUpload = ClassroomUpload::where('id', $activityUpload->id)->first();
         $subject = Subject::where('id', $classroomUpload->subject_id)->first();
 
-        $teacher = Teacher::where('id', Auth::id())->first();
+        $teacher = Teacher::where('id', Auth::user()->id)->first();
 
-        if ($subject->teacher_id !== Auth::id() || !$teacher) return response()->json(['message' => 'Unauthorized'], 403);
+        if ($subject->teacher_id !== Auth::user()->id || !$teacher) return response()->json(['message' => 'Unauthorized'], 403);
 
-        $student = Student::where('id', $activitySubmission->student_id)->fist();
+        $student = Student::where('id', $activitySubmission->student_id)->first();
 
         $request->validate(['score' => 'required|integer']);
 
         if ($request->score > $activityUpload->total_score) return response()->json(['message' => 'Score should not be greater than the total score'], 400);
+        if ($request->score < 0) return response()->json(['message' => 'Score should not be lower than zero'], 400);
 
         $activitySubmission->score = $request->score;
         $activitySubmission->submitted = true;
@@ -268,7 +271,7 @@ class ActivitySubmissionController extends Controller implements HasMiddleware
 
         AuditLog::create([
             'description' => "{$teacher->fn} {$teacher->ln} graded {$student->fn} {$student->ln}'s activity",
-            "type" => "T"
+            "user_type" => "T"
         ]);
 
         return ['activitySubmission' => $activitySubmission];

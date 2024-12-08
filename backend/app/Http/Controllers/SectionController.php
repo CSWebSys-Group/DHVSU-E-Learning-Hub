@@ -37,7 +37,7 @@ class SectionController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-        $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::user()->id)->first();
         $teacher = Teacher::where('id', $user->id)->first();
 
         if ($user->user_type !== 'T' || !$teacher || !$teacher->isAdmin) {
@@ -99,7 +99,7 @@ class SectionController extends Controller implements HasMiddleware
      */
     public function update(Request $request, Section $section)
     {
-        $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::user()->id)->first();
         $teacher = Teacher::where('id', $user->id)->first();
 
         $course = Course::where('id', $section->course_id)->first();
@@ -133,7 +133,7 @@ class SectionController extends Controller implements HasMiddleware
      */
     public function destroy(Section $section)
     {
-        $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::user()->id)->first();
         $teacher = Teacher::where('id', $user->id)->first();
 
         $course = Course::where('id', $section->course_id)->first();
@@ -166,7 +166,7 @@ class SectionController extends Controller implements HasMiddleware
 
     public function addStudent(Request $request, Section $section)
     {
-        $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::user()->id)->first();
         $teacher = Teacher::where('id', $user->id)->first();
 
         $course = Course::where('id', $section->course_id)->first();
@@ -211,7 +211,7 @@ class SectionController extends Controller implements HasMiddleware
 
     public function removeStudent(Request $request, Section $section)
     {
-        $user = User::where('id', Auth::id())->first();
+        $user = User::where('id', Auth::user()->id)->first();
         $teacher = Teacher::where('id', $user->id)->first();
 
         $course = Course::where('id', $section->course_id)->first();

@@ -141,6 +141,18 @@ function App() {
                       <Profile user={user!} token={token!} setUser={setUser} />
                     }
                   />
+                  <Route
+                    path="activities"
+                    element={<Navigate to="/user/subjects" replace />}
+                  />
+                  <Route
+                    path="activities/:id"
+                    element={<SubjectTask user={user} token={token!} />}
+                  />
+                  <Route
+                    path="activities/:id/submissions"
+                    element={<Submissions token={token!} />}
+                  />
                   <Route path="subjects" element={<Subjects />}>
                     <Route
                       index
@@ -160,8 +172,7 @@ function App() {
                     )}
                   </Route>
                   <Route path="help" element={<Help />} />
-                  <Route path="submissions" element={<Submissions />} />
-                  <Route path="grades" element={<Grades user={user!} />} />{" "}
+
                   {/* admin routes */}
                   {user.user.user_type === "T" &&
                     (user.user_creds as TeacherCreds).isAdmin && (
@@ -198,10 +209,6 @@ function App() {
                         </Route>
                       </>
                     )}
-                  <Route
-                    path="activities/:id"
-                    element={<SubjectTask user={user} token={token!} />}
-                  />
                   {user.user.user_type === "S" && (
                     <>
                       <Route path="grades" element={<Grades user={user!} />} />

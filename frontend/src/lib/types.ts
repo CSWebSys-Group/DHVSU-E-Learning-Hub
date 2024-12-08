@@ -189,7 +189,6 @@ export type ActivitySubmissionType = {
   description: string | null;
   score: number | null;
   submitted: boolean;
-  late: boolean;
   created_at: string;
   updated_at: string;
 };
