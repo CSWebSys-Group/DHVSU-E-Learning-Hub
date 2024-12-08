@@ -173,8 +173,9 @@ function App() {
                     )}
                   </Route>
                   <Route path="help" element={<Help />} />
+
+                  {/** TODO */}
                   <Route path="submit-grade" element={<SubmitGrade />} />
-                  <Route path="grades" element={<Grades user={user!} />} />{" "}
                   {/* admin routes */}
                   {user.user.user_type === "T" &&
                     (user.user_creds as TeacherCreds).isAdmin && (

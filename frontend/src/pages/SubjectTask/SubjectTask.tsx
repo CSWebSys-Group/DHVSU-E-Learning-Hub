@@ -304,9 +304,11 @@ const SubjectTask = ({ user, token }: PropType) => {
                       target="_blank"
                       className="font-semibold hover:underline"
                     >
-                      shibal.pdf
+                      {link.split("/").pop()}
                     </a>
-                    <p className="text-gray-400">PNG</p>
+                    <p className="text-gray-400">
+                      {getFileExtension(link)?.toUpperCase()}
+                    </p>
                   </div>
                 </div>
               ))}
