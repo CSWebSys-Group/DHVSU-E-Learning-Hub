@@ -23,7 +23,7 @@ class AuditLogController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        response()->json(AuditLog::all(), 200);
+        return response()->json(AuditLog::all(), 200);
     }
 
     /**

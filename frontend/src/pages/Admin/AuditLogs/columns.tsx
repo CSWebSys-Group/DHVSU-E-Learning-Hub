@@ -3,7 +3,7 @@ import { ColumnDef } from "@tanstack/react-table";
 export type AuditLog = {
   id: number;
   description: string;
-  type: "S" | "T";
+  type: "Student" | "Teacher" | "Admin";
   created_at: string;
   time: string;
 };
@@ -21,16 +21,16 @@ export const columns: ColumnDef<AuditLog>[] = [
   {
     accessorKey: "type",
     header: "Type",
-    cell: ({ row }) => (row.original.type === "S" ? "Student" : "Teacher"),
+    cell: ({ row }) => row.original.type,
   },
   {
     accessorKey: "created_at",
     header: "Date",
-    cell: () => new Date().toLocaleDateString(),
+    cell: ({ row }) => row.original.created_at,
   },
   {
     accessorKey: "time",
     header: "Time",
-    cell: () => new Date().toLocaleTimeString(),
+    cell: ({ row }) => row.original.time,
   },
 ];

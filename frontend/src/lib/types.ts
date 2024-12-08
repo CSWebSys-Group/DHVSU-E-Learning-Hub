@@ -158,8 +158,11 @@ export type SectionType = {
 };
 
 export type AuditLogType = {
-  message: string;
+  id: number;
+  description: string;
   user_type: "A" | "S" | "T";
+  created_at: Date;
+  updated_at: Date;
 };
 
 export type ActivityUploadType = {
