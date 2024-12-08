@@ -59,6 +59,7 @@ import EditStudent from "./pages/Admin/Student/EditStudent";
 import EditTeacher from "./pages/Admin/Teacher/EditTeacher";
 import ValidIds from "./pages/Admin/ValidIds/ValidIds";
 import AuditLogs from "./pages/Admin/AuditLogs/AuditLogs";
+import SubmitGrade from "./pages/SubmitGrade/SubmitGrade";
 
 function App() {
   const context = useContext(AppContext);
@@ -172,7 +173,8 @@ function App() {
                     )}
                   </Route>
                   <Route path="help" element={<Help />} />
-
+                  <Route path="submit-grade" element={<SubmitGrade />} />
+                  <Route path="grades" element={<Grades user={user!} />} />{" "}
                   {/* admin routes */}
                   {user.user.user_type === "T" &&
                     (user.user_creds as TeacherCreds).isAdmin && (

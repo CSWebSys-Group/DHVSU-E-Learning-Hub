@@ -82,7 +82,7 @@ export function NavUser({
                   src={user.user_creds.profile_picture!}
                   alt={user?.user_creds.id.toString()}
                 />
-                <AvatarFallback className="rounded-lg">
+                <AvatarFallback className="rounded-lg text-neutral-800">
                   {user.user_creds.fn[0].toUpperCase() +
                     user.user_creds.ln[0].toUpperCase()}
                 </AvatarFallback>

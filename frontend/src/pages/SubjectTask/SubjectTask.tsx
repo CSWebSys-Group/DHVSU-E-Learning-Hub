@@ -1,6 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle2, LoaderCircle, Plus, Upload, X } from "lucide-react";
+import {
+  CheckCircle2,
+  FileText,
+  LoaderCircle,
+  Plus,
+  Upload,
+  X,
+} from "lucide-react";
 
 import { useState, useRef, useEffect, FormEvent, ChangeEvent } from "react";
 
@@ -9,7 +16,6 @@ import { Notification } from "@/components/SlideInNotifications";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn, formatDate, formatDateTime, isPastDeadline } from "@/lib/utils";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
-import { ImageConfig } from "@/config/ImageConfig";
 import { Link, useParams } from "react-router-dom";
 import {
   ActivityDeadlineType,
@@ -20,15 +26,14 @@ import {
   UsersType,
 } from "@/lib/types";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { ImageConfig } from "@/config/ImageConfig";
 
 type PropType = {
   user: UsersType;
   token: string;
 };
 
-type FileStateType = { name: string; type: string; src: any };
-// { name: "202230567.jpg", type: "JPG", src: ImageConfig.jpg }
-// { name: "assignment.pdf", type: "PDF", src: ImageConfig.pdf }
+type FileStateType = { name: string; type: string };
 
 const SubjectTask = ({ user, token }: PropType) => {
   const { id } = useParams();
@@ -126,7 +131,6 @@ const SubjectTask = ({ user, token }: PropType) => {
     const newDisplayFiles: FileStateType[] = selectedFiles.map((file) => ({
       name: file.name,
       type: file.type.split("/")[1].toUpperCase(),
-      src: getFileDisplayIcon(file.type),
     }));
 
     // Update both states
@@ -179,16 +183,6 @@ const SubjectTask = ({ user, token }: PropType) => {
     }
   };
 
-  // Map file types to display icons
-  const getFileDisplayIcon = (type: string) => {
-    if (type.includes("jpg")) return ImageConfig.jpg;
-    if (type.includes("pdf")) return ImageConfig.pdf;
-    if (type.includes("txt")) return ImageConfig.txt;
-    if (type.includes("png")) return ImageConfig.png;
-    if (type.includes("docx")) return ImageConfig.docx;
-    return type;
-  };
-
   async function fetchWithErrorHandling(url: string, headers: any = {}) {
     try {
       const res = await fetch(url, headers);
@@ -235,6 +229,16 @@ const SubjectTask = ({ user, token }: PropType) => {
     const match = url.match(/\.([a-zA-Z0-9]+)$/);
     return match ? match[1] : null;
   }
+
+  // Map file types to display icons
+  const getFileDisplayIcon = (type: string) => {
+    if (type.includes("jpg")) return ImageConfig.jpg;
+    if (type.includes("pdf")) return ImageConfig.pdf;
+    if (type.includes("txt")) return ImageConfig.txt;
+    if (type.includes("png")) return ImageConfig.png;
+    if (type.includes("docx")) return ImageConfig.docx;
+    return type;
+  };
 
   if (isLoading) return <LoadingSpinner loading={true} />;
 
@@ -290,15 +294,21 @@ const SubjectTask = ({ user, token }: PropType) => {
           <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
             {activity?.attachments.length &&
               activity?.attachments.map((link, i) => (
-                <a href={link} target="_blank">
-                  <div
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      border: "1px solid black",
-                    }}
-                  >{`Attachment ${i + 1}`}</div>
-                </a>
+                <div className="border border-gray-200 flex rounded-lg items-center w-[250px] max-w-[250px]">
+                  <div className="p-2 border-r border-gray-200" key={i}>
+                    <FileText size={36} />
+                  </div>
+                  <div className="p-2">
+                    <a
+                      href={link}
+                      target="_blank"
+                      className="font-semibold hover:underline"
+                    >
+                      shibal.pdf
+                    </a>
+                    <p className="text-gray-400">PNG</p>
+                  </div>
+                </div>
               ))}
           </div>
         </div>
@@ -327,12 +337,7 @@ const SubjectTask = ({ user, token }: PropType) => {
                     key={index}
                   >
                     <div className=" p-2 border-r border-gray-200">
-                      <img
-                        src={file.src}
-                        alt={file.name}
-                        width={35}
-                        height={35}
-                      />
+                      <FileText size={36} />
                     </div>
                     <div className="p-2">
                       <span className="font-semibold">{file.name}</span>

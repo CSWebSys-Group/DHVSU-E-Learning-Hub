@@ -49,17 +49,20 @@ const SubjectCard = ({
         </div>
 
         <div className="relative flex justify-end mr-3">
-          <Avatar className="w-1/4 h-auto rounded-full absolute transform -translate-y-1/2 right-0 border-2 border-DHVSU-white max-w-20 min-w-10">
-            <AvatarImage
+          {/* CHANGE HERE */}
+          {teacher?.profile_picture ? (
+            <img
               src={teacher?.profile_picture!}
-              alt="Teacher's profile"
-              className="w-1/4 h-auto rounded-full absolute transform -translate-y-1/2 right-0 border-2 border-DHVSU-white max-w-20 min-w-10"
+              alt="Teacher's propfile"
+              className="w-[64px] h-[64px] rounded-full absolute transform -translate-y-1/2 right-0 border-2 border-DHVSU-white max-w-20 min-w-10"
             />
-            <AvatarFallback>
-              {teacher &&
-                teacher.fn[0].toUpperCase() + " " + teacher.ln[0].toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
+          ) : (
+            <span className="w-[64px] h-[64px] rounded-full absolute transform -translate-y-1/2 right-0 border-2 border-slate-100 max-w-20 min-w-10 flex items-center justify-center bg-white text-neutral-800">
+              JP
+              {/* {user.user_creds.fn[0].toUpperCase() +
+                user.user_creds.ln[0].toUpperCase()} */}
+            </span>
+          )}
         </div>
 
         <div className="bg-brand text-dhvsu-lighter p-4 h-[8.265rem] pt-6">
