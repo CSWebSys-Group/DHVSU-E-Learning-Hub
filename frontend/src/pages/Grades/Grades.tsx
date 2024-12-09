@@ -42,6 +42,8 @@ const Grades = ({ user }: { user: UsersType }) => {
         if (!gradesRes.ok) throw new Error("Failed to fetch grades");
         const gradesData = await gradesRes.json();
 
+        console.log(gradesData.studentGrades);
+
         setGrades(gradesData.studentGrades);
 
         data.forEach((course: CourseType) => {
@@ -89,11 +91,9 @@ const Grades = ({ user }: { user: UsersType }) => {
     return grade >= 1 && grade <= 3 ? "text-green" : "text-red";
   };
 
-  const getGrade = (subjectCode: string) => {
-    grades.forEach((grade) => {
-      if (grade.subject_code === subjectCode) return grade.grade;
-    });
-    return null;
+  const getGrade = (subjectId: number): number | null => {
+    const gradeEntry = grades.find((grade) => grade.subject_id === subjectId);
+    return gradeEntry ? gradeEntry.grade : null;
   };
 
   if (isLoading) return <LoadingSpinner loading={true} />;
@@ -147,14 +147,14 @@ const Grades = ({ user }: { user: UsersType }) => {
                     {course?.course_code! + section?.name!}
                   </td>
                   <td className="border px-4 py-2 font-bold">
-                    {getGrade(subject.subject_code) || ""}
+                    {getGrade(subject.id) || ""}
                   </td>
                   <td
                     className={`border px-4 py-2 font-bold ${getRemarksColor(
-                      getGrade(subject.subject_code)
+                      getGrade(subject.id)
                     )} rounded-r-lg`}
                   >
-                    {getRemarks(getGrade(subject.subject_code))}
+                    {getRemarks(getGrade(subject.id))}
                   </td>
                 </tr>
               ))}

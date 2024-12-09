@@ -47,7 +47,6 @@ class AuthController extends Controller
                 'fn' => 'required|string|max:100',
                 'ln' => 'required|string|max:100',
                 'section_id' => 'nullable|integer',
-                'grades' => 'nullable|array'
             ], [
                 'email.ends_with' => 'Use your dhvsu email', // Custom error message for email domain validation
             ]);
@@ -59,7 +58,7 @@ class AuthController extends Controller
                 'ln' => $request->ln,
                 'section_id' => 2,
                 // 'section_id' => $request->section_id,
-                'grades' => $request->grades,
+                'grades' => [],
                 'activities' => []
             ]);
         } else if ($request->user_type === 'T') {

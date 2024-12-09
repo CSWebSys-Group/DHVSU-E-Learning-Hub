@@ -100,5 +100,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/grade-submission/{ActivitySubmission}', [ActivitySubmissionController::class, 'gradeSubmission']);
 
+    Route::post('/grade-student', [GradesController::class, 'gradeStudent']);
+    Route::post('/find-student-grade', [GradesController::class, 'findStudentGrade']);
+
     Route::post('logout', [AuthController::class, 'logout']);
 });

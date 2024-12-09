@@ -163,6 +163,10 @@ function App() {
                       path=":id"
                       element={<EnrolledSubject token={token!} user={user} />}
                     />
+                    <Route
+                      path=":id/students"
+                      element={<SubmitGrade token={token!} />}
+                    />
                     {user.user.user_type === "T" && (
                       <>
                         <Route
@@ -174,8 +178,6 @@ function App() {
                   </Route>
                   <Route path="help" element={<Help />} />
 
-                  {/** TODO */}
-                  <Route path="submit-grade" element={<SubmitGrade />} />
                   {/* admin routes */}
                   {user.user.user_type === "T" &&
                     (user.user_creds as TeacherCreds).isAdmin && (
