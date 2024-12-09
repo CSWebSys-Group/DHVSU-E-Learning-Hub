@@ -60,6 +60,7 @@ import EditTeacher from "./pages/Admin/Teacher/EditTeacher";
 import ValidIds from "./pages/Admin/ValidIds/ValidIds";
 import AuditLogs from "./pages/Admin/AuditLogs/AuditLogs";
 import SubmitGrade from "./pages/SubmitGrade/SubmitGrade";
+import ModuleView from "./pages/Module/module-view";
 
 function App() {
   const context = useContext(AppContext);
@@ -154,6 +155,7 @@ function App() {
                     path="activities/:id/submissions"
                     element={<Submissions token={token!} />}
                   />
+                  <Route path="module" element={<ModuleView />} />
                   <Route path="subjects" element={<Subjects />}>
                     <Route
                       index
