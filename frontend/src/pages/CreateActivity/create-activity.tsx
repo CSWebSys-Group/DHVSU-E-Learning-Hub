@@ -127,7 +127,7 @@ const CreateActivity = ({ token }: { token: string }) => {
 
       if (classroomUploadData) navigate(`/user/subjects/${id}`);
     } catch (error) {
-      console.error("Error:", error);
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -144,7 +144,7 @@ const CreateActivity = ({ token }: { token: string }) => {
       }
       return data;
     } catch (err) {
-      console.error("Fetch error:", err);
+      console.error(err);
       return null;
     }
   }

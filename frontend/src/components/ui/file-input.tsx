@@ -1,7 +1,5 @@
-import { Image, UploadIcon } from "lucide-react";
-import { useCallback, useState, useRef } from "react";
-import { useDropzone } from "react-dropzone";
 import { FaUpload } from "react-icons/fa";
+import { useState, useRef } from "react";
 
 type FileWithPreview = File & { preview: string };
 
@@ -22,14 +20,10 @@ const FileInput = ({
   setErrors: React.Dispatch<React.SetStateAction<string[]>>;
   userType: "S" | "T";
 }) => {
-  const [selectedFile, setSelectedFile] = useState<FileWithPreview | null>(
-    null
-  );
-
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [image, setImage] = useState<string | null>("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const handleInputClick = () => {
     if (inputRef.current) {
@@ -45,7 +39,6 @@ const FileInput = ({
       return;
     }
 
-    // Create FormData and append the file
     const formData = new FormData();
     formData.append("file", selectedFile);
 
@@ -104,21 +97,23 @@ const FileInput = ({
               hidden
               onChange={(e) => {
                 e.preventDefault();
-                const file = e.target.files[0];
+                const file = e.target.files ? e.target.files[0] : null;
                 if (file) {
                   const imageURL = URL.createObjectURL(file);
-                  setImage(imageURL);
+                  setSelectedFile(file);
+                  setImagePreview(imageURL); // Set preview image
                 }
               }}
             />
           </div>
 
-          {image && (
+          {imagePreview && (
             <div className="mt-5">
-              <img src={image} />
+              <img src={imagePreview} alt="Preview" />
             </div>
           )}
         </div>
+
         <div className="flex gap-2">
           {!isLoading && (
             <button

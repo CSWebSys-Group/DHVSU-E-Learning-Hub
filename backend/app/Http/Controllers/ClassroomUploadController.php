@@ -141,7 +141,7 @@ class ClassroomUploadController extends Controller implements HasMiddleware
             'total_score' => 'sometimes|integer',
             'deadline' => 'sometimes|date_format:Y-m-d H:i:s',
             'files' => 'sometimes|array',
-            'files.*' => 'file|max:20480',
+            'files.*' => 'file|max:51200',
         ]);
 
         $user = User::where('id', Auth::user()->id)->first();

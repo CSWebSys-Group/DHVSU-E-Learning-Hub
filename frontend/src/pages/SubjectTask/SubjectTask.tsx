@@ -240,6 +240,13 @@ const SubjectTask = ({ user, token }: PropType) => {
     return type;
   };
 
+  function truncateLink(link: string) {
+    const lastPart = link.split("/").pop();
+    return lastPart!.length > 30
+      ? lastPart!.substring(0, 30) + "..."
+      : lastPart;
+  }
+
   if (isLoading) return <LoadingSpinner loading={true} />;
 
   return (
@@ -304,7 +311,7 @@ const SubjectTask = ({ user, token }: PropType) => {
                       target="_blank"
                       className="font-semibold hover:underline"
                     >
-                      {link.split("/").pop()}
+                      {truncateLink(link)}
                     </a>
                     <p className="text-gray-400">
                       {getFileExtension(link)?.toUpperCase()}
