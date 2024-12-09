@@ -121,11 +121,11 @@ const teamMembers = [
     role: "Front End Developer",
     image: ifaImg,
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur nemo aliquam illum libero voluptate, cum natus quibusdam repellendu",
+      "Hello, Ifa here! I’m passionate about web designing and mostly game development. I always love crafting my imagination into reality using the technology we have now. Nice to meet you!",
     socialLinks: {
-      facebook: "#",
-      instagram: "#",
-      twitter: "#",
+      facebook: "https://www.facebook.com/starg4zer1/",
+      instagram: "https://www.instagram.com/ifadlcrz/",
+      twitter: "https://x.com/reinyskies_",
     },
   },
   {
