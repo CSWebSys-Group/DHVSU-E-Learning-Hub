@@ -93,3 +93,45 @@ export function getFileExtension(url: string): string | null {
   const match = url.match(/\.([a-zA-Z0-9]+)$/);
   return match ? match[1] : null;
 }
+
+/**
+ * Helper function to format the date from a given deadline.
+ * @param deadline The deadline to format, which could be a string, number, or Date object.
+ * @returns A formatted date string (YYYY-MM-DD).
+ */
+export function formatDateForCalendar(
+  deadline: string | number | Date
+): string {
+  const dateObj = new Date(deadline);
+
+  // Check if the date is valid
+  if (isNaN(dateObj.getTime())) {
+    throw new Error("Invalid date provided");
+  }
+
+  // Format the date as YYYY-MM-DD
+  return dateObj.toISOString().split("T")[0];
+}
+
+/**
+ * Helper function to format the time from a given deadline.
+ * @param deadline The deadline to format, which could be a string, number, or Date object.
+ * @returns A formatted time string (HH:MM AM/PM).
+ */
+export function formatTimeForCalendar(
+  deadline: string | number | Date
+): string {
+  const dateObj = new Date(deadline);
+
+  // Check if the date is valid
+  if (isNaN(dateObj.getTime())) {
+    throw new Error("Invalid date provided");
+  }
+
+  // Format the time as HH:MM AM/PM
+  return dateObj.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+}

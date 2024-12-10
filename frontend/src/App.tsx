@@ -134,9 +134,12 @@ function App() {
                   />
                   <Route
                     path="dashboard"
-                    element={<Dashboard user={user!} />}
+                    element={<Dashboard user={user!} token={token!} />}
                   />
-                  <Route path="calendar" element={<Calendar />} />
+                  <Route
+                    path="calendar"
+                    element={<Calendar user={user} token={token!} />}
+                  />
                   <Route
                     path="profile"
                     element={

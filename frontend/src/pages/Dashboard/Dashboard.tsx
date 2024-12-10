@@ -3,7 +3,7 @@ import { formatDate } from "@/lib/utils";
 import { UsersType } from "@/lib/types";
 import Calendar from "../Calendar/Calendar";
 
-const Dashboard = ({ user }: { user: UsersType }) => {
+const Dashboard = ({ user, token }: { user: UsersType; token: string }) => {
   const today = new Date();
   return (
     <div className="rounded-4xl p-8 flex flex-col items-center md:items-start lg:flex-row md:min-w-[720px] lg:min-w-[1280px]">
@@ -21,7 +21,7 @@ const Dashboard = ({ user }: { user: UsersType }) => {
         <RevealGrid user={user} />
       </section>
       <section className="right-section w-full lg:w-[500px] bg-[#F1E8E7] p-4 flex flex-col justify-center rounded-3xl">
-        <Calendar />
+        <Calendar user={user} token={token} />
       </section>
     </div>
   );
