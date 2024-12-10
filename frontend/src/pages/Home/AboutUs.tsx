@@ -133,11 +133,11 @@ const teamMembers = [
     role: "Front End Developer",
     image: russelImg,
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur nemo aliquam illum libero voluptate, cum natus quibusdam repellendu",
+      "Hi, I'm Russ! I enjoy creating pixel art and playing games. I aspire to become a game developer and share my love for games.",
     socialLinks: {
-      facebook: "#",
-      instagram: "#",
-      twitter: "#",
+      facebook: "https://www.facebook.com/russgold22",
+      instagram: "https://www.instagram.com/russgold22/",
+      twitter: "https://x.com/AurumXion",
     },
   },
   {
