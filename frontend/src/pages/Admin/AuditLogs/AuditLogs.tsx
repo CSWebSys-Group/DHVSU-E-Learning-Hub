@@ -35,9 +35,8 @@ const AuditLogs = () => {
 
   async function getData(searchTerm: string = ""): Promise<AuditLog[]> {
     setData([]);
+    setErrors([]);
     const allAuditLogsData = await fetchWithErrorHandling("/api/audit-logs");
-
-    console.log(allAuditLogsData);
 
     const allAuditLogs: AuditLog[] = allAuditLogsData.map(
       (audit_log: AuditLogType) => ({

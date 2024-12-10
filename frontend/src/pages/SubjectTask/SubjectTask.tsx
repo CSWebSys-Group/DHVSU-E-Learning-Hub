@@ -14,7 +14,14 @@ import { useState, useRef, useEffect, FormEvent, ChangeEvent } from "react";
 import { Notification } from "@/components/SlideInNotifications";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { cn, formatDate, formatDateTime, isPastDeadline } from "@/lib/utils";
+import {
+  cn,
+  formatDate,
+  formatDateTime,
+  getFileExtension,
+  isPastDeadline,
+  truncateLink,
+} from "@/lib/utils";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -225,11 +232,6 @@ const SubjectTask = ({ user, token }: PropType) => {
     setNotifications((prev) => prev.filter((notif) => notif.id !== id));
   };
 
-  function getFileExtension(url: string): string | null {
-    const match = url.match(/\.([a-zA-Z0-9]+)$/);
-    return match ? match[1] : null;
-  }
-
   // Map file types to display icons
   const getFileDisplayIcon = (type: string) => {
     if (type.includes("jpg")) return ImageConfig.jpg;
@@ -239,13 +241,6 @@ const SubjectTask = ({ user, token }: PropType) => {
     if (type.includes("docx")) return ImageConfig.docx;
     return type;
   };
-
-  function truncateLink(link: string) {
-    const lastPart = link.split("/").pop();
-    return lastPart!.length > 30
-      ? lastPart!.substring(0, 30) + "..."
-      : lastPart;
-  }
 
   if (isLoading) return <LoadingSpinner loading={true} />;
 

@@ -202,3 +202,12 @@ export type ValidIdType = {
   created_at: string;
   updated_at: string;
 };
+
+export type ModuleType = {
+  id: number;
+  title: string;
+  attachments: string[];
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+};

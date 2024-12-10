@@ -155,7 +155,11 @@ function App() {
                     path="activities/:id/submissions"
                     element={<Submissions token={token!} />}
                   />
-                  <Route path="module" element={<ModuleView />} />
+                  <Route
+                    path="modules"
+                    element={<Navigate to="/user/subjects" replace />}
+                  />
+                  <Route path="modules/:id" element={<ModuleView />} />
                   <Route path="subjects" element={<Subjects />}>
                     <Route
                       index

@@ -83,3 +83,13 @@ export async function fetchUser(
     return null; // Return null on error
   }
 }
+
+export function truncateLink(link: string) {
+  const lastPart = link.split("/").pop();
+  return lastPart!.length > 30 ? lastPart!.substring(0, 30) + "..." : lastPart;
+}
+
+export function getFileExtension(url: string): string | null {
+  const match = url.match(/\.([a-zA-Z0-9]+)$/);
+  return match ? match[1] : null;
+}

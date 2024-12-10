@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTwitter, FaGithub } from "react-icons/fa";
 import jeloImg from "../../assets/images/about-team-img/jelo.png";
 import kaelImg from "../../assets/images/about-team-img/kael.png";
 import jpImg from "../../assets/images/about-team-img/jp.png";
@@ -157,11 +157,12 @@ const teamMembers = [
     role: "Back End Developer",
     image: jpImg,
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur nemo aliquam illum libero voluptate, cum natus quibusdam repellendu",
+      "Hi, I'm JP, AKA Sush1sui, an aspiring full-stack developer driven by a passion for learning and growing in the ever-evolving field of software development. I love exploring new technologies and creating Discord bots for fun.",
     socialLinks: {
-      facebook: "#",
-      instagram: "#",
-      twitter: "#",
+      facebook: "https://www.facebook.com/johnpatrick.mercado.16/",
+      instagram: "https://www.instagram.com/sush1sui/",
+      twitter: "https://x.com/Sush1sui",
+      github: "https://github.com/Sush1sui",
     },
   },
   {
@@ -400,6 +401,15 @@ const About = () => {
                     >
                       <FaTwitter className="text-brand" />
                     </a>
+                    {member.socialLinks.github ? (
+                      <a
+                        href={member.socialLinks.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaGithub className="text-brand" />
+                      </a>
+                    ) : null}
                   </div>
                 </div>
               </div>
