@@ -499,7 +499,11 @@ const Profile = ({
                   </div>{" "}
                 </>
               )}
-              <Button type="submit" disabled={isLoading}>
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="bg-dhvsu hover:bg-dhvsu/70"
+              >
                 {isLoading ? "Saving..." : "Save profile"}
               </Button>
             </form>
