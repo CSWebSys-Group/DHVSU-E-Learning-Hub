@@ -169,11 +169,11 @@ const teamMembers = [
     role: "Back End Developer",
     image: kyleImg,
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur nemo aliquam illum libero voluptate, cum natus quibusdam repellendu",
+      "Hello, I am Kyle. I love analyzing data and interpreting them. I currently plan to be a cross platform developer.",
     socialLinks: {
-      facebook: "#",
-      instagram: "#",
-      twitter: "#",
+      facebook: "https://www.facebook.com/kyannu.v",
+      instagram: "https://www.instagram.com/kyannu_v/",
+      twitter: "https://x.com/kyannu_v",
     },
   },
 ];
