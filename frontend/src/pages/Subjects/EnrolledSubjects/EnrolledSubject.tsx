@@ -309,12 +309,12 @@ const EnrolledSubject = ({ token, user }: PropType) => {
               ) : null}
             </div>
             <div className="flex justify-between items-center mt-4 w-full md:w-auto">
-              <button className="bg-brand text-white py-2 px-8 font-bold rounded-md w-[200px] shadow-sm hover:shadow-md transition">
+              <Link
+                to={`/user/subjects/${id}/meet`}
+                className="bg-brand text-white py-2 px-8 font-bold rounded-md shadow-sm hover:shadow-md transition"
+              >
                 Join Meeting
-              </button>
-              <button className="bg-brand text-white py-2 px-8 font-bold rounded-md w-[200px] shadow-sm hover:shadow-md transition">
-                View Chat
-              </button>
+              </Link>
             </div>
           </div>
           <div className="bg-white rounded-md w-full md:w-[800px] p-4 shadow-lg">

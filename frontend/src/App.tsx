@@ -61,6 +61,7 @@ import ValidIds from "./pages/Admin/ValidIds/ValidIds";
 import AuditLogs from "./pages/Admin/AuditLogs/AuditLogs";
 import SubmitGrade from "./pages/SubmitGrade/SubmitGrade";
 import ModuleView from "./pages/Module/module-view";
+import Meeting from "./pages/Meeting/Meeting";
 
 function App() {
   const context = useContext(AppContext);
@@ -176,6 +177,7 @@ function App() {
                       path=":id/students"
                       element={<SubmitGrade token={token!} />}
                     />
+                    <Route path=":id/meet" element={<Meeting user={user} />} />
                     {user.user.user_type === "T" && (
                       <>
                         <Route
