@@ -85,11 +85,11 @@ const teamMembers = [
     role: "Back End Developer",
     image: josephImg,
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur nemo aliquam illum libero voluptate, cum natus quibusdam repellendu",
+      "Hello, I am Joseph! I love backend development, creating efficient systems, optimizing performance, and building scalable, impactful digital solutions.",
     socialLinks: {
-      facebook: "#",
-      instagram: "#",
-      twitter: "#",
+      facebook: "https://www.facebook.com/joseph.bacani.3152",
+      instagram: "",
+      twitter: "https://x.com/JosephB3265",
     },
   },
   {
