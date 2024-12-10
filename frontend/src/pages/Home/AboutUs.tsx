@@ -109,10 +109,10 @@ const teamMembers = [
     role: "Front End Developer",
     image: kielImg,
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur nemo aliquam illum libero voluptate, cum natus quibusdam repellendu",
+      "Hi, I’m Zeke! I design websites, transform them into functional projects, and explore innovative ideas with new technologies.",
     socialLinks: {
-      facebook: "#",
-      instagram: "#",
+      facebook: "https://www.facebook.com/kiel.catli/",
+      instagram: "https://www.instagram.com/zekeron_/",
       twitter: "#",
     },
   },
