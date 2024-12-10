@@ -145,9 +145,9 @@ const teamMembers = [
     role: "UX/UI Designer",
     image: cyrusImg,
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur nemo aliquam illum libero voluptate, cum natus quibusdam repellendu",
+      "Hello, Cyrus here. I love games, especially strategic ones. I want to be a game developer.",
     socialLinks: {
-      facebook: "#",
+      facebook: "https://www.facebook.com/Alpheur/",
       instagram: "#",
       twitter: "#",
     },
