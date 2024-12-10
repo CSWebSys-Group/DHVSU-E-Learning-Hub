@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { Notification } from "@/components/SlideInNotifications";
-import { SubjectType, UsersType } from "@/lib/types";
+import { SectionType, SubjectType, TeacherCreds, UsersType } from "@/lib/types";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { Separator } from "@radix-ui/react-select";
 import { JitsiMeeting } from "@jitsi/react-sdk";
@@ -19,6 +19,8 @@ export default function Meeting({ user }: { user: UsersType }) {
     }[]
   >([]);
   const [subject, setSubject] = useState<SubjectType | null>(null);
+  const [section, setSection] = useState<SectionType | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchRoomName();
@@ -34,6 +36,36 @@ export default function Meeting({ user }: { user: UsersType }) {
     setIsLoading(true);
     try {
       const subjectData = await fetchWithErrorHandling(`/api/subjects/${id}`);
+      console.log(subjectData);
+      const sectionData = await fetchWithErrorHandling(
+        `/api/sections/${subjectData.subject.section_id}`
+      );
+
+      // Check if the user is authorized to access the subject
+      if (user.user.user_type === "T") {
+        const user_creds = user.user_creds as TeacherCreds;
+        // Check if the subject ID is present in the teacher's subjects
+        const isAuthorized = user_creds.subjects.includes(Number(id));
+        console.log(isAuthorized);
+        if (!isAuthorized) {
+          navigate("/user/dashboard"); // Redirect if not authorized
+          return;
+        }
+      } else if (user.user.user_type === "S") {
+        // Check if the student is enrolled in the subject (through section data)
+        const isEnrolled = sectionData.section?.students.includes(user.user.id);
+        console.log(sectionData.section?.subjects);
+        console.log(isEnrolled);
+        if (!isEnrolled) {
+          navigate("/user/dashboard"); // Redirect if not enrolled
+          return;
+        }
+      } else {
+        navigate("/user/dashboard"); // Redirect if user type is not recognized
+        return;
+      }
+
+      setSection(sectionData.section);
       setSubject(subjectData.subject);
       setRoomName(generateRoomName(subjectData));
     } catch (error) {

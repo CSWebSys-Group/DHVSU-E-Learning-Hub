@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import {
@@ -48,6 +48,7 @@ const EnrolledSubject = ({ token, user }: PropType) => {
   >([]);
   const [showAllActivities, setShowAllActivities] = useState(false);
   const [showAllModules, setShowAllModules] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadData = async () => {
@@ -180,6 +181,27 @@ const EnrolledSubject = ({ token, user }: PropType) => {
     const sortedModules = flattenedModules.sort(
       (a, b) => b.created_at.getTime() - a.created_at.getTime()
     );
+
+    // Check if the user is authorized to access the subject
+    if (user.user.user_type === "T") {
+      const user_creds = user.user_creds as TeacherCreds;
+      // Check if the subject ID is present in the teacher's subjects
+      const isAuthorized = user_creds.subjects.includes(Number(id));
+      console.log(isAuthorized);
+      if (!isAuthorized) {
+        navigate("/user/dashboard"); // Redirect if not authorized
+        return;
+      }
+    } else if (user.user.user_type === "S") {
+      // Check if the student is enrolled in the subject (through section data)
+      const isEnrolled = sectionData.section?.students.includes(user.user.id);
+      console.log(sectionData.section?.subjects);
+      console.log(isEnrolled);
+      if (!isEnrolled) {
+        navigate("/user/dashboard"); // Redirect if not enrolled
+        return;
+      }
+    }
 
     setActivities(sortedActivities);
     setSubject(subjectData.subject);
