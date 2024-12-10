@@ -141,11 +141,13 @@ const Home = () => {
                 skills to succeed in a changing world.
               </p>
               <div className="flex gap-3 font-bold lg:mt-10">
-                <div>
-                  <button className="rounded-[10px] bg-brand px-4 py-1 text-white lg:px-8 lg:py-2.5 lg:text-xl transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-brand">
-                    Campuses
-                  </button>
-                </div>
+                <Link to="/campuses">
+                  <div>
+                    <button className="rounded-[10px] bg-brand px-4 py-1 text-white lg:px-8 lg:py-2.5 lg:text-xl transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-brand">
+                      Campuses
+                    </button>
+                  </div>
+                </Link>
                 <div>
                   <Link to={"/auth/login"}>
                     <button className="text-brand bg-none border-2 px-6 py-1 rounded-[10px] border-brand lg:px-10 lg:py-2 lg:text-xl transform transition-all duration-300 hover:bg-brand hover:text-white hover:border-none">
@@ -156,9 +158,11 @@ const Home = () => {
               </div>
 
               <div className="flex gap-3 mt-2 lg:gap-4 lg:mt-4">
-                <div className="bg-brand w-7 h-7 rounded-full flex justify-center items-center text-white lg:w-10 lg:h-10 transform transition-all duration-300 hover:scale-110 hover:bg-opacity-80">
-                  <FaFacebookF />
-                </div>
+                <Link to="https://www.facebook.com/DHVSU1861">
+                  <div className="bg-brand w-7 h-7 rounded-full flex justify-center items-center text-white lg:w-10 lg:h-10 transform transition-all duration-300 hover:scale-110 hover:bg-opacity-80">
+                    <FaFacebookF />
+                  </div>
+                </Link>
                 <div className="bg-brand w-7 h-7 rounded-full flex justify-center items-center text-white lg:w-10 lg:h-10 transform transition-all duration-300 hover:scale-110 hover:bg-opacity-80">
                   <FaInstagram />
                 </div>
@@ -174,8 +178,14 @@ const Home = () => {
 
           {/* Right side */}
           <div className="hero-right w-full lg:w-1/2 h-full flex items-center justify-center">
-            <div className="bg-gray-300 w-[20rem] h-[10rem] mx-5 my-5 rounded-lg flex justify-center items-center md:w-[24rem] md:h-[12rem] lg:w-[40rem] lg:h-[20rem]">
-              Video
+            <div className="bg-gray-300 w-[25rem] h-[12rem] mx-5 my-5 rounded-lg flex justify-center items-center md:w-[28rem] md:h-[16rem] lg:w-[40rem] lg:h-[317px]">
+              <iframe
+                src="https://www.youtube.com/embed/4VLxg3b1ZvY?list=TLGGzXrUS4nXzjwwOTEyMjAyNA&autoplay=1&mute=1"
+                title="YouTube video player"
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full rounded-lg"
+              ></iframe>
             </div>
           </div>
         </div>
@@ -206,9 +216,11 @@ const Home = () => {
           ))}
         </div>
         <div className="flex justify-center mt-5 md:justify-end px-2 sm:px-5 lg:px-20">
-          <button className="font-bold text-brand text-sm bg-[#FFBA15] rounded-lg px-4 py-1 shadow-inner md:text-lg md:px-5 md:py-2 transform transition-transform duration-300 hover:translate-y-[-5px]">
-            See more news...
-          </button>
+          <Link to="https://www.facebook.com/DHVSU1861">
+            <button className="font-bold text-brand text-sm bg-[#FFBA15] rounded-lg px-4 py-1 shadow-inner md:text-lg md:px-5 md:py-2 transform transition-transform duration-300 hover:translate-y-[-5px]">
+              See more news...
+            </button>
+          </Link>
         </div>
       </div>
 
@@ -242,9 +254,11 @@ const Home = () => {
                     {announcement.description}
                   </p>
                   <div className="flex justify-end">
-                    <button className="mt-3 text-[12px] font-bold shadow-inner  px-[10px]  py-[4px] text-brand bg-[#FFBA15] rounded-md hover:bg-[#E0A212] md:text-[15px] md:px-[12px] md:py-[5px] lg:text-[18px] lg:px-[15px] lg:py-[6px]">
-                      Read more
-                    </button>
+                    <Link to="https://www.facebook.com/DHVSU1861">
+                      <button className="mt-3 text-[12px] font-bold shadow-inner  px-[10px]  py-[4px] text-brand bg-[#FFBA15] rounded-md hover:bg-[#E0A212] md:text-[15px] md:px-[12px] md:py-[5px] lg:text-[18px] lg:px-[15px] lg:py-[6px]">
+                        Read more
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>

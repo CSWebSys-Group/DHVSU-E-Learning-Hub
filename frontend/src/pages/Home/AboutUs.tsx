@@ -73,10 +73,10 @@ const teamMembers = [
     role: "Front End Developer",
     image: jeloImg,
     description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur nemo aliquam illum libero voluptate, cum natus quibusdam repellendu",
+      "Hi, I'm Jelo. I love designing websites and transforming those designs into functional, real-life. I'm passionate about exploring new ideas and technologies.",
     socialLinks: {
-      facebook: "#",
-      instagram: "#",
+      facebook: "https://www.facebook.com/dyelo1107/",
+      instagram: "https://www.instagram.com/dyeloo1107/",
       twitter: "#",
     },
   },

@@ -50,11 +50,13 @@ export default function Home() {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <div>
-            <img
-              src={dhvsuLogo}
-              alt="logo"
-              className="w-12 md:w-16 lg:w-20 ml-10"
-            />
+            <Link to="/">
+              <img
+                src={dhvsuLogo}
+                alt="logo"
+                className="w-12 md:w-16 lg:w-20 ml-10"
+              />
+            </Link>
           </div>
 
           {/* Desktop menu items */}
@@ -206,7 +208,7 @@ export default function Home() {
               </div>
               <div className="flex justify-center border border-white items-center text-brand bg-white w-[120px] gap-2 rounded-full px-2 py-[5px] mt-4 lg:w-[150px] lg:h-[40px] lg:text-lg lg:mt-5 hover:bg-brand hover:text-white hover:border-white cursor-pointer transition-all duration-300">
                 <Link to="#" className="font-bold">
-                  Sign In
+                  Book a call
                 </Link>
                 <MdArrowOutward />
               </div>
@@ -225,7 +227,9 @@ export default function Home() {
                     <FaFacebookF />
                   </div>
                   <div className="group-hover:text-brand transition duration-300 ease-in-out">
-                    <Link to="/fb">Facebook</Link>
+                    <Link to="https://www.facebook.com/DHVSU1861">
+                      Facebook
+                    </Link>
                   </div>
                 </div>
 
@@ -234,7 +238,7 @@ export default function Home() {
                     <FaXTwitter />
                   </div>
                   <div className="group-hover:text-brand transition duration-300 ease-in-out">
-                    <Link to="/fb">Twitter</Link>
+                    <Link to="#">Twitter</Link>
                   </div>
                 </div>
 
@@ -243,7 +247,7 @@ export default function Home() {
                     <FaInstagram />
                   </div>
                   <div className="group-hover:text-brand transition duration-300 ease-in-out">
-                    <Link to="/fb">Instagram</Link>
+                    <Link to="#">Instagram</Link>
                   </div>
                 </div>
               </div>
@@ -256,18 +260,26 @@ export default function Home() {
             <div className=" flex justify-between items-center px-2 ">
               <div className="hidden md:block text-light-400">
                 <ul className="flex gap-3 text-sm lg:text-lg cursor-pointer">
-                  <li className="transform transition-all duration-300 hover:scale-110">
-                    Home
-                  </li>
-                  <li className="transform transition-all duration-300 hover:scale-110">
-                    Campuses
-                  </li>
-                  <li className="transform transition-all duration-300 hover:scale-110">
-                    Features
-                  </li>
-                  <li className="transform transition-all duration-300 hover:scale-110">
-                    Sign In
-                  </li>
+                  <Link to="/">
+                    <li className="transform transition-all duration-300 hover:scale-110">
+                      Home
+                    </li>
+                  </Link>
+                  <Link to="/campuses">
+                    <li className="transform transition-all duration-300 hover:scale-110">
+                      Campuses
+                    </li>
+                  </Link>
+                  <Link to="/about-us">
+                    <li className="transform transition-all duration-300 hover:scale-110">
+                      About
+                    </li>
+                  </Link>
+                  <Link to="auth/login">
+                    <li className="transform transition-all duration-300 hover:scale-110">
+                      Sign In
+                    </li>
+                  </Link>
                 </ul>
               </div>
 
