@@ -359,7 +359,7 @@ const SubjectTask = ({ user, token }: PropType) => {
               ""
             )}
 
-            {submittedActivity && (
+            {submittedActivity !== null && (
               <div className="flex flex-col gap-2 mb-4">
                 {submittedActivity.attachments.map((file, index) => (
                   <a
