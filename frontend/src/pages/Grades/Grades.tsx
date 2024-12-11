@@ -19,6 +19,10 @@ const Grades = ({ user }: { user: UsersType }) => {
   const [section, setSection] = useState<SectionType | null>(null);
 
   useEffect(() => {
+    document.title = "Grades | DHVSU E-Learning Hub";
+  }, []);
+
+  useEffect(() => {
     async function initialize() {
       setIsLoading(true); // Start loading
       setSubjects([]);

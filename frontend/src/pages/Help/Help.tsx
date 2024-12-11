@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 interface FAQItem {
@@ -46,6 +46,10 @@ const Help = () => {
   const toggleDropdown = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  useEffect(() => {
+    document.title = "Help | DHVSU E-Learning Hub";
+  }, []);
 
   return (
     <div className="help-container  bg-[#F1E8E7] m-5 rounded-md min-h-screen p-6  ">

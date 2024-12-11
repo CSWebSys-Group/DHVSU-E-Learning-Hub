@@ -52,6 +52,10 @@ const Profile = ({
   const [errors, setErrors] = useState<string[]>([]);
 
   useEffect(() => {
+    document.title = "Profile | DHVSU E-Learning Hub";
+  }, []);
+
+  useEffect(() => {
     async function getCourse() {
       setIsLoading(true); // Start loading
       try {

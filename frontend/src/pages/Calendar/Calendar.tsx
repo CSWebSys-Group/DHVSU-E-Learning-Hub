@@ -44,6 +44,10 @@ const Calendar = ({ user, token }: { user: UsersType; token: string }) => {
   const todayDate = today.toISOString().split("T")[0];
 
   useEffect(() => {
+    document.title = "Calendar | DHVSU E-Learning Hub";
+  }, []);
+
+  useEffect(() => {
     if (user.user.user_type === "S") {
       getDataForStudent();
     } else if (user.user.user_type === "T") {

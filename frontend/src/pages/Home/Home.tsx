@@ -84,6 +84,10 @@ const Home = () => {
   const [scrollLeft, setScrollLeft] = useState(0);
 
   useEffect(() => {
+    document.title = "Home | DHVSU E-Learning Hub";
+  }, []);
+
+  useEffect(() => {
     const slider = sliderRef.current;
     if (slider) {
       setScrollWidth(slider.scrollWidth - slider.offsetWidth);

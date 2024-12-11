@@ -82,6 +82,10 @@ const ForgotPassword = () => {
   };
 
   useEffect(() => {
+    document.title = "Forgot Password | DHVSU E-Learning Hub";
+  }, []);
+
+  useEffect(() => {
     if (otpSuccess) {
       addNotification("OTP is correct");
       handleForgotPassword();
