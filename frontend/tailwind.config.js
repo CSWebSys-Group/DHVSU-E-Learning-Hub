@@ -85,6 +85,7 @@ export default {
       fontFamily: {
         poppins: ["var(--font-poppins)"],
         inter: ["var(--font-inter)"],
+        outfit: ["Outfit", "sans-serif"],
       },
       keyframes: {
         "bounce-updown": {
