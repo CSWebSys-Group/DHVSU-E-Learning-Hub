@@ -51,6 +51,10 @@ const Index = ({ user, token }: PropType) => {
   const tasksPerPage = 3;
 
   useEffect(() => {
+    document.title = "Subjects | DHVSU E-Learning Hub";
+  }, []);
+
+  useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
       setSubjects([]);

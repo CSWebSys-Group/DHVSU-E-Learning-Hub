@@ -1,4 +1,10 @@
+import { useEffect } from "react";
+
 const ContactUs = () => {
+  useEffect(() => {
+    document.title = "Contact Us | DHVSU E-Learning Hub";
+  }, []);
+
   return (
     <div className="flex flex-col items-center gap-5 w-full m-auto max-w-screen-xl mt-5 md:mt-6">
       <div className="flex flex-col justify-center items-center text-brand">

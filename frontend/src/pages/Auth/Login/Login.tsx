@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // Some react-hook-form import fucking shit
 import { z } from "zod";
@@ -35,6 +35,10 @@ const Login = ({
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [hideErrorMessage, setHideErrorMessage] = useState(true);
+
+  useEffect(() => {
+    document.title = "Login | DHVSU E-Learning Hub";
+  }, []);
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),

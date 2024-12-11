@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaFacebook, FaInstagram, FaTwitter, FaGithub } from "react-icons/fa";
 import jeloImg from "../../assets/images/about-team-img/jelo.png";
 import kaelImg from "../../assets/images/about-team-img/kael.png";
@@ -181,6 +181,11 @@ const teamMembers = [
 
 const About = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    document.title = "About Us | DHVSU E-Learning Hub";
+  }, []);
+
   return (
     <>
       {/* banner */}

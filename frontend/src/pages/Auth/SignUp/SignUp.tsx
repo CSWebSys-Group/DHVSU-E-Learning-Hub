@@ -90,6 +90,10 @@ const SignUp = ({
     },
   });
 
+  useEffect(() => {
+    document.title = "Sign Up | DHVSU E-Learning Hub";
+  }, []);
+
   async function handleSignUp() {
     setErrors([]);
     try {
@@ -514,9 +518,7 @@ const SignUp = ({
                   return (
                     <FormItem>
                       <div className="shad-form-item">
-                        <FormLabel className="shad-form-label">
-                          Email Address
-                        </FormLabel>
+                        <FormLabel className="shad-form-label">Email</FormLabel>
                         <FormControl>
                           <Input
                             placeholder="sample@dhvsu.edu.ph"
