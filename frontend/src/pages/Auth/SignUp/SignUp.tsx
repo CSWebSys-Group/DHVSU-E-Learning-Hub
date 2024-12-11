@@ -101,7 +101,6 @@ const SignUp = ({
         method: "post",
         body: JSON.stringify({
           ...form.getValues(),
-          //birthday: 2024-12-31
         }),
       });
 
