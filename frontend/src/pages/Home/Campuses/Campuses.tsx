@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { NavLink, Outlet } from "react-router-dom";
 import campusesBg from "../../../assets/images/campuses-bg.png";
 
@@ -9,6 +11,10 @@ const getNavLinkClasses = (isActive: boolean) =>
    transition-all rounded-md p-2`;
 
 const Campuses = () => {
+  useEffect(() => {
+    document.title = "Campuses | DHVSU E-Learning Hub";
+  }, []);
+
   return (
     <>
       {/* Header Section */}

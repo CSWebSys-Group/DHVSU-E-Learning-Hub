@@ -51,6 +51,10 @@ const Index = ({ user, token }: PropType) => {
   const tasksPerPage = 3;
 
   useEffect(() => {
+    document.title = "Subjects | DHVSU E-Learning Hub";
+  }, []);
+
+  useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
       setSubjects([]);
@@ -85,6 +89,7 @@ const Index = ({ user, token }: PropType) => {
 
   async function fetchStudentData() {
     const { section_id } = user.user_creds as StudentCreds;
+    if (!section_id) return;
     const { activities } = user.user_creds as StudentCreds;
     const sectionData = await fetchWithErrorHandling(
       `/api/sections/${section_id}`

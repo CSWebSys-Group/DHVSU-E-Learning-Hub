@@ -27,9 +27,9 @@ class ValidIDsSeeder extends Seeder
             if ($valid_id->user_type === "T" && !$admin_initialized) {
                 User::create([
                     'id' => $valid_id->id,
-                    'email' => "deanccs@dhvsu.edu.ph",
+                    'email' => "dean.css0123@gmail.com",
                     'user_type' => "T",
-                    'password' => Hash::make(env('FIRST_ADMIN_PASSWORD'))
+                    'password' => Hash::make('12345678')
                 ]);
                 Teacher::create([
                     'id' => $valid_id->id,

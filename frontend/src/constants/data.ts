@@ -36,12 +36,6 @@ export const navItemsStudent: NavItem[] = [
       },
     ],
   },
-  {
-    title: "Messages",
-    url: "/user/messages",
-    icon: Mail,
-    isActive: false,
-  },
 ];
 
 export const navItemsAdmin: NavItem[] = [
