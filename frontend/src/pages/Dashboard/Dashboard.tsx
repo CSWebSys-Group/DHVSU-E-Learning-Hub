@@ -26,7 +26,7 @@ const Dashboard = ({ user, token }: { user: UsersType; token: string }) => {
         </div>
         <RevealGrid user={user} />
       </section>
-      <section className="right-section w-full lg:w-[500px] bg-[#F1E8E7] p-4 flex flex-col justify-center rounded-3xl">
+      <section className="right-section w-full lg:w-[600px] bg-[#F1E8E7] mt-[95px] p-4 flex flex-col justify-center rounded-3xl">
         <Calendar user={user} token={token} />
       </section>
     </div>
