@@ -9,6 +9,10 @@
   animation: animation 3s ease infinite;
 }
 
+.fade-background {
+  animation: fadeIn 3s ease-in;
+}
+
 @keyframes animation {
   0%,
   100% {
@@ -17,6 +21,16 @@
 
   50% {
     background-position: 100% 50%;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 60%;
   }
 }
 
