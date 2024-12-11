@@ -184,11 +184,14 @@ const Home = () => {
           <div className="hero-right w-full lg:w-1/2 h-full flex items-center justify-center">
             <div className="bg-gray-300 w-[25rem] h-[12rem] mx-5 my-5 rounded-lg flex justify-center items-center md:w-[28rem] md:h-[16rem] lg:w-[40rem] lg:h-[317px]">
               <iframe
-                src="https://www.youtube.com/embed/4VLxg3b1ZvY?list=TLGGzXrUS4nXzjwwOTEyMjAyNA&autoplay=1&mute=1"
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/4VLxg3b1ZvY?autoplay=1&mute=1&si=dAxfMJwCFpA6wRoj"
                 title="YouTube video player"
-                allow="autoplay; encrypted-media; picture-in-picture"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
-                className="w-full h-full rounded-lg"
               ></iframe>
             </div>
           </div>
