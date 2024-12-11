@@ -89,6 +89,7 @@ const Index = ({ user, token }: PropType) => {
 
   async function fetchStudentData() {
     const { section_id } = user.user_creds as StudentCreds;
+    if (!section_id) return;
     const { activities } = user.user_creds as StudentCreds;
     const sectionData = await fetchWithErrorHandling(
       `/api/sections/${section_id}`
