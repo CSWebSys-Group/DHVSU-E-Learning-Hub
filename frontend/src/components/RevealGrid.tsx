@@ -1,7 +1,19 @@
 import { HTMLMotionProps, motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import girlSample from "../assets/images/girl-sample-2.svg";
-import { Bell, Calendar, Mail, Megaphone, SquarePen, Star } from "lucide-react";
+import {
+  Bell,
+  Calendar,
+  HelpCircle,
+  HelpCircleIcon,
+  HomeIcon,
+  Mail,
+  Megaphone,
+  SquarePen,
+  SquareUserRound,
+  Star,
+  User2Icon,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { UsersType } from "@/lib/types";
 
@@ -17,7 +29,7 @@ const RevealGrid = ({ user }: { user: UsersType }) => {
         className="grid grid-flow-dense lg:grid-cols-12 grid-rows-4 gap-4"
       >
         <HeaderBlock fn={user.user_creds.fn} ln={user.user_creds.ln} />
-        <SocialsBlock />
+        <SocialsBlock user={user} />
       </motion.div>
     </>
   );
@@ -79,33 +91,47 @@ const HeaderBlock = ({ fn, ln }: { fn: string; ln: string }) => (
   </Block>
 );
 
-const SocialsBlock = () => (
+const SocialsBlock = ({ user }: { user: UsersType }) => (
   <>
-    <Block className="col-span-6 row-span-3 md:col-span-3 bg-dhvsu-light">
+    <Block className="col-span-6 row-span-3 md:col-span-3 bg-dhvsu-light cursor-pointer">
       <Link
-        to="/notifications"
+        to="/user/profile"
         className="grid h-full place-content-center text-5xl text-white dark:text-dhvsu-lighter"
       >
-        <Bell size={48} />
+        <SquareUserRound size={48} />
       </Link>
-      <p className="text-xs font-semibold text-white">Notifications</p>
+      <p className="text-xs font-semibold text-white">Profile</p>
     </Block>
 
-    <Block className="col-span-6 row-span-2 md:col-span-3 bg-dhvsu-light">
-      <Link
-        to="/grades"
-        className="grid h-full place-content-center text-3xl  text-white dark:text-dhvsu-lighter"
-      >
-        <Star size={48} />
-      </Link>
-      <p className="text-xs font-semibold  text-white dark:text-dhvsu-lighter">
-        Grades
-      </p>
-    </Block>
+    {user.user.user_type === "S" ? (
+      <Block className="col-span-6 row-span-2 md:col-span-3 bg-dhvsu-light">
+        <Link
+          to="/user/grades"
+          className="grid h-full place-content-center text-3xl  text-white dark:text-dhvsu-lighter"
+        >
+          <Star size={48} />
+        </Link>
+        <p className="text-xs font-semibold  text-white dark:text-dhvsu-lighter">
+          Grades
+        </p>
+      </Block>
+    ) : (
+      <Block className="col-span-6 row-span-2 md:col-span-3 bg-dhvsu-light">
+        <Link
+          to="/user/calendar"
+          className="grid h-full place-content-center text-3xl  text-white dark:text-dhvsu-lighter"
+        >
+          <Calendar size={48} />
+        </Link>
+        <p className="text-xs font-semibold  text-white dark:text-dhvsu-lighter">
+          Calendar
+        </p>
+      </Block>
+    )}
 
     <Block className="col-span-6 row-span-2 md:col-span-6 bg-dhvsu-light">
       <Link
-        to="/subjects"
+        to="/user/subjects"
         className="grid h-full place-content-center text-3xl  text-white dark:text-dhvsu-lighter"
       >
         <SquarePen size={48} />
@@ -117,35 +143,50 @@ const SocialsBlock = () => (
 
     <Block className="col-span-6 md:col-span-3 bg-dhvsu-light">
       <Link
-        to="/messages"
+        to="/"
         className="grid h-full place-content-center text-3xl  text-white dark:text-dhvsu-lighter"
       >
-        <Mail size={48} />
+        <HomeIcon size={48} />
       </Link>
       <p className="text-xs font-semibold  text-white dark:text-dhvsu-lighter">
-        Messages
+        Home
       </p>
     </Block>
+
+    {user.user.user_type === "S" ? (
+      <Block className="col-span-6 md:col-span-3 bg-dhvsu-light">
+        <Link
+          to="/user/calendar"
+          className="grid h-full place-content-center text-3xl  text-white dark:text-dhvsu-lighter"
+        >
+          <Calendar size={48} />
+        </Link>
+        <p className="text-xs font-semibold  text-white dark:text-dhvsu-lighter">
+          Calendar
+        </p>
+      </Block>
+    ) : (
+      <Block className="col-span-6 md:col-span-3 bg-dhvsu-light">
+        <Link
+          to="/user/help"
+          className="grid h-full place-content-center text-3xl  text-white dark:text-dhvsu-lighter"
+        >
+          <HelpCircle size={48} />
+        </Link>
+        <p className="text-xs font-semibold  text-white dark:text-dhvsu-lighter">
+          Help
+        </p>
+      </Block>
+    )}
     <Block className="col-span-6 md:col-span-3 bg-dhvsu-light">
       <Link
-        to="/subject-enrolled"
+        to="/about-us"
         className="grid h-full place-content-center text-3xl  text-white dark:text-dhvsu-lighter"
       >
-        <Megaphone size={48} />
+        <User2Icon size={48} />
       </Link>
       <p className="text-xs font-semibold  text-white dark:text-dhvsu-lighter">
-        Announcements
-      </p>
-    </Block>
-    <Block className="col-span-6 md:col-span-3 bg-dhvsu-light">
-      <Link
-        to="/subject-enrolled"
-        className="grid h-full place-content-center text-3xl  text-white dark:text-dhvsu-lighter"
-      >
-        <Calendar size={48} />
-      </Link>
-      <p className="text-xs font-semibold  text-white dark:text-dhvsu-lighter">
-        Calendar
+        About Us
       </p>
     </Block>
   </>
