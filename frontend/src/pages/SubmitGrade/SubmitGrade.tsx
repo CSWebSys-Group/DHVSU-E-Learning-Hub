@@ -87,13 +87,14 @@ const SubmitGrade = ({ token }: { token: string }) => {
               }),
             }
           );
+
           return {
             id: student_id,
             avatarUrl: studentData.student.profile_picture,
             email: userData.user.email,
             fn: studentData.student.fn,
             ln: studentData.student.ln,
-            grade: studentGrade.grade.grade,
+            grade: studentGrade.grade,
           };
         })
       );
