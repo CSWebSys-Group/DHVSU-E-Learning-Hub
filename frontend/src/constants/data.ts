@@ -94,12 +94,6 @@ export const navItemsAdmin: NavItem[] = [
       },
     ],
   },
-  {
-    title: "Messages",
-    url: "/user/messages",
-    icon: Mail,
-    isActive: false,
-  },
 ];
 
 export const navItemsTeacher: NavItem[] = [
@@ -132,11 +126,5 @@ export const navItemsTeacher: NavItem[] = [
         url: "/user/subjects",
       },
     ],
-  },
-  {
-    title: "Messages",
-    url: "/user/messages",
-    icon: Mail,
-    isActive: false,
   },
 ];

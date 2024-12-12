@@ -112,7 +112,9 @@ class StudentController extends Controller implements HasMiddleware
             $section->save();
             $student->update($fields);
         } else {
-            return response()->json(['message' => 'Cannot change sections'], 400);
+            // Update only other fields except for section_id
+            unset($fields['section_id']); // Remove section_id from the update fields
+            $student->update($fields);
         }
 
         AuditLog::create([

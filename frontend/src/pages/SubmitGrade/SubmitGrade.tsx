@@ -93,7 +93,10 @@ const SubmitGrade = ({ token }: { token: string }) => {
             email: userData.user.email,
             fn: studentData.student.fn,
             ln: studentData.student.ln,
-            grade: studentGrade.grade.grade,
+            grade:
+              studentGrade.grade !== null
+                ? studentGrade.grade.grade
+                : studentGrade.grade,
           };
         })
       );
@@ -271,6 +274,7 @@ const GradeForm = ({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault(); // Prevent default form submission (refresh)
+    if (grade === "") return;
     try {
       setIsLoading(true);
       const gradedData = await fetchWithErrorHandling(`/api/grade-student`, {
