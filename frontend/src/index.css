@@ -26,6 +26,16 @@ body {
   }
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 60%;
+  }
+}
+
 @layer base {
   * {
     @apply scroll-smooth;
