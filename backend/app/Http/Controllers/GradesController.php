@@ -149,6 +149,10 @@ class GradesController extends Controller implements HasMiddleware
             'grade' => $request->grade
         ]);
 
+        $studentGradeIds[] = $grade->id;
+        $student->grades = $studentGradeIds;
+        $student->save();
+
         AuditLog::create([
             'description' => "{$teacher->fn} {$teacher->ln} with ID: {$user->id} graded student: {$student->fn} {$student->ln} on subject {$subject->subject_code}.",
             "user_type" => "A"
