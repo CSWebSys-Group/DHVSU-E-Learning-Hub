@@ -6,7 +6,6 @@ import FloatingNav from "@/components/FloatingNav";
 import { Outlet } from "react-router-dom";
 
 import dhvsuMain from "@/assets/images/dhvsu-main-image.jpg";
-import "react-slideshow-image/dist/styles.css";
 
 import dhvsuMainImage1 from "@/assets/images/dhvsu-gradients/dhvsu-main-image-1.jpg";
 import dhvsuMainImage2 from "@/assets/images/dhvsu-gradients/dhvsu-main-image-2.jpg";
